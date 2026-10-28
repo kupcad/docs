@@ -3,7 +3,7 @@
 The source of the KupCAD documentation site: the language reference for
 [KupCAD](https://github.com/kupcad/kupcad), built with [Astro](https://astro.build) and
 [Starlight](https://starlight.astro.build). Every push to `main` publishes it to GitHub Pages, at
-https://kupcad.github.io/docs/.
+https://docs.kupcad.org/.
 
 ## Running it
 
