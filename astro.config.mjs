@@ -1,7 +1,15 @@
 // @ts-check
 import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
+import baseLinks from './src/plugins/base-links.mjs';
+
+// Where the site is served: the deploy workflow takes both from GitHub Pages (the site is
+// https://kupcad.github.io/docs/ until the repository has a custom domain). Unset locally,
+// where the site is at the root.
+const site = process.env.SITE_URL || undefined;
+const base = process.env.BASE_PATH || '/';
 
 // KupCAD's TextMate grammar, copied from the kupcad repo, where `zig build grammar` generates it
 // (packages/kupcad-vscode/syntaxes/kupcad.tmLanguage.json): ```kupcad blocks highlight as the
@@ -12,6 +20,10 @@ const kupcadGrammar = JSON.parse(
 
 // https://astro.build/config
 export default defineConfig({
+	site,
+	base,
+	// Starlight adds its own plugins (asides, heading anchors) to this processor
+	markdown: { processor: satteri({ hastPlugins: [baseLinks(base)] }) },
 	integrations: [
 		starlight({
 			title: 'KupCAD',

@@ -11,6 +11,7 @@
     "check:examples": "node scripts/check-examples.mjs"
   },
   "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.6",
     "@astrojs/starlight": "^0.42.7",
     "astro": "^7.2.10",
     "sharp": "^0.35.3"

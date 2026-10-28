@@ -41,6 +41,16 @@ implementation, the `kupcad` repo (`core/src/stdlib/manifest.zig`, `core/src/std
   by running it. Signatures and deliberately invalid code go in `frame="none"` blocks.
 - Lengths are millimetres and angles degrees. Prose is British English, as the kupcad repo's
   docs are (colour, centre); identifiers are as the language spells them (`color:`, `center`).
-- Links are absolute with a trailing slash: `/reference/geometry/solids/#cube`.
+- Links are absolute with a trailing slash: `/reference/geometry/solids/#cube`. The build puts
+  the site's base in front of them (`src/plugins/base-links.mjs`); a component's `href` (the
+  landing page's cards and buttons) doesn't pass through it, so write those relative.
 - Terse and present tense. No implementation details a script can't see, and nothing hidden
   from scripts (`on_face`, `Workplane`).
+
+## Deployment
+
+`.github/workflows/deploy.yml` builds the site and deploys it to GitHub Pages on every push to
+`main`. It first checks the examples against the KupCAD release in `KUPCAD_VERSION`, the one the
+reference describes: bump it when the reference is updated for a new release. The site's URL and
+base path come from the repository's Pages settings (`SITE_URL`, `BASE_PATH`), so a custom domain
+needs no change here.
