@@ -1,40 +1,34 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: KupCAD
+description: Documentation for KupCAD, a Ruby-inspired, method-chaining language for parametric CAD.
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: A Ruby-inspired language for parametric CAD. Write a part as a script, set its parameters, and export it as STL, 3MF, glTF, STEP, SVG or DXF.
   image:
-    file: ../../assets/houston.webp
+    file: ../../assets/logo.svg
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Read the reference
+      link: /reference/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: KupCAD on GitHub
+      link: https://github.com/kupcad/kupcad
       icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-## Next steps
+```kupcad
+plate = cube(x: 40, y: 30, z: 4, round_r: 2)
+holes = [[5, 5], [35, 5], [5, 25], [35, 25]].map { |(x, y)| cylinder(d: 3.4, h: 10).translate(x, y, -1) }
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
+plate.difference(holes)
+```
+
+<CardGrid>
+	<LinkCard title="Language" href="/reference/language/syntax/" description="Literals, operators, methods, blocks, classes, errors and modules." />
+	<LinkCard title="Geometry" href="/reference/geometry/shapes/" description="Solids, sketches and paths, and every operation on them." />
+	<LinkCard title="Standard library" href="/reference/stdlib/kernel/" description="Global functions and the built-in classes." />
+	<LinkCard title="Parameters and imports" href="/reference/inputs/parameters/" description="Parameters, data, meshes, drawings, fonts and packages." />
+	<LinkCard title="Tooling" href="/reference/tooling/cli/" description="The kupcad command, configuration, lint rules and the formatter." />
 </CardGrid>

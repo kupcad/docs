@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- The desktop app's placeholder icon in the brand's colours: brand black on orangered -->
+  <rect x="64" y="64" width="896" height="896" rx="200" fill="#ff5f14"/>
+  <path d="M512 232 L762 376 L512 520 L262 376 Z" fill="#1a1b1c" fill-opacity="0.18"/>
+  <g fill="none" stroke="#1a1b1c" stroke-width="44" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M512 232 L762 376 L762 664 L512 808 L262 664 L262 376 Z"/>
+    <path d="M262 376 L512 520 L762 376 M512 520 L512 808"/>
+  </g>
+</svg>

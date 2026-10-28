@@ -1,0 +1,270 @@
+{
+  "name": "KupCAD",
+  "scopeName": "source.kupcad",
+  "patterns": [
+    {
+      "include": "#docstring"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#single_quoted_strings"
+    },
+    {
+      "include": "#method_declarations"
+    },
+    {
+      "include": "#hash_keys"
+    },
+    {
+      "include": "#block_parameters"
+    },
+    {
+      "include": "#symbols"
+    },
+    {
+      "include": "#instance_vars"
+    },
+    {
+      "include": "#global_vars"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#method_calls"
+    },
+    {
+      "include": "#for_in"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#builtins"
+    },
+    {
+      "include": "#core_methods"
+    },
+    {
+      "include": "#primitives_3d"
+    },
+    {
+      "include": "#primitives_2d"
+    },
+    {
+      "include": "#transforms"
+    },
+    {
+      "include": "#csg_operators"
+    },
+    {
+      "include": "#inspections"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#operators"
+    }
+  ],
+  "repository": {
+    "docstring": {
+      "match": "^\\s*(#\\s*@[a-zA-Z_]+)(.*)$",
+      "captures": {
+        "1": {
+          "name": "keyword.control.directive.kupcad"
+        },
+        "2": {
+          "name": "comment.block.documentation.kupcad"
+        }
+      }
+    },
+    "comments": {
+      "match": "#.*$",
+      "name": "comment.line.number-sign.kupcad"
+    },
+    "strings": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.kupcad",
+      "patterns": [
+        {
+          "match": "\\\\(?:u\\{[0-9A-Fa-f]{1,6}\\}|u[0-9A-Fa-f]{4}|.)",
+          "name": "constant.character.escape.kupcad"
+        },
+        {
+          "begin": "#\\{",
+          "end": "\\}",
+          "name": "meta.embedded.line.kupcad",
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    },
+    "single_quoted_strings": {
+      "begin": "'",
+      "end": "'",
+      "name": "string.quoted.single.kupcad",
+      "patterns": [
+        {
+          "match": "\\\\['\\\\]",
+          "name": "constant.character.escape.kupcad"
+        }
+      ]
+    },
+    "symbols": {
+      "match": "(?<!:):[a-zA-Z_]\\w*[!?]?",
+      "name": "constant.language.symbol.kupcad"
+    },
+    "numbers": {
+      "match": "\\b(0[xX][a-fA-F0-9_]+|0[bB][01_]+|0[oO][0-7_]+|[0-9][0-9_]*(\\.[0-9_]+)?([eE][-+]?[0-9_]+)?)\\b",
+      "name": "constant.numeric.kupcad"
+    },
+    "instance_vars": {
+      "match": "(@)[a-zA-Z_]\\w*",
+      "name": "variable.other.readwrite.instance.kupcad"
+    },
+    "global_vars": {
+      "match": "(\\$)[a-zA-Z_]\\w*",
+      "name": "variable.other.readwrite.global.kupcad"
+    },
+    "constants": {
+      "match": "\\b[A-Z]\\w*\\b",
+      "name": "entity.name.type.class.kupcad"
+    },
+    "operators": {
+      "patterns": [
+        {
+          "match": "(&\\.)",
+          "name": "keyword.operator.safe-navigation.kupcad"
+        },
+        {
+          "match": "(<<=|>>=|\\*\\*=|\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|&&=\\|\\|=)",
+          "name": "keyword.operator.assignment.augmented.kupcad"
+        },
+        {
+          "match": "(==|!=|<=|>=|<|>|<=>|===)",
+          "name": "keyword.operator.comparison.kupcad"
+        },
+        {
+          "match": "(&&|\\|\\||!)",
+          "name": "keyword.operator.logical.kupcad"
+        },
+        {
+          "match": "(\\+|-|\\*|/|%|\\*\\*|&|\\||\\^|<<|>>)",
+          "name": "keyword.operator.arithmetic.kupcad"
+        },
+        {
+          "match": "=",
+          "name": "keyword.operator.assignment.kupcad"
+        }
+      ]
+    },
+    "method_calls": {
+      "match": "([a-zA-Z_]\\w*[!?]?)(\\()",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.kupcad"
+        }
+      }
+    },
+    "for_in": {
+      "match": "\\b(for)\\b([^#\\n]*?)\\b(in)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.control.kupcad"
+        },
+        "3": {
+          "name": "keyword.control.kupcad"
+        }
+      }
+    },
+    "keywords": {
+      "match": "(?<![\\w.])(and|as|begin|break|case|class|def|do|else|elsif|end|ensure|export|false|for|from|if|import|module|next|nil|not|or|private|public|rescue|return|self|super|then|true|unless|until|when|while|with|yield)(?![\\w?!])",
+      "name": "keyword.control.kupcad"
+    },
+    "builtins": {
+      "match": "(?<![\\w])(assert|benchmark|debugger|import_3mf|import_dxf|import_font|import_json|import_obj|import_step|import_stl|import_svg|inspect|param|print|puts|warn)(?![\\w?!])",
+      "name": "support.function.builtin.kupcad"
+    },
+    "core_methods": {
+      "match": "(?<![\\w])(abs|acos|acosd|all\\?|any\\?|asin|asind|atan|atan2|atan2d|atand|between\\?|bytes_allocated|cbrt|ceil|center|chars|clamp|class|clone|close\\?|cm|collect|compact|config|contains\\?|cos|cosd|count|cover\\?|current_config|deg2rad|delete|dig|downcase|downto|drop|dup|each|each_cons|each_slice|each_with_index|empty\\?|end_with\\?|ends_with\\?|even\\?|exclusive\\?|exp|fetch|filter|find|finite\\?|first|flat_map|flatten|floor|gcd|get|group_by|hypot|inch|include\\?|infinite\\?|inspect|integer\\?|into|invert|is_a\\?|join|key\\?|keys|last|lcm|length|lerp|ljust|log|log10|log2|m|map|max|max_by|merge|method|min|min_by|mm|name|nan\\?|negative\\?|nil\\?|none\\?|odd\\?|polar|pop|positive\\?|preview\\?|push|rad2deg|rand|reduce|reject|remap|replace|respond_to\\?|reverse|rjust|round|sample|seed|shift|shuffle|sign|sin|sind|size|slice|smoothstep|snap|sort|sort_by|split|sqrt|start_with\\?|starts_with\\?|step|stringify_keys|strip|sum|symbolize_keys|take|tan|tand|tap|times|to_a|to_f|to_h|to_i|to_s|to_sym|transform_values|trim|uniq|unshift|upcase|upto|values|with_config|x_max|x_min|x_size|y_max|y_min|y_size|z_max|z_min|z_size|zero\\?|zip)(?![\\w?!])",
+      "name": "support.function.core.kupcad"
+    },
+    "primitives_3d": {
+      "match": "(?<![\\w])(cube|cylinder|polyhedron|sphere|torus)(?![\\w?!])",
+      "name": "support.class.primitive.3d.kupcad"
+    },
+    "primitives_2d": {
+      "match": "(?<![\\w])(circle|polygon|regular_polygon|square|text)(?![\\w?!])",
+      "name": "support.class.primitive.2d.kupcad"
+    },
+    "transforms": {
+      "match": "(?<![\\w])(align|center|decompose|extrude|ghost|helix|highlight|hull|loft|material|minkowski|mirror|named|offset|project|repeat_linear|repeat_polar|resize|revolve|rotate|scale|shell|simplify|slice|split_by_plane|sweep|transform|translate|trim_by_plane)(?![\\w?!])",
+      "name": "support.function.transform.kupcad"
+    },
+    "csg_operators": {
+      "match": "(?<![\\w])(difference|intersection|union)(?![\\w?!])",
+      "name": "support.function.csg.kupcad"
+    },
+    "inspections": {
+      "match": "(?<![\\w])(area|bbox|bom|center_of_mass|contains\\?|genus|intersects\\?|mass|min_gap|ray_cast|surface_area|volume)(?![\\w?!])",
+      "name": "support.function.inspection.kupcad"
+    },
+    "hash_keys": {
+      "match": "\\b([a-zA-Z_]\\w*[!?]?)(:)(?!:)",
+      "captures": {
+        "1": {
+          "name": "constant.language.symbol.hashkey.kupcad"
+        },
+        "2": {
+          "name": "punctuation.separator.key-value.kupcad"
+        }
+      }
+    },
+    "method_declarations": {
+      "match": "(?:^|\\s)(def)\\s+([a-zA-Z_]\\w*[!?]?)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.def.kupcad"
+        },
+        "2": {
+          "name": "entity.name.function.kupcad"
+        }
+      }
+    },
+    "block_parameters": {
+      "begin": "(?<=\\bdo\\b|\\{)\\s*(\\|)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.separator.variable.kupcad"
+        }
+      },
+      "end": "(\\|)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.separator.variable.kupcad"
+        }
+      },
+      "name": "meta.block.parameters.kupcad",
+      "patterns": [
+        {
+          "match": "[a-zA-Z_]\\w*",
+          "name": "variable.parameter.block.kupcad"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.object.kupcad"
+        }
+      ]
+    }
+  }
+}

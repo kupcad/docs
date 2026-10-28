@@ -1,0 +1,76 @@
+/*
+  The KupCAD brand on Starlight: orangered, brand black and gainsboro. The values are the --kc-*
+  tokens of @kupcad/panels (packages/kupcad-ui/src/tokens.css in the kupcad repo), so the docs
+  match the playground and the desktop app; change them there first.
+
+  The rules the brand sets: text on orange is the brand black (white on #ff5f14 is 3.0:1); orange
+  as text on white is the darker #c5480d (4.9:1), on black the lighter #ff6a24 (6.0:1); what is
+  chosen in a list is the subtle tint edged in orange, not a full orange row; notes are
+  dodgerblue and dangers rose red, so the only orange on a page is the accent.
+*/
+
+/* Dark, Starlight's default */
+:root {
+	--sl-color-accent-low: #43271b; /* --kc-accent-subtle */
+	--sl-color-accent: #ff5f14; /* --kc-accent */
+	--sl-color-accent-high: #ff6a24; /* --kc-accent-text */
+	--sl-color-text-accent: #ff6a24;
+	--sl-color-bg-accent: #ff5f14;
+	--sl-color-text-invert: #1a1b1c; /* --kc-accent-fg */
+	--sl-color-accent-hover: #ff7a3d; /* --kc-accent-hover */
+
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #f1f3f5;
+	--sl-color-gray-2: #e3e7eb; /* gainsboro: body text */
+	--sl-color-gray-3: #9a9da3; /* --kc-muted */
+	--sl-color-gray-4: #73767c; /* --kc-control-border */
+	--sl-color-gray-5: #333436; /* --kc-border */
+	--sl-color-gray-6: #282829; /* raised: nav, sidebar, inline code */
+	--sl-color-black: #1a1b1c; /* brand black: the page */
+
+	--sl-hue-blue: 204; /* dodgerblue, #0099ff: notes */
+	--sl-hue-red: 350; /* rose red: dangers */
+}
+
+/* Light */
+:root[data-theme='light'] {
+	--sl-color-accent-low: #ffe9de;
+	--sl-color-accent: #ff5f14;
+	--sl-color-accent-high: #c5480d;
+	--sl-color-text-accent: #c5480d;
+	--sl-color-bg-accent: #ff5f14;
+	--sl-color-text-invert: #1a1b1c;
+	--sl-color-accent-hover: #f0540c;
+
+	--sl-color-white: #1a1b1c; /* brand black: headings */
+	--sl-color-gray-1: #1a1b1c;
+	--sl-color-gray-2: #26272a; /* body text */
+	--sl-color-gray-3: #5a5d65; /* --kc-muted */
+	--sl-color-gray-4: #8a9099; /* --kc-control-border */
+	--sl-color-gray-5: #d5dae0; /* --kc-border */
+	--sl-color-gray-6: #e3e7eb; /* gainsboro: surfaces, inline code */
+	--sl-color-gray-7: #f2f4f6; /* the nav */
+	--sl-color-black: #ffffff;
+	--sl-color-hairline: #d5dae0;
+}
+
+/* A primary button: the brand orange, its text brand black, in both themes */
+.sl-link-button.primary {
+	background: var(--sl-color-accent);
+	border-color: var(--sl-color-accent);
+	color: var(--sl-color-text-invert);
+}
+.sl-link-button.primary:hover {
+	background: var(--sl-color-accent-hover);
+	border-color: var(--sl-color-accent-hover);
+	color: var(--sl-color-text-invert);
+}
+
+/* The current page in the sidebar: tinted and edged in orange, its text the page's */
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+	color: var(--sl-color-white);
+	background-color: var(--sl-color-accent-low);
+	box-shadow: inset 3px 0 0 var(--sl-color-accent);
+}
