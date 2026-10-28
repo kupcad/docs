@@ -131,7 +131,7 @@ solid.resize([x, y, z], auto: false)
 
 Scales a Solid so its bounding box has the sizes given. A size of 0, or one left out, keeps that
 axis; with `auto: true` it scales instead by the factor of the first size given, keeping the
-proportions.
+proportions. An empty Solid has no box to scale, and comes back as it is.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -155,7 +155,7 @@ shape.center(axes = "xyz")
 
 Moves the shape so the centre of its bounding box is at the origin on the axes named: a String
 or a Symbol of `x`, `y` and `z` (`center(:xy)`). A Sketch centres on x and y only. An Assembly
-moves as a whole.
+moves as a whole. An empty shape has no box, and comes back as it is.
 
 **Returns:** the receiver's kind.
 
@@ -171,7 +171,8 @@ shape.align(target, axes, my_align, target_align = my_align, offset = 0)
 
 Moves the shape along `axes` so that its `my_align` side meets the target's `target_align` side,
 `offset` beyond it. The sides are `"min"`, `"max"` and `"center"`; the axes are letters of `x`,
-`y` and `z`. Each name is a String or a Symbol. The target is a Solid or a Sketch.
+`y` and `z`. Each name is a String or a Symbol. The target is a Solid or a Sketch. An empty
+shape comes back as it is; an empty target has no side to meet.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -182,6 +183,8 @@ Moves the shape along `axes` so that its `my_align` side meets the target's `tar
 | `offset` | Number | 0 | The distance beyond the target's side. |
 
 **Returns:** the receiver's kind.
+
+**Raises:** `ValueError` for an empty target.
 
 ```kupcad
 base = cube(x: 40, y: 40, z: 5)

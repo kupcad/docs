@@ -50,7 +50,7 @@ implementation, the `kupcad` repo (`core/src/stdlib/manifest.zig`, `core/src/std
 ## Deployment
 
 `.github/workflows/deploy.yml` builds the site and deploys it to GitHub Pages on every push to
-`main`. It first checks the examples against the KupCAD release in `KUPCAD_VERSION`, the one the
-reference describes: bump it when the reference is updated for a new release. The site's URL and
+`main`. Its example check against a KupCAD release (`KUPCAD_VERSION`) is commented out until the
+next release: the reference follows kupcad's main branch, ahead of 0.1.0. The site's URL and
 base path come from the repository's Pages settings (`SITE_URL`, `BASE_PATH`), so a custom domain
 needs no change here.

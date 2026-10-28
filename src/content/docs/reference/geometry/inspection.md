@@ -36,12 +36,12 @@ shape.bbox
 ```
 
 The shape's axis-aligned bounding box. A Sketch's and a Path's have z 0. An Assembly's holds
-all its parts.
+all its parts that have one.
 
-An empty Sketch's `bbox` is `nil`. An empty Solid's is a box with `min` at `Infinity` and `max`
-at `-Infinity` (its `size` is `[0, 0, 0]`); check [`empty?`](#empty) first.
+An empty shape has no box: its `bbox` is `nil`, and so is an Assembly's when none of its parts
+has one.
 
-**Returns:** `BoundingBox`.
+**Returns:** `BoundingBox`, or `nil`.
 
 ```kupcad
 box = cube(x: 50, y: 30, z: 20).bbox

@@ -81,8 +81,9 @@ puts union([]).empty? # true
 puts cube(5).empty?   # false
 ```
 
-An empty Sketch's `bbox` is `nil`. An empty Solid's `bbox` is a box whose `min` is `Infinity`
-and whose `max` is `-Infinity`, so check `empty?` before measuring one.
+An empty shape has no box: its `bbox` is `nil`. Moving one by its box leaves it as it is
+(`center`, `align`, `resize`), and in a parts list its `volume` is `0` and its `size`
+`[0, 0, 0]`.
 
 ## Printing a shape
 

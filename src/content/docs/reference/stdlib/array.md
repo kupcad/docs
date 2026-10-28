@@ -375,11 +375,13 @@ a Map's do, so equal pairs `[x, y]` group together. **Returns:** `Map`.
 
 ```kupcad frame="none"
 a.to_h
+a.to_h { |item| [key, value] }
 ```
 
-A Map from an Array of `[key, value]` pairs. **Returns:** `Map`.
+A Map of `[key, value]` pairs: the items, or what the block gives for each
+(`names.to_h { |n| [n, n.length] }`). **Returns:** `Map`.
 
-**Raises:** `ArgumentError` when an item isn't an Array.
+**Raises:** `ArgumentError` when an item, or the block's result, isn't an Array of two.
 
 ```kupcad
 parts = [1, nil, 2, nil]
@@ -443,14 +445,15 @@ puts names.max_by { |s| s.length }                   # ccc
 
 ```kupcad frame="none"
 a.sum
+a.sum { |item| ... }
 ```
 
-The items added up, `0` for an empty Array.
+The items added up, or what the block gives for each; `0` for an empty Array.
 
 **Returns:** `Number`.
 
-**Raises:** `TypeError` for an item that isn't a Number (it isn't skipped); `RangeError` when
-the total is past the largest Number.
+**Raises:** `TypeError` for an item, or a block result, that isn't a Number (it isn't skipped);
+`RangeError` when the total is past the largest Number.
 
 ### max
 
@@ -462,7 +465,9 @@ a.min
 The greatest item, or the least: all Numbers or all Strings. **Returns:** the item, or `nil`
 for an empty Array.
 
-**Raises:** `TypeError` for items of mixed or other kinds; `MathError` for a `NaN`.
+**Raises:** `TypeError` for items of mixed or other kinds; `MathError` for a `NaN`;
+`ArgumentError` for a block, which Ruby takes as a comparator: use [`max_by`](#min_by) or
+[`sort`](#sort) with a block instead.
 
 ### reduce
 
@@ -481,6 +486,7 @@ Ruby's `inject` is `reduce` here, and it takes no Symbol (`reduce(:+)`).
 
 ```kupcad
 puts [3, 1, 2].sum                              # 6
+puts [cube(2), cube(3)].sum { |c| c.volume }    # 35
 puts [3, 1, 2].max                              # 3
 puts [].max.inspect                             # nil
 puts [1, 2, 3].reduce(10) { |acc, x| acc + x }  # 16
@@ -492,15 +498,15 @@ volume = [cube(2), cube(3)].reduce(0) { |acc, c| acc + c.volume }   # 35
 ### join
 
 ```kupcad frame="none"
-a.join(separator)
+a.join(separator = "")
 ```
 
-The items as `puts` shows them, with `separator` between them. The separator is required:
-`join("")` runs them together. **Returns:** `String`.
+The items as `puts` shows them, with `separator` between them; without one, run together.
+**Returns:** `String`.
 
 ```kupcad
 puts [1, 2, 3].join(", ")   # 1, 2, 3
-puts [:m, 3].join("")       # m3
+puts [:m, 3].join           # m3
 ```
 
 An Array has no `to_s`; `puts`, interpolation and `inspect` show it as `[1, 2, 3]`.

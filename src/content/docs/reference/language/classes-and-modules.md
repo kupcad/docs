@@ -228,14 +228,49 @@ puts Fasteners.describe(4)     # M4
 puts Screw.new(3).tag          # [bolt 3]
 ```
 
-`is_a?` takes a class, not a module. A class nested in a module is written inside the module's
-body; Ruby's `extend` and `module_function` don't exist.
+`is_a?` takes a class, not a module. Ruby's `extend` and `module_function` don't exist.
+
+### Nesting and reopening
+
+A class nested in a module is written inside the module's body, or declared by its path from
+the top level: `class Fasteners::Nut … end` is the same as `class Nut` inside
+`module Fasteners`, and `Fasteners` must already exist (else a `NameError`).
+
+- A nested class or module is its own: `Fasteners::Nut` and a top-level `Nut` are two classes.
+- Declaring a class or a module again, by either form, adds to it.
+- A class or module prints by its full name: `puts Fasteners::Nut` gives `Fasteners::Nut`.
+- Declaring one under a name that holds something else is a `TypeError`: `module K` after
+  `class K` (`K is not a module`), or `class M` after `module M` (`M is not a class`).
+
+```kupcad
+module Fasteners
+end
+
+class Fasteners::Nut
+  def size = 3
+end
+
+module Fasteners
+  class Nut
+    def pitch = 0.5
+  end
+end
+
+class Nut
+end
+
+nut = Fasteners::Nut.new
+puts [nut.size, nut.pitch].inspect      # [3, 0.5]
+puts Fasteners::Nut                     # Fasteners::Nut
+puts Nut.new.respond_to?(:size)         # false
+```
 
 ## Built-in classes are sealed
 
 The built-in classes (`Solid`, `Sketch`, `Path`, `Number`, `String`, `Array`, `Map` and the
-rest) can't be reopened or subclassed: `class Solid` is the compile error `builtin-redefined`,
-and `class Bracket < Solid` is a `TypeError`, since their values come from literals,
+rest) and modules (`Math`, `CAD`, `GC`) can't be reopened, and the classes can't be subclassed:
+`class Solid` and `module Math` are the compile error `builtin-redefined`, even nested in a
+module of your own, and `class Bracket < Solid` is a `TypeError`, since their values come from literals,
 constructors and methods. A class of your own builds or holds a shape instead:
 
 ```kupcad

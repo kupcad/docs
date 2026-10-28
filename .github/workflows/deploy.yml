@@ -16,9 +16,12 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-env:
-  # The KupCAD release the reference describes: its examples are checked against it
-  KUPCAD_VERSION: 0.1.0
+# The example check is off until the next release: the reference describes kupcad's main branch,
+# ahead of 0.1.0. To turn it on, uncomment this and the Install KupCAD and Check examples steps,
+# and set KUPCAD_VERSION to the new release.
+# env:
+#   # The KupCAD release the reference describes: its examples are checked against it
+#   KUPCAD_VERSION: 0.1.0
 
 jobs:
   build:
@@ -40,19 +43,20 @@ jobs:
       - name: Install Javascript dependencies
         run: npm ci
 
-      - name: Install KupCAD
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          archive="kupcad_${KUPCAD_VERSION}_linux_amd64.tar.gz"
-          cd "$RUNNER_TEMP"
-          gh release download "v${KUPCAD_VERSION}" --repo kupcad/kupcad --pattern "$archive" --pattern checksums.txt
-          grep " ${archive}\$" checksums.txt | sha256sum --check
-          mkdir kupcad && tar xzf "$archive" -C kupcad
-          echo "KUPCAD=$RUNNER_TEMP/kupcad/kupcad" >> "$GITHUB_ENV"
-
-      - name: Check examples
-        run: npm run check:examples
+      # Off until the next release (see KUPCAD_VERSION above)
+      # - name: Install KupCAD
+      #   env:
+      #     GH_TOKEN: ${{ github.token }}
+      #   run: |
+      #     archive="kupcad_${KUPCAD_VERSION}_linux_amd64.tar.gz"
+      #     cd "$RUNNER_TEMP"
+      #     gh release download "v${KUPCAD_VERSION}" --repo kupcad/kupcad --pattern "$archive" --pattern checksums.txt
+      #     grep " ${archive}\$" checksums.txt | sha256sum --check
+      #     mkdir kupcad && tar xzf "$archive" -C kupcad
+      #     echo "KUPCAD=$RUNNER_TEMP/kupcad/kupcad" >> "$GITHUB_ENV"
+      #
+      # - name: Check examples
+      #   run: npm run check:examples
 
       - name: Configure Pages
         id: pages

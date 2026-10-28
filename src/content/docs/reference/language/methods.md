@@ -59,7 +59,7 @@ Parameters come in this order:
 | `*rest` | Any further positional arguments, as an Array |
 | `k:` | A required keyword argument |
 | `k: default` | An optional keyword argument |
-| `**opts` | Keyword arguments, as a Map; with it, any keyword is accepted |
+| `**opts` | The keywords no other parameter names, as a Map (`{}` for none); with it, any keyword is accepted |
 | `&blk` | The block, as a value (`nil` when none is given) |
 
 A default is evaluated when the call needs it and may use the parameters before it. `nil`
@@ -70,11 +70,11 @@ may be absent. A Map passed as a positional argument stays a positional argument
 
 ```kupcad
 def frame(w, h = w / 2, *extra, depth: 3, label:, **opts, &blk)
-  [w, h, extra, depth, label].inspect
+  [w, h, extra, depth, label, opts].inspect
 end
 
-puts frame(10, label: "A")             # [10, 5, [], 3, "A"]
-puts frame(10, nil, 1, 2, label: "B")  # [10, 5, [1, 2], 3, "B"]
+puts frame(10, label: "A")                     # [10, 5, [], 3, "A", {}]
+puts frame(10, nil, 1, 2, label: "B", tag: 7)  # [10, 5, [1, 2], 3, "B", {tag: 7}]
 ```
 
 ## Arity

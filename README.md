@@ -40,7 +40,7 @@ Blocks marked `frame="none"` (signatures, deliberately invalid code) aren't run.
 | `src/grammars/kupcad.tmLanguage.json` | KupCAD's TextMate grammar, which highlights `kupcad` code blocks |
 | `src/plugins/base-links.mjs` | Puts the site's base path in front of the pages' links |
 | `scripts/check-examples.mjs` | The example check |
-| `.github/workflows/deploy.yml` | Builds, checks and deploys the site |
+| `.github/workflows/deploy.yml` | Builds and deploys the site |
 
 ## Writing pages
 
@@ -65,14 +65,15 @@ what the `kupcad` binary does. [AGENTS.md](AGENTS.md) has the full conventions; 
 - **Colours:** `theme.css` uses the values of the `--kc-*` tokens in the kupcad repo's
   `packages/kupcad-ui/src/tokens.css`, so the docs match the playground and the desktop app.
   Change them there first.
-- **Release:** the deploy workflow checks the examples against the KupCAD release named in its
-  `KUPCAD_VERSION`, the one the reference describes. Bump it when the reference is updated for a
-  new release.
+- **Release:** the reference follows kupcad's main branch, ahead of the 0.1.0 release, so the
+  deploy workflow doesn't check the examples yet. Once a release has caught up, uncomment its
+  Install KupCAD and Check examples steps and set `KUPCAD_VERSION` to that release; bump it with
+  each release after.
 
 ## Deployment
 
 [`deploy.yml`](.github/workflows/deploy.yml) runs on every push to `main`, and on demand from the
-Actions tab. It installs the KupCAD release, checks the examples, builds the site and deploys it
-with `actions/deploy-pages`. The site's URL and base path come from the repository's Pages
+Actions tab. It builds the site and deploys it with `actions/deploy-pages`; checking the
+examples against a KupCAD release is off until the next release (see above). The site's URL and base path come from the repository's Pages
 settings, so adding a custom domain needs no change here. Pages must be enabled with GitHub
 Actions as its source (Settings → Pages).

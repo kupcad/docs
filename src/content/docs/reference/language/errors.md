@@ -119,7 +119,8 @@ Every class below is a subclass of `StandardError`, which is a subclass of `Exce
 
 `NoMethodError` is not a subclass of `NameError`, as it is in Ruby: rescue each by its name.
 
-A built-in never ignores what it is given: an extra argument, a keyword it doesn't take, or a
+A built-in never ignores what it is given: an extra argument, a keyword it doesn't take, a block
+to a method that takes none (`[1, 2].length { }`: `Array#length doesn't take a block`), or a
 `nil` where a shape belongs is an error, not dropped. `nil` for an optional parameter leaves it
 unset, as if it weren't passed.
 

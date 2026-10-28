@@ -107,8 +107,10 @@ The characters in the opposite order. **Returns:** `String`.
 s.replace(target, replacement)
 ```
 
-The String with every occurrence of `target` replaced by `replacement`. (Ruby's `replace`
-swaps the whole content; this one is closer to Ruby's `gsub` with a plain string.)
+The String with every occurrence of `target` replaced by `replacement`. An empty `target` is
+found before each character and at the end, as in Ruby: `"abc".replace("", "-")` is
+`"-a-b-c-"`. (Ruby's `replace` swaps the whole content; this one is closer to Ruby's `gsub`
+with a plain string.)
 
 **Returns:** `String`.
 

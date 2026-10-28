@@ -41,7 +41,7 @@ robot = assemble(name: "robot", parts: [base, arm.translate(0, 0, 5), arm.transl
 |---|---|
 | `name` | The name it was given. |
 | `parts` | Its Solids and assemblies as it was given them, as a new Array each time. |
-| `bbox` | The [BoundingBox](/reference/geometry/inspection/#boundingbox) around all its parts. |
+| `bbox` | The [BoundingBox](/reference/geometry/inspection/#boundingbox) around all its parts that have one; `nil` when none has (no parts, or only empty ones). |
 | `bom` | Its [parts list](#parts-lists): every Solid in it, its sub-assemblies' too. |
 | `mass` | The [mass](/reference/geometry/inspection/#mass) of every Solid in it, in grams. |
 | `translate(x, y, z)` | A new assembly of the same name, every part moved alike. |
@@ -90,7 +90,7 @@ it was reached) and so are the name and material.
 | `name` | The part's name, or `nil`. |
 | `count` | How many copies. |
 | `volume` | Its volume, in mm³. |
-| `size` | Its bounding box's extent along x, y and z, in mm, as the part is made, before its placement. |
+| `size` | Its bounding box's extent along x, y and z, in mm, as the part is made, before its placement; `[0, 0, 0]` for an empty part. |
 | `density` | Its material's density in g/cm³, or `nil`. |
 | `mass` | Its mass in grams (volume times density), or `nil` without a density. |
 

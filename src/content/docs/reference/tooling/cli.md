@@ -99,10 +99,11 @@ kupcad run <file.kup> [-p name=value]... [-P file.json]...
 ```
 
 Runs a script and writes no model. What it prints and the errors it raises are the result, for a
-script that computes or checks rather than models. The model, the script's last value, is still
-evaluated by the geometry kernel, so a kernel error in it (a `polyhedron` that isn't closed) fails
-the run as it would a build; a shape the model doesn't use isn't evaluated. The script can still
-write files itself with `export_*`. Takes `-p` and `-P` as `build` does.
+script that computes or checks rather than models. A model that is one Solid is evaluated by the
+geometry kernel, as the editor's preview evaluates it, so a kernel error in it (a `polyhedron`
+that isn't closed) fails the run as it would a build. An Array or an Assembly of Solids is built
+but not evaluated, so a kernel error in one waits for `kupcad build`. The script can still write
+files itself with `export_*`. Takes `-p` and `-P` as `build` does.
 
 ## kupcad watch
 

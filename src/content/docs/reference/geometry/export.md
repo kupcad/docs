@@ -16,7 +16,7 @@ shape itself with the export methods below.
 shape.export_stl(path)
 shape.export_3mf(path)
 shape.export_gltf(path, draco = false)
-shape.export_obj(path, mtl = false)
+shape.export_obj(path, mtl: false)
 shape.export_step(path)
 shape.export_svg(path)
 shape.export_dxf(path)
@@ -31,9 +31,10 @@ shape.export_dxf(path)
 |---|---|---|---|
 | `path` | String | — | The file to write, relative to the directory `kupcad` runs in. |
 | `draco` | Boolean | `false` | `export_gltf`: compress each part's mesh with Draco. |
-| `mtl` | Boolean | `false` | `export_obj`: write the materials to a library beside it (`part.mtl`). |
+| `mtl:` | Boolean | `false` | `export_obj`: write the materials to a library beside it (`part.mtl`). |
 
-`draco` and `mtl` are positional: `export_obj("part.obj", true)`.
+`draco` is positional, `export_gltf("part.glb", true)`; `mtl:` is a keyword only,
+`export_obj("part.obj", mtl: true)`.
 
 An export writes only a file named for its format, in any case: `export_stl` a `.stl`,
 `export_3mf` a `.3mf`, `export_gltf` a `.gltf` or `.glb`, `export_obj` a `.obj`,
@@ -52,7 +53,7 @@ that gives the script no file system, such as the editor's preview);
 part = cube(20).material(color: "#FF5F14").named("block")
 part.export_stl("block.stl")
 part.export_gltf("block.glb", true)
-part.export_obj("block.obj", true)
+part.export_obj("block.obj", mtl: true)
 part.export_svg("block.svg")
 ```
 
@@ -96,7 +97,7 @@ another precision.
 Wavefront OBJ text: one object per Solid, named after its part (`o lid`, `o lid_2`), in
 millimetres with z up as the script made it (OBJ has no unit or up axis), with a normal per face.
 
-Without the material library it has no materials. With it (`mtl` true, or `kupcad build --mtl`),
+Without the material library it has no materials. With it (`mtl: true`, or `kupcad build --mtl`),
 the library is written beside it (`part.mtl`; `materials.mtl` for the parts of a `--split`):
 each run of faces names its material, and the library gives each the script's colour as its
 diffuse and ambient colour and its alpha as its dissolve.

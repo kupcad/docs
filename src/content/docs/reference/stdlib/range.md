@@ -89,9 +89,11 @@ puts squares.inspect         # [1, 4, 9]
 r.size
 r.length
 r.count
+r.count { |x| ... }
 ```
 
-How many numbers the Range yields, worked out without iterating it. **Returns:** `Number`.
+How many numbers the Range yields, worked out without iterating it; with a block, how many of
+them make the block truthy (`(1..10).count { |i| i.even? }` is `5`). **Returns:** `Number`.
 
 ### include?
 

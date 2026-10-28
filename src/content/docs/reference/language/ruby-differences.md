@@ -68,8 +68,8 @@ See [Control flow](/reference/language/control-flow/).
 
 ## Classes and errors
 
-- **Built-in classes are sealed**: `Solid`, `Number`, `Array` and the rest can't be reopened
-  or subclassed. Only the error classes can be subclassed. See
+- **Built-in classes are sealed**: `Solid`, `Number`, `Array`, `Math` and the rest can't be
+  reopened, and the classes can't be subclassed. Only the error classes can be subclassed. See
   [Built-in classes are sealed](/reference/language/classes-and-modules/#built-in-classes-are-sealed).
 - **Operator methods can't be defined** (`def ==(other)`), and instances are equal only to
   themselves.
