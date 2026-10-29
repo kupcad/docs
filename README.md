@@ -36,7 +36,9 @@ Blocks marked `frame="none"` (signatures, deliberately invalid code) aren't run.
 | `src/content/docs/index.mdx` | The landing page |
 | `src/content/docs/reference/` | The reference, a folder per sidebar section: `language`, `geometry`, `stdlib`, `inputs` (parameters and imports), `tooling` |
 | `astro.config.mjs` | The site's title, sidebar, theme and code highlighting |
-| `src/styles/theme.css` | The KupCAD brand colours, light and dark |
+| `src/styles/theme.css` | The KupCAD brand colours, light and dark, the icon's among them (`--kc-icon-bg`, `--kc-icon-fg`) |
+| `public/icon.svg` | KupCAD's icon: the favicon, and drawn in the page (`<use>`) in the header and on the landing page, where the theme colours it |
+| `src/components/SiteTitle.astro` | Starlight's site title with the icon drawn in the page |
 | `src/grammars/kupcad.tmLanguage.json` | KupCAD's TextMate grammar, which highlights `kupcad` code blocks |
 | `src/plugins/base-links.mjs` | Puts the site's base path in front of the pages' links |
 | `scripts/check-examples.mjs` | The example check |

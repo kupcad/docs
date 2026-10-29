@@ -28,7 +28,10 @@ export default defineConfig({
 		starlight({
 			title: 'KupCAD',
 			description: 'Reference for KupCAD, a Ruby-inspired language for parametric CAD.',
-			logo: { src: './src/assets/logo.svg' },
+			// KupCAD's icon, themed by the --kc-icon-* variables in theme.css; the favicon, an
+			// image, has the icon's own colours
+			favicon: '/icon.svg',
+			components: { SiteTitle: './src/components/SiteTitle.astro' },
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/kupcad/docs' }],
 			customCss: ['./src/styles/theme.css'],
 			expressiveCode: {

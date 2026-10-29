@@ -5,7 +5,8 @@ template: splash
 hero:
   tagline: A Ruby-inspired language for parametric CAD. Write a part as a script, set its parameters, and export it as STL, 3MF, glTF, STEP, SVG or DXF.
   image:
-    file: ../../assets/logo.svg
+    # public/icon.svg drawn in the page, so the theme colours it (relative: this page is the site's root)
+    html: '<svg viewBox="0 0 660 660" aria-hidden="true"><use href="icon.svg#kc-icon"/></svg>'
   actions:
     - text: Read the reference
       link: reference/

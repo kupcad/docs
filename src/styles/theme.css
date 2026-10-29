@@ -30,6 +30,10 @@
 
 	--sl-hue-blue: 204; /* dodgerblue, #0099ff: notes */
 	--sl-hue-red: 350; /* rose red: dangers */
+
+	/* The icon (public/icon.svg): the brand orange, brand black on it */
+	--kc-icon-bg: #ff5f14;
+	--kc-icon-fg: #1a1b1c;
 }
 
 /* Light */
@@ -52,6 +56,16 @@
 	--sl-color-gray-7: #f2f4f6; /* the nav */
 	--sl-color-black: #ffffff;
 	--sl-color-hairline: #d5dae0;
+
+	/* The icon's own colours: a darker orange on white, its marks light on it */
+	--kc-icon-bg: #e0501c;
+	--kc-icon-fg: #f1efe8;
+}
+
+/* The landing page's icon, drawn in the page (index.mdx), as wide as the hero gives it */
+.hero-html > svg {
+	width: 100%;
+	height: auto;
 }
 
 /* A primary button: the brand orange, its text brand black, in both themes */
