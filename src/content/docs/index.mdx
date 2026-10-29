@@ -5,16 +5,19 @@ template: splash
 hero:
   tagline: A Ruby-inspired language for parametric CAD. Write a part as a script, set its parameters, and export it as STL, 3MF, glTF, STEP, SVG or DXF.
   image:
-    # public/icon.svg drawn in the page, so the theme colours it (relative: this page is the site's root)
-    html: '<svg viewBox="0 0 660 660" aria-hidden="true"><use href="icon.svg#kc-icon"/></svg>'
+    # public/icon.svg drawn in the page, so the theme colours it
+    html: '<svg viewBox="0 0 660 660" aria-hidden="true"><use href="/icon.svg#kc-icon"/></svg>'
   actions:
     - text: Read the reference
-      link: reference/
+      link: /reference/
       icon: right-arrow
     - text: KupCAD on GitHub
       link: https://github.com/kupcad/kupcad
       icon: external
       variant: minimal
+      attrs:
+        target: _blank
+        rel: noopener noreferrer
 ---
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
@@ -27,9 +30,9 @@ plate.difference(holes)
 ```
 
 <CardGrid>
-	<LinkCard title="Language" href="reference/language/syntax/" description="Literals, operators, methods, blocks, classes, errors and modules." />
-	<LinkCard title="Geometry" href="reference/geometry/shapes/" description="Solids, sketches and paths, and every operation on them." />
-	<LinkCard title="Standard library" href="reference/stdlib/kernel/" description="Global functions and the built-in classes." />
-	<LinkCard title="Parameters and imports" href="reference/inputs/parameters/" description="Parameters, data, meshes, drawings, fonts and packages." />
-	<LinkCard title="Tooling" href="reference/tooling/cli/" description="The kupcad command, configuration, lint rules and the formatter." />
+	<LinkCard title="Language" href="/reference/language/syntax/" description="Literals, operators, methods, blocks, classes, errors and modules." />
+	<LinkCard title="Geometry" href="/reference/geometry/shapes/" description="Solids, sketches and paths, and every operation on them." />
+	<LinkCard title="Standard library" href="/reference/stdlib/kernel/" description="Global functions and the built-in classes." />
+	<LinkCard title="Parameters and imports" href="/reference/inputs/parameters/" description="Parameters, data, meshes, drawings, fonts and packages." />
+	<LinkCard title="Tooling" href="/reference/tooling/cli/" description="The kupcad command, configuration, lint rules and the formatter." />
 </CardGrid>

@@ -41,9 +41,10 @@ implementation, the `kupcad` repo (`core/src/stdlib/manifest.zig`, `core/src/std
   by running it. Signatures and deliberately invalid code go in `frame="none"` blocks.
 - Lengths are millimetres and angles degrees. Prose is British English, as the kupcad repo's
   docs are (colour, centre); identifiers are as the language spells them (`color:`, `center`).
-- Links are absolute with a trailing slash: `/reference/geometry/solids/#cube`. The build puts
-  the site's base in front of them (`src/plugins/base-links.mjs`); a component's `href` (the
-  landing page's cards and buttons) doesn't pass through it, so write those relative.
+- Links are absolute with a trailing slash: `/reference/geometry/solids/#cube`. A Markdown link
+  to another site opens in a new tab with `rel="noopener noreferrer"`
+  (`src/plugins/external-links.mjs`); a component's link (the landing page's buttons, the
+  header's) doesn't pass through it, so it sets the same attributes itself.
 - Terse and present tense. No implementation details a script can't see, and nothing hidden
   from scripts (`on_face`, `Workplane`).
 
@@ -51,6 +52,5 @@ implementation, the `kupcad` repo (`core/src/stdlib/manifest.zig`, `core/src/std
 
 `.github/workflows/deploy.yml` builds the site and deploys it to GitHub Pages on every push to
 `main`. Its example check against a KupCAD release (`KUPCAD_VERSION`) is commented out until the
-next release: the reference follows kupcad's main branch, ahead of 0.1.0. The site's URL and
-base path come from the repository's Pages settings (`SITE_URL`, `BASE_PATH`), so a custom domain
-needs no change here.
+next release: the reference follows kupcad's main branch, ahead of 0.1.0. The site is served at
+the root of its custom domain, https://docs.kupcad.org (`site` in `astro.config.mjs`).

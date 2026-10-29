@@ -2,11 +2,10 @@
 // Starlight's site title with KupCAD's icon drawn in the page (`<use>` of public/icon.svg)
 // rather than as an <img>, so the icon takes its colours from the theme's --kc-icon-* variables.
 const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
-const iconHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/icon.svg#kc-icon`;
 ---
 
 <a href={siteTitleHref} class="site-title sl-flex">
-	<svg viewBox="0 0 660 660" aria-hidden="true"><use href={iconHref} /></svg>
+	<svg viewBox="0 0 660 660" aria-hidden="true"><use href="/icon.svg#kc-icon" /></svg>
 	<span translate="no">{siteTitle}</span>
 </a>
 

@@ -39,8 +39,9 @@ Blocks marked `frame="none"` (signatures, deliberately invalid code) aren't run.
 | `src/styles/theme.css` | The KupCAD brand colours, light and dark, the icon's among them (`--kc-icon-bg`, `--kc-icon-fg`) |
 | `public/icon.svg` | KupCAD's icon: the favicon, and drawn in the page (`<use>`) in the header and on the landing page, where the theme colours it |
 | `src/components/SiteTitle.astro` | Starlight's site title with the icon drawn in the page |
+| `src/components/SocialIcons.astro` | Starlight's header links (GitHub), opening in a new tab |
 | `src/grammars/kupcad.tmLanguage.json` | KupCAD's TextMate grammar, which highlights `kupcad` code blocks |
-| `src/plugins/base-links.mjs` | Puts the site's base path in front of the pages' links |
+| `src/plugins/external-links.mjs` | Makes a Markdown link to another site open in a new tab, with `rel="noopener noreferrer"` |
 | `scripts/check-examples.mjs` | The example check |
 | `.github/workflows/deploy.yml` | Builds and deploys the site |
 
@@ -54,8 +55,9 @@ what the `kupcad` binary does. [AGENTS.md](AGENTS.md) has the full conventions; 
   frontmatter. A new page in a section's folder appears in the sidebar on its own.
 - An API page gives each member a heading of its name, then its call forms in a
   `frame="none"` block, a parameter table, **Returns:**, **Raises:** and an example.
-- Link with absolute paths and a trailing slash: `/reference/geometry/solids/#cube`. The build
-  adds the base path, except to a component's `href`, so links on the landing page are relative.
+- Link with absolute paths and a trailing slash: `/reference/geometry/solids/#cube`. Links to
+  other sites open in a new tab: in Markdown on their own, while a component's link (a landing
+  page button) sets `target="_blank"` and `rel="noopener noreferrer"` itself.
 - Lengths are millimetres, angles degrees, and the prose British English, as the kupcad repo's
   docs are.
 
@@ -76,6 +78,6 @@ what the `kupcad` binary does. [AGENTS.md](AGENTS.md) has the full conventions; 
 
 [`deploy.yml`](.github/workflows/deploy.yml) runs on every push to `main`, and on demand from the
 Actions tab. It builds the site and deploys it with `actions/deploy-pages`; checking the
-examples against a KupCAD release is off until the next release (see above). The site's URL and base path come from the repository's Pages
-settings, so adding a custom domain needs no change here. Pages must be enabled with GitHub
-Actions as its source (Settings → Pages).
+examples against a KupCAD release is off until the next release (see above). The site is served
+at the root of its custom domain, https://docs.kupcad.org (`site` in `astro.config.mjs`, and the
+domain in the repository's Pages settings, whose source must be GitHub Actions).

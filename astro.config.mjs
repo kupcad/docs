@@ -3,13 +3,7 @@ import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
-import baseLinks from './src/plugins/base-links.mjs';
-
-// Where the site is served: the deploy workflow takes both from GitHub Pages (the site is
-// https://kupcad.github.io/docs/ until the repository has a custom domain). Unset locally,
-// where the site is at the root.
-const site = process.env.SITE_URL || undefined;
-const base = process.env.BASE_PATH || '/';
+import externalLinks from './src/plugins/external-links.mjs';
 
 // KupCAD's TextMate grammar, copied from the kupcad repo, where `zig build grammar` generates it
 // (packages/kupcad-vscode/syntaxes/kupcad.tmLanguage.json): ```kupcad blocks highlight as the
@@ -20,10 +14,9 @@ const kupcadGrammar = JSON.parse(
 
 // https://astro.build/config
 export default defineConfig({
-	site,
-	base,
+	site: 'https://docs.kupcad.org',
 	// Starlight adds its own plugins (asides, heading anchors) to this processor
-	markdown: { processor: satteri({ hastPlugins: [baseLinks(base)] }) },
+	markdown: { processor: satteri({ hastPlugins: [externalLinks] }) },
 	integrations: [
 		starlight({
 			title: 'KupCAD',
@@ -31,7 +24,11 @@ export default defineConfig({
 			// KupCAD's icon, themed by the --kc-icon-* variables in theme.css; the favicon, an
 			// image, has the icon's own colours
 			favicon: '/icon.svg',
-			components: { SiteTitle: './src/components/SiteTitle.astro' },
+			components: {
+				SiteTitle: './src/components/SiteTitle.astro',
+				// The header's GitHub link opens in a new tab, as Markdown's external links do
+				SocialIcons: './src/components/SocialIcons.astro',
+			},
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/kupcad/docs' }],
 			customCss: ['./src/styles/theme.css'],
 			expressiveCode: {
