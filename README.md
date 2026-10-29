@@ -16,6 +16,10 @@ npm run build       # the static site in dist/
 npm run preview     # serves dist/
 ```
 
+Astro keeps the rendered Markdown between builds, so a change to how code blocks render (an
+Expressive Code plugin, the grammar) shows on the pages only once that cache is gone:
+`rm -rf .astro node_modules/.astro`.
+
 ## Checking the examples
 
 Every framed `kupcad` code block on a page is a script that has to work. `npm run
@@ -29,6 +33,10 @@ KUPCAD=../kupcad/core/zig-out/bin/kupcad npm run check:examples
 
 Blocks marked `frame="none"` (signatures, deliberately invalid code) aren't run.
 
+Each of those examples also gets an "Open in playground" link to the website's playground
+(kupcad.org/playground), the script in the link's fragment: `#code=` and its UTF-8 in base64url,
+which the website reads back (its `src/lib/share.js`). The fragment never reaches a server.
+
 ## What's where
 
 | Path | What it is |
@@ -39,9 +47,11 @@ Blocks marked `frame="none"` (signatures, deliberately invalid code) aren't run.
 | `src/styles/theme.css` | The KupCAD brand colours, light and dark, the icon's among them (`--kc-icon-bg`, `--kc-icon-fg`) |
 | `public/icon.svg` | KupCAD's icon: the favicon, and drawn in the page (`<use>`) in the header and on the landing page, where the theme colours it |
 | `src/components/SiteTitle.astro` | Starlight's site title with the icon drawn in the page |
-| `src/components/SocialIcons.astro` | Starlight's header links (GitHub), opening in a new tab |
+| `src/components/SocialIcons.astro` | The header's links out (kupcad.org, GitHub), opening in a new tab |
+| `src/links.mjs` | The website's addresses the docs link to (`WEBSITE`, `PLAYGROUND`) |
 | `src/grammars/kupcad.tmLanguage.json` | KupCAD's TextMate grammar, which highlights `kupcad` code blocks |
 | `src/plugins/external-links.mjs` | Makes a Markdown link to another site open in a new tab, with `rel="noopener noreferrer"` |
+| `src/plugins/playground-links.mjs` | Adds "Open in playground" under each example |
 | `scripts/check-examples.mjs` | The example check |
 | `.github/workflows/deploy.yml` | Builds and deploys the site |
 

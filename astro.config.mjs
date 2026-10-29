@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
+import { PLAYGROUND } from './src/links.mjs';
 import externalLinks from './src/plugins/external-links.mjs';
+import playgroundLinks from './src/plugins/playground-links.mjs';
 
 // KupCAD's TextMate grammar, copied from the kupcad repo, where `zig build grammar` generates it
 // (packages/kupcad-vscode/syntaxes/kupcad.tmLanguage.json): ```kupcad blocks highlight as the
@@ -33,6 +35,8 @@ export default defineConfig({
 			customCss: ['./src/styles/theme.css'],
 			expressiveCode: {
 				shiki: { langs: [{ ...kupcadGrammar, name: 'kupcad', aliases: ['kup'] }] },
+				// Each example opens in the website's playground
+				plugins: [playgroundLinks({ playground: PLAYGROUND })],
 			},
 			sidebar: [
 				{ label: 'Overview', slug: 'reference' },

@@ -38,7 +38,9 @@ implementation, the `kupcad` repo (`core/src/stdlib/manifest.zig`, `core/src/std
 - A framed ```` ```kupcad ```` block is an example: `npm run check:examples` runs each through
   `kupcad check` (`KUPCAD=../kupcad/core/zig-out/bin/kupcad`), and it must also run with
   `kupcad run`. A comment shows what a line gives (`# 1000`) or raises (`# ValueError`), checked
-  by running it. Signatures and deliberately invalid code go in `frame="none"` blocks.
+  by running it. Signatures and deliberately invalid code go in `frame="none"` blocks. Each
+  example gets an "Open in playground" link (`src/plugins/playground-links.mjs`), so an
+  example should also run in the playground on its own.
 - Lengths are millimetres and angles degrees. Prose is British English, as the kupcad repo's
   docs are (colour, centre); identifiers are as the language spells them (`color:`, `center`).
 - Links are absolute with a trailing slash: `/reference/geometry/solids/#cube`. A Markdown link
