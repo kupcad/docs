@@ -80,7 +80,7 @@ it was reached) and so are the name and material.
 - A copy moved by `translate` or `rotate` is the same part again.
 - A mirrored or scaled copy is a part of its own, with the name it was made with. Rename it to
   tell them apart: `left.mirror(1, 0, 0).named("bracket R")`.
-- A different colour or density makes another part.
+- A different colour or density makes another part; a highlighted copy doesn't.
 - A union of copies is one fused Solid, so one part. Assemble the copies to count them.
 
 **A row** is a Map with Symbol keys:

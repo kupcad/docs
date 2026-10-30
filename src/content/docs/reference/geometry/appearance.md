@@ -97,7 +97,9 @@ highlight { solid }
 ```
 
 Shows a Solid in the viewer's highlight colour, seen through whatever hides it, to find a part
-in a busy model. The geometry is unchanged; a glTF export only tags the part's material for the
+in a busy model; in a wireframe, its edges are drawn in that colour. The geometry is unchanged,
+and so is the part: its material (its colour in an export, its density for its mass) and its
+place among its copies in the parts list. A glTF export only tags the part's material for the
 viewer.
 
 - `solid.highlight` returns the solid, marked.
