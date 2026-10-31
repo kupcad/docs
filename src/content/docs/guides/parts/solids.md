@@ -12,6 +12,25 @@ explains them; you can read that first, or look things up there as they come.
 
 We start with the three basic solids and where they go.
 
+## The axes
+
+<figure class="kc-diagram">
+<svg viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="The axes: x to the right, y away, z up; a cube with its corner on the origin">
+  <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M90 150 L250 150" /><path d="M244 145 L250 150 L244 155" />
+    <path d="M90 150 L170 100" /><path d="M162 101 L170 100 L167 108" />
+    <path d="M90 150 L90 30" /><path d="M85 36 L90 30 L95 36" />
+    <path d="M90 150 L150 150 L150 90 L90 90 Z" stroke-opacity="0.9" />
+    <path d="M150 150 L180 131 L180 71 L150 90" stroke-opacity="0.9" /><path d="M90 90 L120 71 L180 71" stroke-opacity="0.9" />
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" fill="currentColor">
+    <text x="256" y="155">x</text><text x="176" y="98">y</text><text x="84" y="22">z</text>
+    <text x="70" y="166" font-size="12" opacity="0.7">0, 0, 0</text>
+  </g>
+</svg>
+<figcaption>x to the right, y away from you, z up. <code>cube(20)</code> fills from the origin along all three.</figcaption>
+</figure>
+
 ## Three solids
 
 ```kupcad

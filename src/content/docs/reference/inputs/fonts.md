@@ -104,5 +104,5 @@ the font's own rules, and CJK fonts draw too.
 ```kupcad
 import naskh from "./fonts/NotoNaskhArabic-Regular.ttf"
 
-sign = text("مرحبا", size: 12, font: naskh, halign: :center)
+sign = text("سلام", size: 12, font: naskh, halign: :center)
 ```

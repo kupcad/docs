@@ -1,15 +1,27 @@
 ---
-// The header's links out: the website (kupcad.org), then Starlight's social links. Each opens in
+// The header's links out: the website (kupcad.org), the IDE, the downloads, then Starlight's
+// social links. Each opens in
 // a new tab as Markdown's external links do (src/plugins/external-links.mjs); a social link's
 // `rel` keeps Starlight's `me` and adds noopener noreferrer.
 import config from 'virtual:starlight/user-config';
 import { Icon } from '@astrojs/starlight/components';
-import { WEBSITE } from '../links.mjs';
+import { DOWNLOAD, IDE, WEBSITE } from '../links.mjs';
 
 const links = config.social || [];
+const out = [
+	{ label: 'kupcad.org', href: WEBSITE },
+	{ label: 'IDE', href: IDE },
+	{ label: 'Download', href: DOWNLOAD },
+];
 ---
 
-<a href={WEBSITE} target="_blank" rel="noopener noreferrer" class="website sl-flex">kupcad.org</a>
+{
+	out.map(({ label, href }) => (
+		<a {href} target="_blank" rel="noopener noreferrer" class="website sl-flex">
+			{label}
+		</a>
+	))
+}
 {
 	links.map(({ label, href, icon }) => (
 		<a {href} target="_blank" rel="me noopener noreferrer" class="sl-flex">

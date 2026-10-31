@@ -1,0 +1,3 @@
+LENGTHS = [8, 12, 16]
+
+export LENGTHS

@@ -14,7 +14,11 @@ pnpm install
 pnpm dev            # the site at http://localhost:4321, reloading as pages change
 pnpm build          # the static site in dist/
 pnpm preview        # serves dist/
+pnpm render:examples   # the examples' pictures (public/examples/), with KUPCAD set as below
 ```
+
+The pictures aren't committed: without them the pages show no picture under an example, and
+the build is otherwise the same.
 
 Astro keeps the rendered Markdown between builds, so a change to how code blocks render (an
 Expressive Code plugin, the grammar) shows on the pages only once that cache is gone:
@@ -23,7 +27,8 @@ Expressive Code plugin, the grammar) shows on the pages only once that cache is 
 ## Checking the examples
 
 Every framed `kupcad` code block on a page is a script that has to work. `pnpm check:examples`
-runs each one through `kupcad check`, so an example the language no longer
+lints each with `kupcad check`, runs it with `kupcad run` (the files an example reads come from
+`scripts/fixtures/`), and compares what its `puts` lines print with their comments, so an example the language no longer
 accepts fails here instead of in a reader's editor. It needs the `kupcad` binary: on the `PATH`,
 or given by `KUPCAD`, such as a build from a checkout of the kupcad repo beside this one:
 

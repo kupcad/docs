@@ -1,0 +1,5 @@
+# pnpm's settings for the docs site. pnpm leaves out a version published less than its minimum
+# release age ago, as one not yet looked at; KupCAD's own packages are taken the moment they are
+# released.
+minimumReleaseAgeExclude:
+  - '@kupcad/*'

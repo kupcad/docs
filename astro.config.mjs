@@ -1,5 +1,6 @@
 // @ts-check
 import { readFileSync } from 'node:fs';
+import svelte from '@astrojs/svelte';
 import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
@@ -28,14 +29,17 @@ export default defineConfig({
 			favicon: '/icon.svg',
 			components: {
 				SiteTitle: './src/components/SiteTitle.astro',
-				// The header's GitHub link opens in a new tab, as Markdown's external links do
+				// The header's links open in a new tab, as Markdown's external links do
 				SocialIcons: './src/components/SocialIcons.astro',
+				// The examples' "Edit here": the playground on the page
+				Footer: './src/components/Footer.astro',
 			},
+			editLink: { baseUrl: 'https://github.com/kupcad/docs/edit/main/' },
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/kupcad/docs' }],
 			customCss: ['./src/styles/theme.css'],
 			expressiveCode: {
 				shiki: { langs: [{ ...kupcadGrammar, name: 'kupcad', aliases: ['kup'] }] },
-				// Each example opens in the website's playground
+				// Each example shows its picture, opens in the website's playground, or here
 				plugins: [playgroundLinks({ playground: PLAYGROUND })],
 			},
 			sidebar: [
@@ -47,6 +51,9 @@ export default defineConfig({
 						{ label: 'Making parts', items: [{ autogenerate: { directory: 'guides/parts' } }] },
 					],
 				},
+				{ label: 'Recipes', items: [{ autogenerate: { directory: 'recipes' } }] },
+				{ label: 'Examples', slug: 'examples' },
+				{ label: 'Cheat sheet', slug: 'cheat-sheet' },
 				{ label: 'Reference', slug: 'reference' },
 				{ label: 'Language', items: [{ autogenerate: { directory: 'reference/language' } }] },
 				{ label: 'Geometry', items: [{ autogenerate: { directory: 'reference/geometry' } }] },
@@ -56,7 +63,10 @@ export default defineConfig({
 					items: [{ autogenerate: { directory: 'reference/inputs' } }],
 				},
 				{ label: 'Tooling', items: [{ autogenerate: { directory: 'reference/tooling' } }] },
+				{ label: 'Glossary', slug: 'glossary' },
 			],
 		}),
+		// The playground an example opens on the page is a Svelte component
+		svelte(),
 	],
 });

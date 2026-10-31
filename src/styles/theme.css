@@ -88,3 +88,19 @@
 	background-color: var(--sl-color-accent-low);
 	box-shadow: inset 3px 0 0 var(--sl-color-accent);
 }
+
+/* The guides' diagrams: drawn in the text's colour, captioned small */
+.kc-diagram {
+	margin: 1.5rem 0;
+	text-align: center;
+}
+.kc-diagram svg {
+	max-width: 100%;
+	height: auto;
+	color: var(--sl-color-text);
+}
+.kc-diagram figcaption {
+	margin-top: 0.25rem;
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-2);
+}

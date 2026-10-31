@@ -1,0 +1,60 @@
+# @title Coffee mug
+# @description A mug turned from one outline, rounded at its rim and base, with a swept handle
+
+# For show: a printed plastic mug isn't for hot drinks
+
+height = param(:height, default: 95, validate: { min: 50, max: 140 }, unit: "mm", title: "Height")
+diameter = param(
+  :diameter,
+  default: 80,
+  validate: { min: 50, max: 110 },
+  unit: "mm",
+  title: "Diameter",
+)
+wall = param(:wall, default: 4, validate: { min: 3, max: 6 }, step: 0.5, unit: "mm", title: "Wall")
+reach = param(
+  :reach,
+  default: 22,
+  validate: { min: 15, max: 40 },
+  unit: "mm",
+  title: "Handle reach",
+  description: "How far the handle stands out from the mug",
+)
+
+radius = diameter / 2
+assert(radius > 2 * wall) { "a #{wall} mm wall leaves no room inside a #{diameter} mm mug" }
+
+CAD.config(resolution: { segments: 96 })
+
+# The mug's half section, from the axis along the base, up the outside, over the rim and down
+# the inside to the floor: every corner rounded by half the wall, so the rim comes out round.
+# Turned about the axis it is the whole mug
+round = wall / 2
+section = polyline([
+  [0, 0],
+  [radius, 0],
+  [radius, height],
+  [radius - wall, height],
+  [radius - wall, wall],
+  [0, wall],
+]).fillet(round)
+mug = section.close.revolve
+
+# What it holds, to the brim: the space inside the same outline
+inside = polyline([[0, wall], [radius - wall, wall], [radius - wall, height]]).fillet(round) +
+  polyline([[radius - wall, height], [0, height]])
+puts("Holds #{(inside.close.revolve.volume / 1000).round} ml to the brim")
+
+# The handle: a band of rounded section swept along a C from high on the side to low, its ends
+# sunk into the wall; drawn flat, then stood up beside the mug
+top = height * 0.78
+bottom = height * 0.22
+start = radius - wall / 2
+path = polyline([[start, top], [radius + reach, top], [radius + reach, bottom], [start, bottom]])
+# Its corners rounded as far as its upright side, between them, has room for: on a short mug
+# the handle comes out a half circle
+bend = [reach * 0.6, (top - bottom) / 2].min
+grip = square([wall * 2.2, wall * 3], center: true, round_r: wall * 1.1)
+handle = grip.sweep(path.fillet(bend)).rotate(90, 0, 0)
+
+(mug + handle).named("mug").material(color: "#F4F1EA")

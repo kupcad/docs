@@ -1,0 +1,192 @@
+# @title Project box
+# @description A printable box for a circuit board, from its size, its holes and its connectors
+
+board = param(
+  :board,
+  default: [80, 50],
+  validate: {
+    tuple: [
+      { type: :number, min: 20, max: 200, title: "Length" },
+      { type: :number, min: 20, max: 150, title: "Width" },
+    ],
+  },
+  unit: "mm",
+  group: "Board",
+  title: "Board size",
+)
+holes = param(
+  :holes,
+  default: [[4, 4], [76, 4], [4, 46], [76, 46]],
+  validate: {
+    items: {
+      tuple: [
+        { type: :number, min: 0, max: 200, title: "X" },
+        { type: :number, min: 0, max: 150, title: "Y" },
+      ],
+    },
+    max_items: 8,
+  },
+  unit: "mm",
+  group: "Board",
+  title: "Mounting holes",
+  description: "From the board's front left corner",
+)
+headroom = param(
+  :headroom,
+  default: 18,
+  validate: { min: 5, max: 80 },
+  unit: "mm",
+  group: "Board",
+  title: "Parts height",
+  description: "How tall the board's parts stand above it",
+)
+ports = param(
+  :ports,
+  default: [
+    { side: "front", shape: "usb_c", at: 20, z: 1.5, width: 0, height: 0 },
+    { side: "front", shape: "round", at: 62, z: 5.5, width: 8, height: 0 },
+    { side: "right", shape: "rect", at: 25, z: 7, width: 16, height: 14 },
+  ],
+  validate: {
+    items: {
+      fields: {
+        side: { type: :string, in: ["front", "back", "left", "right"], title: "Side" },
+        shape: { type: :string, in: ["usb_c", "round", "rect"], title: "Shape" },
+        at: { type: :number, min: 0, max: 200, title: "Along the side" },
+        z: { type: :number, min: 0, max: 80, title: "Above the board" },
+        width: { type: :number, min: 0, max: 100, title: "Width" },
+        height: { type: :number, min: 0, max: 80, title: "Height" },
+      },
+    },
+    max_items: 12,
+  },
+  unit: "mm",
+  group: "Connectors",
+  title: "Cutouts",
+  description: "Each one's middle: along its side from the board's corner, and above the board",
+)
+
+wall = param(
+  :wall,
+  default: 2,
+  validate: { min: 1.2, max: 4 },
+  unit: "mm",
+  group: "Box",
+  title: "Wall",
+)
+label = param(:label, default: "SENSOR HUB", group: "Box", title: "Lid label")
+lift = param(
+  :lift,
+  default: 30,
+  validate: { min: 0, max: 80 },
+  unit: "mm",
+  group: "Box",
+  title: "Lid lifted",
+  description: "How far above the box the lid is shown; 0 closes it",
+)
+
+CAD.config(resolution: { segments: 64 })
+
+# The board's place: its front left corner at the origin, on standoffs above the floor
+length, width = board
+gap = 1
+standoff = 5
+pcb = 1.6
+board_z = wall + standoff
+top_z = board_z + pcb
+inner = [length + 2 * gap, width + 2 * gap]
+outer = inner.map { |size| size + 2 * wall }
+height = top_z + headroom + 2
+corner = 4
+# How far the lid's lip reaches down inside the walls
+lip = 3
+
+# A block `size` ([x, y]) across and `h` high, rounded by `r` at its upright edges, its corner
+# at (at, at, z)
+def block(size, h, r, at, z)
+  cube(x: size[0], y: size[1], z: h, round_r: r).translate(at, at, z)
+end
+
+# The box: rounded at its upright edges, hollowed from the floor up
+box = block(outer, height, corner, -gap - wall, 0) - block(inner, height, corner - wall, -gap, wall)
+
+# A standoff under each of the board's holes, with a pilot hole for an M2.5 screw
+holes.each_with_index do |(x, y), i|
+  if x < 0 || x > length || y < 0 || y > width
+    warn("hole #{i + 1} at [#{x}, #{y}] is off the #{length} × #{width} mm board")
+  end
+  post = cylinder(d: 5.5, h: wall + standoff).translate(x, y, 0)
+  box = box + post - cylinder(d: 2.2, h: standoff).translate(x, y, wall + 1)
+end
+
+# A connector's opening, in the plane of its wall: a USB-C plug's rounded slot, a round hole
+# (`width` across) or a rectangle, each with half a millimetre round it
+def opening(port)
+  slack = 0.5
+  case port[:shape]
+  when "usb_c"
+    end_d = 3.3 + 2 * slack
+    circle(d: end_d).translate(-3, 0).hull(circle(d: end_d).translate(3, 0))
+  when "round"
+    circle(d: port[:width] + 2 * slack)
+  else
+    square(port[:width] + 2 * slack, port[:height] + 2 * slack, center: true)
+  end
+end
+
+# The opening cut through its wall: front and back face along y, left and right along x
+def cutter(port)
+  through = opening(port).extrude(wall * 4, center: true)
+  mid = wall / 2
+  z = top_z + port[:z]
+  case port[:side]
+  when "front"
+    through.rotate(90, 0, 0).translate(port[:at], -gap - mid, z)
+  when "back"
+    through.rotate(90, 0, 0).translate(port[:at], width + gap + mid, z)
+  when "left"
+    through.rotate(90, 0, 90).translate(-gap - mid, port[:at], z)
+  else
+    through.rotate(90, 0, 90).translate(length + gap + mid, port[:at], z)
+  end
+end
+
+ports.each_with_index do |port, i|
+  side_length = ["front", "back"].include?(port[:side]) ? length : width
+  if port[:at] > side_length
+    warn("cutout #{i + 1} is past the end of the #{port[:side]} side (#{side_length} mm)")
+  end
+  if top_z + port[:z] + opening(port).bbox.y_max > height - lip
+    warn("cutout #{i + 1} reaches up behind the lid's lip: give the parts more height")
+  end
+  box = box - cutter(port)
+end
+
+# The lid: a plate on the rim, a lip inside the walls to hold it, slots over the board to let
+# its heat out, and the label pressed into it
+fit = 0.25
+lip_outside = inner.map { |size| size - 2 * fit }
+lip_inside = lip_outside.map { |size| size - 3 }
+ring = block(lip_outside, lip, corner - wall, -gap + fit, height - lip) -
+  block(lip_inside, lip, corner - wall, -gap + fit + 1.5, height - lip)
+lid = block(outer, wall, corner, -gap - wall, height) + ring
+slot = circle(d: 2.5).hull(circle(d: 2.5).translate(length * 0.5, 0))
+vents = slot.repeat_linear(5, y: 5).center.translate(length / 2, width * 0.62).extrude(wall * 3)
+lid = lid - vents.translate(z: height - wall)
+badge = text(label, size: 6, font: "sans-bold", halign: "center", valign: "center")
+lid = lid - badge.extrude(1).translate(length / 2, width * 0.22, height + wall - 0.6)
+
+# What goes in it: the board, shown but not made, and its screws, counted in the parts list
+cube(x: length, y: width, z: pcb).translate(0, 0, board_z).material(color: "#2E7D32").ghost
+screw = (cylinder(d: 4.5, h: 1.8).translate(z: 6) + cylinder(d: 2.5, h: 6))
+  .named("M2.5 × 6 screw")
+  .material(color: "#9AA0A6", density: 7.85)
+screws = holes.map { |(x, y)| screw.translate(x, y, top_z - 6) }
+
+box = box.named("box").material(color: "#F1EFE8", density: 1.24)
+lid = lid.named("lid").material(color: "#FF5F14", density: 1.24)
+kit = assemble(name: "Project box", parts: [box, lid.translate(z: lift)] + screws)
+
+puts("Outside: #{outer[0]} × #{outer[1]} × #{(height + wall).round(1)} mm")
+kit.bom.each { |row| puts("#{row[:count]} × #{row[:name]}, #{row[:mass].round(1)} g") }
+kit

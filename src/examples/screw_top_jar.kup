@@ -1,0 +1,145 @@
+# @title Screw-top jar
+# @description A jar and its screw-on lid: a turned body, swept threads, a twisted grip and a label
+
+diameter = param(
+  :diameter,
+  default: 64,
+  validate: { min: 40, max: 120 },
+  unit: "mm",
+  group: "Jar",
+  title: "Diameter",
+)
+height = param(
+  :height,
+  default: 60,
+  validate: { min: 30, max: 150 },
+  unit: "mm",
+  group: "Jar",
+  title: "Body height",
+)
+wall = param(
+  :wall,
+  default: 2,
+  validate: { min: 1.2, max: 4 },
+  unit: "mm",
+  group: "Jar",
+  title: "Wall",
+)
+
+pitch = param(
+  :pitch,
+  default: 4,
+  validate: { min: 2, max: 6 },
+  unit: "mm",
+  group: "Thread",
+  title: "Pitch",
+)
+turns = param(
+  :turns,
+  default: 2.5,
+  validate: { min: 1, max: 4 },
+  step: 0.25,
+  group: "Thread",
+  title: "Turns",
+)
+clearance = param(
+  :clearance,
+  default: 0.4,
+  validate: { min: 0.1, max: 1 },
+  unit: "mm",
+  group: "Thread",
+  title: "Clearance",
+  description: "Between the jar's thread and the lid's, so a printed lid turns",
+)
+
+label = param(:label, default: "KUPCAD", group: "Lid", title: "Label")
+ribs = param(
+  :ribs,
+  default: 40,
+  validate: { min: 12, max: 90 },
+  step: 1,
+  group: "Lid",
+  title: "Grip ribs",
+)
+lift = param(
+  :lift,
+  default: 24,
+  validate: { min: 0, max: 60 },
+  unit: "mm",
+  group: "Lid",
+  title: "Lid lifted",
+  description: "How far above the jar the lid is shown; 0 screws it on",
+)
+
+CAD.config(resolution: { segments: 96 })
+
+radius = diameter / 2
+neck_r = radius - 4
+shoulder = 6
+neck = pitch * turns + 4
+top = height + shoulder + neck
+# How far a thread stands off the neck
+depth = pitch * 0.4
+
+# The jar's section: its outline from the axis round the base, up the side and over the
+# shoulder to the neck, every corner rounded; both halves, so the wall wraps round the base
+outline = polyline([
+  [0, 0],
+  [radius, 0],
+  [radius, height],
+  [neck_r, height + shoulder],
+  [neck_r, top],
+]).fillet(5)
+half = (outline + polyline([[neck_r, top], [0, top]])).close
+section = half + half.mirror(1, 0)
+right = square([radius + 1, top + 1])
+
+# The wall: the band `wall` thick inside the section's outline, open at the mouth, turned about
+# the axis; and what it holds
+mouth = square([2 * (neck_r - wall), 2 * wall], center: true).translate(0, top)
+jar = ((section.shell(wall) - mouth) & right).revolve
+cavity = (section.offset(-wall) & right).revolve
+
+# A thread: its profile swept up a helix at radius r from height z0, `turns` turns. `outward`
+# stands it off the surface away from the axis (the jar's), else towards it (the lid's); half a
+# millimetre of it is sunk into the surface, so the two join.
+def thread(r, z0, outward)
+  side = outward ? -1 : 1
+  root = pitch * 0.6
+  tip = root - 2 * depth * Math.tand(30)
+  profile = polygon([
+    [-side * 0.5, -root / 2],
+    [side * depth, -tip / 2],
+    [side * depth, tip / 2],
+    [-side * 0.5, root / 2],
+  ])
+  steps = (turns * 72).round
+  points = (0..steps).map do |i|
+    angle = i * 5.0
+    [r * Math.cosd(angle), r * Math.sind(angle), z0 + pitch * angle / 360]
+  end
+  profile.sweep(points)
+end
+
+thread_from = top - neck + 2
+jar = jar + thread(neck_r, thread_from, true)
+
+# The lid, as it sits screwed on: a skirt round the neck, its thread inside half a pitch above
+# the jar's, ribs twisted round it to grip by, and the label raised on its top
+bore = neck_r + depth + clearance
+lid_r = bore + 2.5
+skirt = neck + 1
+lid_top = 2.5
+ribbed = circle(r: lid_r) + circle(r: 1).translate(lid_r, 0).repeat_polar(ribs)
+lid = ribbed.extrude(skirt + lid_top, twist: 20).translate(z: top - skirt) -
+  cylinder(r: bore, h: skirt + 1).translate(z: top - skirt - 1)
+lid = lid + thread(bore, thread_from + pitch / 2, false)
+badge = text(label, size: diameter / 7, font: "sans-bold", halign: "center", valign: "center")
+lid = lid + badge.extrude(0.8).translate(z: top + lid_top)
+
+jar = jar.named("jar").material(color: "#E8E4DA", density: 1.24)
+lid = lid.named("lid").material(color: "#FF5F14", density: 1.24)
+puts("Holds #{(cavity.volume / 1000).round} ml")
+puts("In PLA: the jar #{jar.mass.round(1)} g, the lid #{lid.mass.round(1)} g")
+
+assemble(name: "Screw-top jar", parts: [jar, lid.translate(z: lift)])

@@ -1,0 +1,115 @@
+---
+// The examples gallery: each script in src/examples (copies of the kupcad repository's
+// examples/), with its title and description (`# @title`, `# @description`), its picture
+// (public/examples/<name>.png, drawn by scripts/render-examples.mjs), and the playground to
+// open it in.
+import { existsSync } from 'node:fs';
+import { PLAYGROUND } from '../links.mjs';
+
+const scripts = import.meta.glob('../examples/*.kup', { query: '?raw', import: 'default', eager: true });
+// From the project's root: a component's own URL isn't its source file's when the site is built
+const pictures = new URL('public/examples/', `file://${process.cwd()}/`).pathname;
+
+const examples = Object.entries(scripts)
+	.map(([path, code]) => {
+		const name = path.split('/').at(-1)?.replace(/\.kup$/, '') ?? path;
+		const source = String(code);
+		const title = /^# @title (.+)$/m.exec(source)?.[1] ?? name;
+		const description = /^# @description (.+)$/m.exec(source)?.[1] ?? '';
+		return {
+			name,
+			title,
+			description,
+			lines: source.split('\n').length - 1,
+			picture: existsSync(`${pictures}${name}.png`) ? `/examples/${name}.png` : null,
+			dark: existsSync(`${pictures}${name}-dark.png`) ? `/examples/${name}-dark.png` : null,
+			playground: `${PLAYGROUND}#code=${Buffer.from(source, 'utf8').toString('base64url')}`,
+		};
+	})
+	.sort((a, b) => a.title.localeCompare(b.title));
+---
+
+<div class="gallery not-content">
+	{
+		examples.map(({ name, title, description, lines, picture, dark, playground }) => (
+			<article class="card" id={name}>
+				{picture && <img class="light" src={picture} alt={`The ${title} model`} width="1280" height="800" loading="lazy" />}
+				{dark && <img class="dark" src={dark} alt={`The ${title} model`} width="1280" height="800" loading="lazy" />}
+				<div class="body">
+					<h3>{title}</h3>
+					<p>{description}</p>
+					<p class="meta">
+						<a href={playground} target="_blank" rel="noopener noreferrer">
+							Open in playground →
+						</a>
+						<span>{lines} lines</span>
+					</p>
+				</div>
+			</article>
+		))
+	}
+</div>
+
+<style>
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+	.card {
+		display: flex;
+		flex-direction: column;
+		border: 1px solid var(--sl-color-hairline);
+		border-radius: 0.5rem;
+		overflow: hidden;
+		background: var(--sl-color-bg-nav);
+	}
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-bottom: 1px solid var(--sl-color-hairline);
+	}
+	/* The picture in the page's theme: the viewer's backgrounds */
+	img.light {
+		background: #eef1f4;
+	}
+	img.dark {
+		display: none;
+		background: #131415;
+	}
+	:global(:root[data-theme='dark']) .card img.light {
+		display: none;
+	}
+	:global(:root[data-theme='dark']) .card img.dark {
+		display: block;
+	}
+	.body {
+		padding: 0.75rem 1rem 1rem;
+	}
+	h3 {
+		margin: 0;
+		font-size: var(--sl-text-lg);
+	}
+	p {
+		margin: 0.5rem 0 0;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+	}
+	.meta {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		text-transform: uppercase;
+		font-size: var(--sl-text-xs);
+		letter-spacing: 0.02em;
+	}
+	.meta a {
+		color: var(--sl-color-text-accent);
+		text-decoration: none;
+	}
+	.meta a:hover {
+		text-decoration: underline;
+	}
+</style>

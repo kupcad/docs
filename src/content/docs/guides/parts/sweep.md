@@ -8,6 +8,25 @@ sidebar:
 A handle is a band bent into a C. In KupCAD that is a `sweep`: a small sketch, the band's cross
 section, pushed along a path.
 
+<figure class="kc-diagram">
+<svg viewBox="0 0 360 200" width="360" height="200" role="img" aria-label="A small profile standing on a path, its x across the path and its y up, swept along it">
+  <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 150 C 120 150, 160 60, 240 60 L 320 60" />
+    <path d="M314 55 L320 60 L314 65" />
+    <rect x="60" y="118" width="18" height="30" rx="6" transform="rotate(-8 69 133)" stroke-opacity="0.9" />
+    <path d="M69 150 L69 100" stroke-dasharray="3 3" stroke-opacity="0.6" />
+    <path d="M69 150 L100 143" stroke-dasharray="3 3" stroke-opacity="0.6" />
+    <path d="M150 140 C 190 140, 220 95, 260 95" stroke-opacity="0.35" stroke-width="30" />
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="currentColor">
+    <text x="60" y="92">y up</text><text x="104" y="140">x across</text>
+    <text x="236" y="84" opacity="0.8">the band it sweeps</text>
+    <text x="236" y="48">the path</text>
+  </g>
+</svg>
+<figcaption>The profile stands on the path: its origin on the path, its x across it, its y up. Along a straight part it is extruded; round a bend, turned.</figcaption>
+</figure>
+
 ## The path
 
 The path is a C, drawn flat: from high on the mug's side, out, down, and back in low on the

@@ -1,0 +1,119 @@
+# @title Antenna standoff
+# @description A clip for a drone's antenna: sleeves for two frame standoffs, a platform between them
+
+# [Frame Physical Dimensions]
+standoff_dist = param(
+  :standoff_dist,
+  default: 20.0,
+  group: "Frame",
+  validate: { min: 15.0, max: 35.0 },
+  title: "Standoff spacing",
+  description: "Centre to centre of the two frame standoffs it clips onto",
+)
+standoff_dia = param(
+  :standoff_dia,
+  default: 5.0,
+  group: "Frame",
+  validate: { min: 3.0, max: 8.0 },
+  title: "Standoff diameter",
+  description: "The frame standoffs' outside diameter",
+)
+standoff_height = param(
+  :standoff_height,
+  default: 25.0,
+  group: "Frame",
+  title: "Sleeve height",
+  description: "How far the sleeves run down the standoffs",
+)
+wall_thickness = param(
+  :wall_thickness,
+  default: 1.6,
+  group: "Frame",
+  title: "Wall thickness",
+  description: "Around each standoff",
+)
+fit_tolerance = param(
+  :fit_tolerance,
+  default: 0.2,
+  group: "Frame",
+  title: "Fit tolerance",
+  description: "Added to the standoff's diameter, for a friction fit",
+)
+
+# [Antenna Platform Settings]
+antenna_angle = param(
+  :antenna_angle,
+  default: 25.0,
+  group: "Antenna platform",
+  title: "Antenna angle",
+  description: "How far the platform tilts back, in degrees",
+)
+platform_offset = param(
+  :platform_offset,
+  default: 23.0,
+  group: "Antenna platform",
+  title: "Antenna offset",
+  description: "From the standoffs to the antenna's hole",
+)
+platform_w = param(:platform_w, default: 15.0, group: "Antenna platform")
+platform_padding = param(:platform_padding, default: 8.0, group: "Antenna platform")
+mounting_thick = param(:mounting_thick, default: 2.5, group: "Antenna platform")
+
+# [Hardware Specifications]
+sma_hole_dia = param(:sma_hole_dia, default: 6.6, group: "Hardware")
+sma_hex_flat = param(:sma_hex_flat, default: 8.2, group: "Hardware")
+shoulder_thick = param(:shoulder_thick, default: 1.25, group: "Hardware")
+
+# Internal Math
+platform_l = platform_offset + platform_padding
+
+# --- 1. Solid Body ---
+sleeves = [-1, 1].map do |i|
+  cylinder(d: standoff_dia + (wall_thickness * 2.0), h: standoff_height)
+    .translate(i * standoff_dist / 2.0, 0.0, 0.0)
+end
+
+main_body = sleeves[0] + sleeves[1]
+
+# Mounting Platform
+platform = cube(x: platform_w, y: platform_l, z: mounting_thick)
+  .translate(-platform_w / 2.0, 0.0, -mounting_thick)
+  .rotate(-antenna_angle, 0.0, 0.0)
+  .translate(0.0, 0.0, standoff_height)
+
+main_body = main_body + platform
+
+# Structural Rib Trusses
+[-1, 1].each do |i|
+  top_anchor = cube(x: 2.5, y: platform_l, z: mounting_thick, center: true)
+    .translate(i * (platform_w / 2.0 - 1.25), platform_l / 2.0, -mounting_thick / 2.0)
+    .rotate(-antenna_angle, 0.0, 0.0)
+    .translate(0.0, 0.0, standoff_height)
+
+  bottom_anchor = cylinder(d: standoff_dia + (wall_thickness * 2.0), h: 1.0)
+    .translate(i * standoff_dist / 2.0, 0.0, 0.0)
+
+  rib = top_anchor.hull(bottom_anchor)
+  main_body = main_body + rib
+end
+
+# --- 2. Carve Holes ---
+
+# Standoff Holes (Octagons for friction)
+[-1, 1].each do |i|
+  hole = cylinder(d: standoff_dia + fit_tolerance, h: standoff_height + 2.0, sides: 8)
+    .translate(i * standoff_dist / 2.0, 0.0, -1.0)
+  main_body = main_body - hole
+end
+
+# SMA Connector Stack
+hex_size = sma_hex_flat / 0.866025
+thread_hole = cylinder(d: sma_hole_dia, h: 55.0).translate(0.0, 0.0, -50.0)
+hex_trap = cylinder(d: hex_size, h: 50.0 - shoulder_thick, sides: 6).translate(0.0, 0.0, -50.0)
+
+sma_stack = (thread_hole + hex_trap)
+  .translate(0.0, platform_offset, 0.0)
+  .rotate(-antenna_angle, 0.0, 0.0)
+  .translate(0.0, 0.0, standoff_height)
+
+main_body - sma_stack

@@ -4,3 +4,7 @@
 
 export const WEBSITE = 'https://kupcad.org/';
 export const PLAYGROUND = 'https://kupcad.org/playground/';
+/** The IDE: a project of scripts in the browser, kept there, offline, installable. */
+export const IDE = 'https://kupcad.dev/';
+/** The kupcad command and the desktop app, for every system. */
+export const DOWNLOAD = 'https://github.com/kupcad/kupcad/releases/latest';

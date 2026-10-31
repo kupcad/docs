@@ -8,6 +8,27 @@ sidebar:
 `revolve` turns a sketch about the y axis, which becomes the model's z axis. The sketch's x is
 the distance from the axis, its y the height. That is exactly how the half section was drawn.
 
+<figure class="kc-diagram">
+<svg viewBox="0 0 360 200" width="360" height="200" role="img" aria-label="A half section drawn with x as the distance from the axis and y as the height, turned about the axis into the mug">
+  <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 170 L40 20" stroke-dasharray="4 4" />
+    <path d="M40 170 L120 170 L120 40 L104 40 L104 154 L40 154" />
+    <path d="M40 180 L130 180" /><path d="M124 176 L130 180 L124 184" />
+    <path d="M30 170 L30 40" /><path d="M26 46 L30 40 L34 46" />
+    <path d="M170 100 L210 100" /><path d="M204 95 L210 100 L204 105" />
+    <ellipse cx="290" cy="40" rx="60" ry="12" />
+    <path d="M230 40 L230 170 A60 12 0 0 0 350 170 L350 40" />
+    <ellipse cx="290" cy="46" rx="48" ry="9" stroke-opacity="0.6" />
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="currentColor">
+    <text x="134" y="184">x</text><text x="22" y="34">y</text>
+    <text x="48" y="32" opacity="0.7" font-size="12">the axis</text>
+    <text x="150" y="92" font-size="12">revolve</text>
+  </g>
+</svg>
+<figcaption>In the sketch, x is the distance from the axis and y the height. Turned about the axis, the half section is the whole mug.</figcaption>
+</figure>
+
 ## Turn the section
 
 ```kupcad

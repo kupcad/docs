@@ -16,12 +16,10 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-# The example check is off until the next release: the reference describes kupcad's main branch,
-# ahead of 0.1.0. To turn it on, uncomment this and the Install KupCAD and Check examples steps,
-# and set KUPCAD_VERSION to the new release.
-# env:
-#   # The KupCAD release the reference describes: its examples are checked against it
-#   KUPCAD_VERSION: 0.1.0
+env:
+  # The KupCAD release the reference describes: its examples are checked against it, and drawn
+  # by it (scripts/render-examples.mjs)
+  KUPCAD_VERSION: 0.1.5
 
 jobs:
   build:
@@ -43,20 +41,27 @@ jobs:
       - name: Install Javascript dependencies
         run: pnpm install --frozen-lockfile
 
-      # Off until the next release (see KUPCAD_VERSION above)
-      # - name: Install KupCAD
-      #   env:
-      #     GH_TOKEN: ${{ github.token }}
-      #   run: |
-      #     archive="kupcad_${KUPCAD_VERSION}_linux_amd64.tar.gz"
-      #     cd "$RUNNER_TEMP"
-      #     gh release download "v${KUPCAD_VERSION}" --repo kupcad/kupcad --pattern "$archive" --pattern checksums.txt
-      #     grep " ${archive}\$" checksums.txt | sha256sum --check
-      #     mkdir kupcad && tar xzf "$archive" -C kupcad
-      #     echo "KUPCAD=$RUNNER_TEMP/kupcad/kupcad" >> "$GITHUB_ENV"
-      #
-      # - name: Check examples
-      #   run: pnpm check:examples
+      - name: Install KupCAD
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="kupcad_${KUPCAD_VERSION}_linux_amd64.tar.gz"
+          cd "$RUNNER_TEMP"
+          gh release download "v${KUPCAD_VERSION}" --repo kupcad/kupcad --pattern "$archive" --pattern checksums.txt
+          grep " ${archive}\$" checksums.txt | sha256sum --check
+          mkdir kupcad && tar xzf "$archive" -C kupcad
+          echo "KUPCAD=$RUNNER_TEMP/kupcad/kupcad" >> "$GITHUB_ENV"
+
+      # Every example is linted, run, and its printed values compared with its comments
+      - name: Check examples
+        run: pnpm check:examples
+
+      # Each example's picture, drawn by the viewer in headless Chromium
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Draw examples
+        run: pnpm render:examples
 
       - name: Build website
         run: pnpm build

@@ -19,3 +19,6 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# the examples' pictures, drawn at build time (pnpm render:examples)
+public/examples/

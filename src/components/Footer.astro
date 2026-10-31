@@ -1,0 +1,26 @@
+---
+// Starlight's footer, with the page's script for the examples' "Edit here" buttons
+// (src/scripts/try-here.js) after it, so every page has it.
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+<script>
+	// The playground's tokens with every page: a stylesheet a script imports on demand isn't
+	// written by the build
+	import '@kupcad/ui/tokens.css';
+	import '../scripts/try-here.js';
+</script>
+
+<style is:global>
+	/* As tall as the window allows, within reason: the playground stacks its panes in a column
+	   this narrow, and scrolls them */
+	.kc-try-playground {
+		height: clamp(30rem, 80vh, 60rem);
+		margin: 0 0 1.5rem;
+		border: 1px solid var(--sl-color-hairline);
+		border-radius: 0.5rem;
+		overflow: hidden;
+	}
+</style>

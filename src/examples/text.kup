@@ -1,0 +1,13 @@
+# @title Text
+# @description Letters drawn in a built-in font, extruded, on a plate
+
+# 1. Generate the 2D text profile
+my_text = text("Hello KupCAD!")
+
+# 2. Extrude it 5 units into 3D
+my_3d_text = my_text.extrude(5.0)
+
+# 3. Center it or move it around (optional)
+# my_3d_text = my_3d_text.translate(-10.0, 0.0, 0.0)
+
+my_3d_text

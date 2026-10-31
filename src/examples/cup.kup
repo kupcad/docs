@@ -1,0 +1,43 @@
+# @title Cup
+# @description A cup of coffee on its saucer, steaming: a line icon, for a drawing (SVG, DXF)
+
+line_width = param(
+  :line_width,
+  default: 3.6,
+  validate: { min: 1, max: 8 },
+  unit: "mm",
+  title: "Line width",
+)
+steaming = param(:steaming, default: true, title: "Steam")
+
+# Curves cut finely: a stroke's arcs are straight edges in the drawing
+CAD.config(resolution: { segments: 180 })
+
+# The cup: its rim a line, its sides dropping into a half circle, the bottom at y = 7
+rim = 51
+half = 38
+bowl = polyline([[-half, rim], [-half, rim - 6]]) +
+  arc(center: [0, rim - 6], r: half, start: 180, sweep: 180) +
+  polyline([[half, rim - 6], [half, rim], [-half, rim]])
+
+# The handle: a loop out of the cup's right side, back into its bowl lower down
+handle = polyline([[half, 43], [46, 43]]).arc_to([46, 25], r: 9, ccw: false).line_to([30, 22])
+
+saucer = line([-30, 0], [30, 0])
+
+# A wisp of steam: rising, leaning right, a wave across it
+def wisp(x, y)
+  polyline(
+    (0..24).map { |i|
+      s = i / 24.0
+      [x + 12 * s + 3.5 * Math.sind(360 * s), y + 36 * s]
+    },
+  )
+end
+
+lines = [bowl, handle, saucer]
+if steaming
+  lines += [wisp(-12, 60), wisp(-1, 55)]
+end
+cup = lines.map { |line| line.stroke(line_width) }
+cup.first.union(cup.drop(1)).named("cup").material(color: "#000000")

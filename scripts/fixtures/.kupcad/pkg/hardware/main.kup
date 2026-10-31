@@ -1,0 +1,3 @@
+def bolt(len) = cylinder(r: 1.5, h: len)
+
+export bolt

@@ -18,6 +18,20 @@ hero:
       attrs:
         target: _blank
         rel: noopener noreferrer
+    - text: Open the IDE
+      link: https://kupcad.dev/
+      icon: external
+      variant: secondary
+      attrs:
+        target: _blank
+        rel: noopener noreferrer
+    - text: Download
+      link: https://github.com/kupcad/kupcad/releases/latest
+      icon: download
+      variant: minimal
+      attrs:
+        target: _blank
+        rel: noopener noreferrer
     - text: KupCAD on GitHub
       link: https://github.com/kupcad/kupcad
       icon: external
@@ -29,7 +43,8 @@ hero:
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-```kupcad
+```kupcad aside
+# @title Plate
 plate = cube(x: 40, y: 30, z: 4, round_r: 2)
 holes = [[5, 5], [35, 5], [5, 25], [35, 25]].map { |(x, y)| cylinder(d: 3.4, h: 10).translate(x, y, -1) }
 
@@ -40,6 +55,8 @@ plate.difference(holes)
 	<LinkCard title="Start here" href="/start/install/" description="Where to run KupCAD, and a parametric plate in ten lines." />
 	<LinkCard title="The language" href="/guides/language/first-script/" description="A guide to the language: values, methods, blocks, classes, parameters and files, in ten short pages." />
 	<LinkCard title="Making parts" href="/guides/parts/solids/" description="A guide that builds a coffee mug and a planetary gearbox, one idea at a time." />
+	<LinkCard title="Examples" href="/examples/" description="The scripts that ship with KupCAD, a click from the playground." />
+	<LinkCard title="Cheat sheet" href="/cheat-sheet/" description="Every common shape, operation and method on one page." />
 	<LinkCard title="Language" href="/reference/language/syntax/" description="Literals, operators, methods, blocks, classes, errors and modules." />
 	<LinkCard title="Geometry" href="/reference/geometry/shapes/" description="Solids, sketches and paths, and every operation on them." />
 	<LinkCard title="Standard library" href="/reference/stdlib/kernel/" description="Global functions and the built-in classes." />

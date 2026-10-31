@@ -1,0 +1,102 @@
+# @title Grid organizer
+# @description A drawer tray on a 42 mm grid, open or split into rows, columns or a box per cell
+
+cells_x = param(
+  :cells_x,
+  default: 2,
+  validate: { min: 1, max: 4 },
+  step: 1,
+  group: "Grid",
+  title: "Cells across",
+)
+cells_y = param(
+  :cells_y,
+  default: 2,
+  validate: { min: 1, max: 3 },
+  step: 1,
+  group: "Grid",
+  title: "Cells deep",
+)
+height = param(
+  :height,
+  default: 25,
+  validate: { min: 15, max: 50 },
+  unit: "mm",
+  group: "Grid",
+  title: "Height",
+)
+layout = param(
+  :layout,
+  default: :cells,
+  validate: { in: [:open, :rows, :columns, :cells] },
+  group: "Grid",
+  title: "Dividers",
+  description: "None, between the rows, between the columns, or round every cell",
+)
+
+wall = param(
+  :wall,
+  default: 2,
+  validate: { min: 1.5, max: 3 },
+  step: 0.5,
+  unit: "mm",
+  group: "Fit",
+  title: "Wall",
+)
+floor = param(
+  :floor,
+  default: 2,
+  validate: { min: 1.5, max: 4 },
+  step: 0.5,
+  unit: "mm",
+  group: "Fit",
+  title: "Floor",
+)
+clearance = param(
+  :clearance,
+  default: 0.5,
+  validate: { min: 0.2, max: 1 },
+  step: 0.1,
+  unit: "mm",
+  group: "Fit",
+  title: "Clearance",
+  description: "Left between neighbouring trays in the drawer",
+)
+
+# A cell of the grid, and the tray's rounded corners
+CELL = 42
+CORNER = 4
+
+CAD.config(resolution: { segments: 64 })
+
+size_x = cells_x * CELL - clearance
+size_y = cells_y * CELL - clearance
+
+# The tray's outline, centred, `inset` in from its outside
+def footprint(inset = 0)
+  square([size_x - 2 * inset, size_y - 2 * inset], center: true, round_r: CORNER - inset)
+end
+
+tray = footprint.extrude(height) - footprint(wall).extrude(height).translate(z: floor)
+
+# The dividers on the cells' lines, each run into the walls and the floor: across the tray
+# between its columns, along it between its rows
+across = cube(x: wall, y: size_y - wall, z: height, center: true)
+  .translate(-size_x / 2 + CELL - clearance / 2, 0, height / 2)
+  .repeat_linear(cells_x - 1, x: CELL)
+along = cube(x: size_x - wall, y: wall, z: height, center: true)
+  .translate(0, -size_y / 2 + CELL - clearance / 2, height / 2)
+  .repeat_linear(cells_y - 1, y: CELL)
+dividers = case layout
+when :rows
+  cells_y > 1 ? [along] : []
+when :columns
+  cells_x > 1 ? [across] : []
+when :cells
+  [cells_x > 1 ? across : nil, cells_y > 1 ? along : nil].compact
+else
+  []
+end
+
+puts("Outside #{size_x} × #{size_y} × #{height} mm")
+tray.union(dividers).named("tray").material(color: "#3C6E91")

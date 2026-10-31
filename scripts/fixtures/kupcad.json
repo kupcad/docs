@@ -1,0 +1,7 @@
+{
+  "name": "docs-examples",
+  "version": "0.0.1",
+  "dependencies": {
+    "hardware": "github.com/kupcad-libs/hardware@^1.2"
+  }
+}
