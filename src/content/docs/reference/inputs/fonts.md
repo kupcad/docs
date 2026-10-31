@@ -84,15 +84,25 @@ A Font can be a module's export, so a project can keep its label font in one pla
 
 ## Drawing text
 
-- Text is one line, its glyphs kerned as the font says: by its GPOS table, or its `kern` table
-  for a font without GPOS kerning.
+- Text is one line, shaped as the font says: kerned (by its GPOS table, or its `kern` table for a
+  font without GPOS kerning), with its ligatures, its letters joined and reordered as their script
+  writes them, and its marks placed.
+- A right-to-left script (Arabic, Hebrew) runs from right to left, and a line mixing directions is
+  ordered as Unicode's bidirectional algorithm says: in a left-to-right line, a Hebrew word reads
+  from its right end.
 - A variable font draws its default style.
 - A character the font has no glyph for comes from the [symbol font](#symbols). One neither has is
   a `ValueError` naming it (`"中"` in a Latin font, an emoji, a line break).
 - A symbol isn't kerned against its neighbours, which are another font's.
 
-## Not yet supported
+## Scripts
 
-Right-to-left scripts and scripts whose letters change shape with their neighbours (Arabic,
-Hebrew, the Indic scripts) need text shaping, which `text()` doesn't do. CJK fonts draw, glyph by
-glyph.
+The embedded fonts draw Latin, Greek and Cyrillic. For another script, import a font that has it:
+Arabic, Hebrew, Devanagari and the other scripts whose letters join or change places are shaped by
+the font's own rules, and CJK fonts draw too.
+
+```kupcad
+import naskh from "./fonts/NotoNaskhArabic-Regular.ttf"
+
+sign = text("مرحبا", size: 12, font: naskh, halign: :center)
+```

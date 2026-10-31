@@ -174,9 +174,10 @@ The embedded fonts:
 | `"serif"` | Roboto Serif |
 | `"stencil"` | Allerta Stencil |
 
-Glyphs are kerned as the font says. Without `tolerance:`, they are drawn as finely as the
-resolution draws a circle half the text size. A text's curves stay curves in an SVG or DXF
-export. A character the font has no glyph for, such as the diameter sign `⌀`, comes from the
+Glyphs are shaped as the font says (kerned, joined, ligatures made), a right-to-left script laid
+out from right to left. Without `tolerance:`, they are drawn as finely as the resolution draws a
+circle half the text size. A text's curves stay curves in an SVG or DXF export. A character the
+font has no glyph for, such as the diameter sign `⌀`, comes from the
 [symbol font](/reference/inputs/fonts/#symbols), at the same size and on the same baseline.
 
 **Returns:** `Sketch`.
