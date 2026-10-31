@@ -1,0 +1,48 @@
+# @title Name tag
+# @description A keyring tag with a name on it: printed, with the letters raised, or drawn for a laser cutter
+
+name = param(:name, default: "KupCAD", title: "Name")
+font = param(
+  :font,
+  default: "sans-bold",
+  validate: { in: ["sans", "sans-bold", "serif", "mono", "stencil"] },
+  title: "Font",
+)
+size = param(
+  :size,
+  default: 9,
+  validate: { min: 5, max: 16 },
+  step: 0.5,
+  unit: "mm",
+  title: "Letter size",
+)
+laser = param(
+  :laser,
+  default: false,
+  title: "For a laser cutter",
+  description: "A drawing of the outline and the letters, instead of a part",
+)
+
+thickness = 3
+margin = 5
+hole = 4
+
+# The letters, centred on the origin: the tag is drawn round them, with room for the ring's
+# hole at the left end
+letters = text(name, size: size, font: font, halign: :center, valign: :center)
+box = letters.bbox
+length = box.x_size + 2 * margin + hole + margin
+height = [box.y_size + 2 * margin, hole + 2 * margin].max
+
+outline = square([length, height], center: true, round_r: height / 2)
+ring = circle(d: hole).translate(x: -length / 2 + margin + hole / 2)
+plate = outline - ring
+words = letters.translate(x: (hole + margin) / 2)
+
+if laser
+  # Two drawings: the outline to cut, the letters to engrave
+  [plate.named("cut").material(color: "#000000"), words.named("engrave").material(color: "#D00000")]
+else
+  tag = plate.extrude(thickness) + words.extrude(1).translate(z: thickness)
+  tag.named("tag").material(color: "#1F6F8B")
+end

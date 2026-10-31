@@ -1,0 +1,65 @@
+# @title Spiral staircase
+# @description A model staircase winding up a column, its steps placed by arithmetic and its handrail swept along a helix
+
+steps = param(:steps, default: 14, validate: { min: 4, max: 40 }, step: 1, title: "Steps")
+rise = param(:rise, default: 18, validate: { min: 8, max: 40 }, unit: "mm", title: "Rise per step")
+turn = param(
+  :turn,
+  default: 25,
+  validate: { min: 10, max: 45 },
+  step: 1,
+  unit: "°",
+  title: "Turn per step",
+)
+radius = param(:radius, default: 80, validate: { min: 40, max: 200 }, unit: "mm", title: "Radius")
+column_d = param(
+  :column_d,
+  default: 20,
+  validate: { min: 8, max: 60 },
+  unit: "mm",
+  title: "Column diameter",
+)
+
+tread = 6
+post_d = 3
+rail_d = 4
+rail_height = 55
+
+CAD.config(resolution: { segments: 64 })
+
+# One step: a wedge from the column out to the radius, `turn` degrees wide, with a post at its
+# outer corner for the handrail
+wedge = circle(r: radius) - circle(d: column_d - 2)
+sector = polygon([
+  [0, 0],
+  [radius + 1, 0],
+  [(radius + 1) * Math.cosd(turn), (radius + 1) * Math.sind(turn)],
+])
+step = (wedge & sector).extrude(tread)
+post = cylinder(d: post_d, h: rail_height).translate(
+  (radius - post_d) * Math.cosd(turn / 2),
+  (radius - post_d) * Math.sind(turn / 2),
+  tread,
+)
+step_with_post = (step + post).named("step").material(color: "#C8A165")
+
+# Each step turned and raised by its place in the flight
+flight = (0...steps).map do |i|
+  step_with_post.rotate(i * turn).translate(z: i * rise)
+end
+
+height = steps * rise
+column = cylinder(d: column_d, h: height + tread).named("column").material(color: "#555B6E")
+
+# The handrail: a circle swept along a helix through the posts' tops, a point every few degrees
+handrail_points = (0..(steps - 1) * 4).map do |k|
+  angle = turn / 2 + k * turn / 4.0
+  [
+    (radius - post_d) * Math.cosd(angle),
+    (radius - post_d) * Math.sind(angle),
+    k * rise / 4.0 + tread + rail_height,
+  ]
+end
+handrail = circle(d: rail_d).sweep(handrail_points).named("handrail").material(color: "#8B5E3C")
+
+assemble(name: "Spiral staircase", parts: [column, handrail] + flight)

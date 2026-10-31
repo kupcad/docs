@@ -1,0 +1,84 @@
+# @title Hinge
+# @description A hinge printed in one piece: two leaves whose knuckles alternate round a pin, with a clearance to tune for your printer
+
+length = param(:length, default: 60, validate: { min: 30, max: 150 }, unit: "mm", title: "Length")
+leaf = param(:leaf, default: 20, validate: { min: 10, max: 50 }, unit: "mm", title: "Leaf width")
+thickness = param(
+  :thickness,
+  default: 3,
+  validate: { min: 2, max: 6 },
+  step: 0.5,
+  unit: "mm",
+  title: "Leaf thickness",
+)
+knuckles = param(
+  :knuckles,
+  default: 5,
+  validate: { min: 3, max: 11 },
+  step: 2,
+  title: "Knuckles",
+  description: "An odd number: the outer ones belong to the same leaf",
+)
+clearance = param(
+  :clearance,
+  default: 0.3,
+  validate: { min: 0.15, max: 0.6 },
+  step: 0.05,
+  unit: "mm",
+  title: "Clearance",
+  description: "Round the pin and between knuckles; 0.3 prints well",
+)
+holes = param(
+  :holes,
+  default: 2,
+  validate: { min: 0, max: 5 },
+  step: 1,
+  title: "Screw holes per leaf",
+)
+
+knuckle_d = 2 * thickness + 2
+pin_d = thickness
+segment = length / knuckles
+
+# A knuckle: a cylinder along x, as long as its segment less the clearance to its neighbours,
+# bored for the pin with the clearance round it. The pin itself is the first leaf's, one piece
+# through them all; the other leaf's knuckles turn round it.
+def knuckle(index)
+  cylinder(d: knuckle_d, h: segment - clearance)
+    .rotate(0, 90, 0)
+    .translate(index * segment + clearance / 2, 0, knuckle_d / 2)
+end
+
+bore = cylinder(d: pin_d + 2 * clearance, h: length + 2)
+  .rotate(0, 90, 0)
+  .translate(-1, 0, knuckle_d / 2)
+pin = cylinder(d: pin_d, h: length).rotate(0, 90, 0).translate(0, 0, knuckle_d / 2)
+
+# Each leaf: a plate beside the axis, its knuckles (the even ones for the first leaf, the odd
+# ones for the second), and its screw holes
+def leaf_plate(side)
+  plate = cube(x: length, y: leaf, z: thickness, round_r: 2).translate(
+    0,
+    side > 0 ? knuckle_d / 2 - 1 : -leaf - knuckle_d / 2 + 1,
+    0,
+  )
+  screw_holes = (0...holes).map do |i|
+    cylinder(d: 3.4, h: thickness + 2).translate(
+      (i + 0.5) * length / [holes, 1].max,
+      side * (knuckle_d / 2 + leaf / 2),
+      -1,
+    )
+  end
+  plate.difference(screw_holes)
+end
+
+first = leaf_plate(1) + union((0...knuckles).to_a.filter { |i| i.even? }.map { |i| knuckle(i) }) - bore + pin
+second = leaf_plate(-1) + union((0...knuckles).to_a.filter { |i| i.odd? }.map { |i| knuckle(i) }) - bore
+
+assemble(
+  name: "Hinge",
+  parts: [
+    first.named("leaf with pin").material(color: "#6B8E23"),
+    second.named("leaf").material(color: "#9ACD32"),
+  ],
+)

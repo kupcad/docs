@@ -1,0 +1,45 @@
+# @title Phone stand
+# @description A desk stand that leans a phone back at an angle you choose, with a slot for its cable
+
+angle = param(
+  :angle,
+  default: 65,
+  validate: { min: 45, max: 85 },
+  step: 5,
+  unit: "°",
+  title: "Lean",
+  description: "The back's angle from the desk",
+)
+phone = param(
+  :phone,
+  default: 11,
+  validate: { min: 6, max: 20 },
+  step: 0.5,
+  unit: "mm",
+  title: "Phone thickness",
+  description: "With its case",
+)
+width = param(:width, default: 70, validate: { min: 40, max: 120 }, unit: "mm", title: "Width")
+lip = param(:lip, default: 12, validate: { min: 6, max: 25 }, unit: "mm", title: "Lip height")
+cable = param(:cable, default: true, title: "Cable slot")
+
+thickness = 4
+back = 70
+play = 1
+
+# Three plates: the back, leaning away from the phone by (90 - angle); the base, reaching from
+# under the back's top to the front of the lip; and the lip, a little in front of the phone
+rear = back * Math.cosd(angle)
+front = thickness + phone + play + thickness
+back_plate = cube(x: thickness, y: width, z: back).rotate(0, angle - 90, 0)
+base = cube(x: rear + front, y: width, z: thickness).translate(x: -rear)
+lip_plate = cube(x: thickness, y: width, z: lip).translate(x: front - thickness)
+stand = back_plate + base + lip_plate
+
+# A slot through the base and the lip, down the middle, for a charging cable
+if cable
+  slot = cube(x: front + 2 * play, y: 10, z: lip + 2 * play).translate(-play, width / 2 - 5, -play)
+  stand -= slot
+end
+
+stand.named("phone stand").material(color: "#D9822B")

@@ -1,0 +1,68 @@
+# @title Honeycomb wall
+# @description A tile of the Honeycomb Storage Wall, the hexagonal pegboard many printed tools hang from, with a hook to plug into it
+
+columns = param(:columns, default: 5, validate: { min: 1, max: 20 }, step: 1, title: "Columns")
+rows = param(:rows, default: 4, validate: { min: 1, max: 20 }, step: 1, title: "Rows")
+cell = param(
+  :cell,
+  default: 20,
+  validate: { min: 10, max: 40 },
+  unit: "mm",
+  title: "Cell size",
+  description: "Across the flats; 20 fits Honeycomb Storage Wall inserts",
+)
+web = param(
+  :web,
+  default: 1.8,
+  validate: { min: 1, max: 4 },
+  step: 0.1,
+  unit: "mm",
+  title: "Web",
+  description: "The wall between cells",
+)
+depth = param(:depth, default: 8, validate: { min: 4, max: 15 }, unit: "mm", title: "Depth")
+clearance = param(
+  :clearance,
+  default: 0.3,
+  validate: { min: 0, max: 0.8 },
+  step: 0.05,
+  unit: "mm",
+  title: "Plug clearance",
+)
+
+# Hexagons stand on a corner, so a row is a run of flats: a cell and a web apart along x, and
+# every other row shifted half that. Rows are three quarters of a corner-to-corner height apart.
+pitch = cell + web
+corner_r = pitch / Math.sqrt(3)
+row_step = corner_r * 1.5
+
+def hexagon(across)
+  circle(r: across / Math.sqrt(3), sides: 6).rotate(30)
+end
+
+def cell_at(column, row)
+  [column * pitch + (row.odd? ? pitch / 2 : 0), row * row_step]
+end
+
+# Odd rows are a cell short, so the tile's sides stay straight
+positions = (0...rows)
+  .to_a
+  .flat_map do |row|
+    (0...(row.odd? ? columns - 1 : columns)).map { |column| cell_at(column, row) }
+  end
+hexagons = positions.map { |(x, y)| hexagon(cell).translate(x, y) }
+cells = hexagons.reduce { |all, one| all + one }
+box = cells.bbox
+outline = square([box.x_size + 2 * web, box.y_size + 2 * web], center: true, round_r: web)
+  .translate(box.x_size / 2 + box.min[0], box.y_size / 2 + box.min[1])
+wall = (outline - cells).extrude(depth).named("wall").material(color: "#4A4E69")
+
+# A hook: a plug that fits a cell, a flange that rests on the web, and an arm that turns up
+plug = hexagon(cell - clearance).extrude(depth)
+flange = hexagon(cell + web).extrude(2).translate(z: depth)
+arm = cube(x: 6, y: 5, z: 25, round_r: 1).translate(-3, -cell / 2 + 1, depth)
+tip = cube(x: 6, y: 12, z: 5, round_r: 1).translate(-3, -cell / 2 + 1, depth + 20)
+hook = (plug + flange + arm + tip).named("hook").material(color: "#F2A541")
+
+home = cell_at(1, 1)
+assemble(name: "Honeycomb wall", parts: [wall, hook.translate(home[0], home[1])])

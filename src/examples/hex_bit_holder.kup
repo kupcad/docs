@@ -1,0 +1,52 @@
+# @title Hex bit holder
+# @description A block holding screwdriver bits in rows of hexagonal sockets, labelled on its front
+
+columns = param(:columns, default: 6, validate: { min: 1, max: 20 }, step: 1, title: "Columns")
+rows = param(:rows, default: 2, validate: { min: 1, max: 6 }, step: 1, title: "Rows")
+bit = param(
+  :bit,
+  default: 6.35,
+  validate: { min: 3, max: 12 },
+  step: 0.05,
+  unit: "mm",
+  title: "Bit size",
+  description: "Across the flats of the hexagon: 6.35 for a quarter-inch bit",
+)
+clearance = param(
+  :clearance,
+  default: 0.2,
+  validate: { min: 0, max: 0.6 },
+  step: 0.05,
+  unit: "mm",
+  title: "Clearance",
+)
+depth = param(:depth, default: 14, validate: { min: 6, max: 30 }, unit: "mm", title: "Socket depth")
+label = param(:label, default: "BITS", title: "Label")
+
+# Sockets a bit apart, in a block that leaves a wall round the outer ones
+pitch = bit + 6
+margin = 5
+length = columns * pitch - 6 + 2 * margin
+width = rows * pitch - 6 + 2 * margin
+height = depth + 4
+
+# A hexagon across the flats is `across`: its corners are that far apart over root three
+socket_r = (bit + clearance) / Math.sqrt(3)
+socket = circle(r: socket_r, sides: 6).rotate(30)
+sockets = socket
+  .repeat_linear(columns, x: pitch)
+  .repeat_linear(rows, y: pitch)
+  .translate(margin + socket_r, margin + socket_r)
+  .extrude(depth + 1)
+  .translate(z: height - depth)
+
+block = cube(x: length, y: width, z: height, round_r: 3)
+holder = block - sockets
+
+# The label, engraved half a millimetre into the front face
+letters = text(label, size: 5, font: "sans-bold", halign: :center, valign: :center)
+  .extrude(1)
+  .rotate(90, 0, 0)
+  .translate(length / 2, 0.5, height / 2)
+
+(holder - letters).named("bit holder").material(color: "#2F4858")
