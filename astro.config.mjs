@@ -39,7 +39,14 @@ export default defineConfig({
 				plugins: [playgroundLinks({ playground: PLAYGROUND })],
 			},
 			sidebar: [
-				{ label: 'Overview', slug: 'reference' },
+				{ label: 'Start here', items: [{ autogenerate: { directory: 'start' } }] },
+				{
+					label: 'Guides',
+					items: [
+						{ label: 'Making parts', items: [{ autogenerate: { directory: 'guides/parts' } }] },
+					],
+				},
+				{ label: 'Reference', slug: 'reference' },
 				{ label: 'Language', items: [{ autogenerate: { directory: 'reference/language' } }] },
 				{ label: 'Geometry', items: [{ autogenerate: { directory: 'reference/geometry' } }] },
 				{ label: 'Standard library', items: [{ autogenerate: { directory: 'reference/stdlib' } }] },
