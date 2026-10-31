@@ -176,14 +176,14 @@ The embedded fonts:
 
 Glyphs are kerned as the font says. Without `tolerance:`, they are drawn as finely as the
 resolution draws a circle half the text size. A text's curves stay curves in an SVG or DXF
-export.
+export. A character the font has no glyph for, such as the diameter sign `⌀`, comes from the
+[symbol font](/reference/inputs/fonts/#symbols), at the same size and on the same baseline.
 
 **Returns:** `Sketch`.
 
-**Raises:** `ValueError` for a character the font has no glyph for (a line break, an emoji, a
-CJK character in the embedded fonts), naming it. No embedded font has the diameter sign `⌀`:
-the error suggests `Ø`, as drawings write it. `ArgumentError` for a font name that doesn't exist,
-listing the fonts.
+**Raises:** `ValueError` for a character neither the font nor the symbol font has (a line break, an
+emoji, a CJK character in the embedded fonts), naming it. `ArgumentError` for a font name that
+doesn't exist, listing the fonts.
 
 ```kupcad
 label = text("KupCAD", size: 8, font: :sans_bold, halign: :center, valign: :center)

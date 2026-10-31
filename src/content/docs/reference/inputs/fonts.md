@@ -28,6 +28,30 @@ plate - text("KupCAD", size: 8, font: label, halign: "center", valign: "center")
 | `"serif"` | Roboto Serif | |
 | `"stencil"` | Allerta Stencil | |
 
+## Symbols
+
+A character the font has no glyph for is drawn from KupCAD's symbol font, at the same size and on
+the same baseline, whichever font the text is in, an imported one too. It has the symbols of
+drawings, panels and labels that text fonts lack:
+
+| Group | Symbols |
+|---|---|
+| Dimensions and tolerances | `⌀ ⌖ ⏥ ⏤ ○ ⌭ ⌒ ⌓ ∥ ⊥ ∠ ◎ ⌯ ↗ ⌰ ⌴ ⌵ ↧ ⌲ ⌳ ⌢ □ Ⓜ Ⓛ Ⓟ Ⓕ Ⓣ Ⓢ Ⓤ` |
+| Math | `± ∓ × ÷ ° ′ ″ ≈ ≠ ≤ ≥ ∞ √ ∅ ∆ π ∑ Ω` |
+| Arrows | `← ↑ → ↓ ↔ ↕ ↖ ↗ ↘ ↙ ⇄ ⇅ ↺ ↻ ⟲ ⟳ ⇐ ⇒` |
+| Electrical | `⏚ ⏻ ⏼ ⏽ ⭘ ⚡ ⎓ ∿ ⏦ ⌁` |
+| Signs | `✓ ✔ ✗ ✘ ★ ☆ ⚠ ♻ ☢ ☣ ⚙ ⌘ ⏏ ⏎ ⇧ ⌫ ⌥ ⌃ ⏵ ⏸ ⏹ ⏺ ☀ ❄ ♨` |
+| Shapes | `■ □ ▲ △ ▼ ▽ ● ○ ◆ ◇ ◉` |
+
+A character the font has comes from the font, so `±` in `"sans"` is Roboto's, and only a font
+without it takes the symbol font's. The symbols are a subset of Noto Sans Math, Noto Sans Symbols
+and Noto Sans Symbols 2, under the SIL Open Font License.
+
+```kupcad
+hole_note = text("4× ⌀3.4 ⌴ ⌀6 ↧3", size: 4)
+panel = text("⏻ POWER", size: 6, font: "sans-bold")
+```
+
 ## import_font
 
 ```kupcad frame="none"
@@ -63,9 +87,9 @@ A Font can be a module's export, so a project can keep its label font in one pla
 - Text is one line, its glyphs kerned as the font says: by its GPOS table, or its `kern` table
   for a font without GPOS kerning.
 - A variable font draws its default style.
-- A character the font has no glyph for is a `ValueError` naming it (`"中"` in a Latin font, an
-  emoji, a line break). No embedded font has the diameter sign `⌀`; write `Ø`, as drawings do,
-  and the error says so.
+- A character the font has no glyph for comes from the [symbol font](#symbols). One neither has is
+  a `ValueError` naming it (`"中"` in a Latin font, an emoji, a line break).
+- A symbol isn't kerned against its neighbours, which are another font's.
 
 ## Not yet supported
 
