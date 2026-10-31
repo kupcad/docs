@@ -1,7 +1,7 @@
 // Runs every framed ```kupcad block of the docs through `kupcad check`, so an example the
 // language no longer accepts fails here, not in a reader's editor. Blocks with frame="none"
 // (signatures, deliberately invalid code) are skipped. The binary is $KUPCAD, else `kupcad` on
-// the PATH: KUPCAD=../kupcad/core/zig-out/bin/kupcad npm run check:examples
+// the PATH: KUPCAD=../kupcad/core/zig-out/bin/kupcad pnpm check:examples
 
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';

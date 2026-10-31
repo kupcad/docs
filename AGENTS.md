@@ -35,7 +35,7 @@ implementation, the `kupcad` repo (`core/src/stdlib/manifest.zig`, `core/src/std
 - A member's call forms come first in a ```` ```kupcad frame="none" ```` block, then what it
   does in a few sentences, a `Parameter | Type | Default | Description` table, **Returns:**,
   **Raises:** for the errors specific to it, and an example.
-- A framed ```` ```kupcad ```` block is an example: `npm run check:examples` runs each through
+- A framed ```` ```kupcad ```` block is an example: `pnpm check:examples` runs each through
   `kupcad check` (`KUPCAD=../kupcad/core/zig-out/bin/kupcad`), and it must also run with
   `kupcad run`. A comment shows what a line gives (`# 1000`) or raises (`# ValueError`), checked
   by running it. Signatures and deliberately invalid code go in `frame="none"` blocks. Each

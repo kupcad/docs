@@ -7,13 +7,13 @@ https://docs.kupcad.org/.
 
 ## Running it
 
-Requires the Node version in [`.tool-versions`](.tool-versions) and npm.
+Requires the Node version in [`.tool-versions`](.tool-versions) and pnpm (12 or later).
 
 ```sh
-npm install
-npm run dev         # the site at http://localhost:4321, reloading as pages change
-npm run build       # the static site in dist/
-npm run preview     # serves dist/
+pnpm install
+pnpm dev            # the site at http://localhost:4321, reloading as pages change
+pnpm build          # the static site in dist/
+pnpm preview        # serves dist/
 ```
 
 Astro keeps the rendered Markdown between builds, so a change to how code blocks render (an
@@ -22,13 +22,13 @@ Expressive Code plugin, the grammar) shows on the pages only once that cache is 
 
 ## Checking the examples
 
-Every framed `kupcad` code block on a page is a script that has to work. `npm run
-check:examples` runs each one through `kupcad check`, so an example the language no longer
+Every framed `kupcad` code block on a page is a script that has to work. `pnpm check:examples`
+runs each one through `kupcad check`, so an example the language no longer
 accepts fails here instead of in a reader's editor. It needs the `kupcad` binary: on the `PATH`,
 or given by `KUPCAD`, such as a build from a checkout of the kupcad repo beside this one:
 
 ```sh
-KUPCAD=../kupcad/core/zig-out/bin/kupcad npm run check:examples
+KUPCAD=../kupcad/core/zig-out/bin/kupcad pnpm check:examples
 ```
 
 Blocks marked `frame="none"` (signatures, deliberately invalid code) aren't run.

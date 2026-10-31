@@ -33,15 +33,15 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install Node.JS
-        uses: actions/setup-node@v7
+      - name: Install pnpm and Node.js
+        uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
-          check-latest: true
-          cache: 'npm'
+          version: '^12.15'
           node-version-file: '.tool-versions'
+          cache: true
 
       - name: Install Javascript dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       # Off until the next release (see KUPCAD_VERSION above)
       # - name: Install KupCAD
@@ -56,10 +56,10 @@ jobs:
       #     echo "KUPCAD=$RUNNER_TEMP/kupcad/kupcad" >> "$GITHUB_ENV"
       #
       # - name: Check examples
-      #   run: npm run check:examples
+      #   run: pnpm check:examples
 
       - name: Build website
-        run: npm run build
+        run: pnpm build
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v5
