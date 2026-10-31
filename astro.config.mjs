@@ -51,6 +51,7 @@ export default defineConfig({
 						{ label: 'Making parts', items: [{ autogenerate: { directory: 'guides/parts' } }] },
 					],
 				},
+				{ label: 'Mastering KupCAD', items: [{ autogenerate: { directory: 'mastering' } }] },
 				{ label: 'Recipes', items: [{ autogenerate: { directory: 'recipes' } }] },
 				{ label: 'Examples', slug: 'examples' },
 				{ label: 'Cheat sheet', slug: 'cheat-sheet' },

@@ -21,8 +21,8 @@ importers:
         specifier: ^0.44.3
         version: 0.44.3
       '@kupcad/playground':
-        specifier: ^0.1.5
-        version: 0.1.5(svelte@5.57.3)
+        specifier: ^0.1.7
+        version: 0.1.7(svelte@5.57.3)
       astro:
         specifier: ^7.4.4
         version: 7.4.4(@types/node@24.19.2)(yaml@2.9.1)
@@ -37,14 +37,14 @@ importers:
         version: 5.57.3
     devDependencies:
       '@kupcad/ui':
-        specifier: ^0.1.5
-        version: 0.1.5(svelte@5.57.3)
+        specifier: ^0.1.7
+        version: 0.1.7(svelte@5.57.3)
       '@playwright/test':
         specifier: ^1.64.1
         version: 1.64.1
       three:
-        specifier: ^0.186.1
-        version: 0.186.1
+        specifier: ^0.187.0
+        version: 0.187.0
       vite:
         specifier: ^8.3.5
         version: 8.3.5(@types/node@24.19.2)(yaml@2.9.1)
@@ -310,6 +310,9 @@ packages:
   '@codemirror/commands@6.11.1':
     resolution: {integrity: sha512-O/4hG3SC1YwcmQ0d2UVNDs+AsaNWd1iHVxbTeEBuqH+6bExAiPK3iS/BvpY6rZGURALv4ZD3sIgcCmRvw3ehBg==}
 
+  '@codemirror/lang-json@6.0.2':
+    resolution: {integrity: sha512-x2OtO+AvwEHrEwR0FyyPtfDUiloG3rnVTSZV1W8UteaLL8/MajQd8DpvUb2YVzC+/T18aSDv0H9mu+xw0EStoQ==}
+
   '@codemirror/language@6.13.1':
     resolution: {integrity: sha512-zfvU2r3TyylQLMj/te+5CnQ0rSqZi8B1oTCBbQkagcLW4Xc6imab6qN+pEJhsuNOLaJqiRyBXp9UhWA1DhVvDw==}
 
@@ -546,38 +549,41 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@kupcad/editor@0.1.5':
-    resolution: {integrity: sha512-mmZWDhShCvCMU1zkPiWh+Ko5/vcy25NTSJwuHlkajw9Y1PXLu1yyVFfFPWPmY71JfAfpYHpCaLfpGuM+DVh6ZA==}
+  '@kupcad/editor@0.1.7':
+    resolution: {integrity: sha512-zSgjkp/GAwoDUa6XGGB4MCqbSwiiBs1S25L0atykqgTLBOZzLZo0+b2KVgcoS+II3TE5VXy9rWb1zT2L21xaqg==}
     peerDependencies:
       svelte: ^5.57.2
     peerDependenciesMeta:
       svelte:
         optional: true
 
-  '@kupcad/playground@0.1.5':
-    resolution: {integrity: sha512-kpw8S2qlecHZ8jdUEaJ1thQ7I06r1TIMBNfRyLyuxspYCpNvxULdKRN+S1xj/vwdBbfW0oJ7CLlSzb8O4/wO4Q==}
+  '@kupcad/playground@0.1.7':
+    resolution: {integrity: sha512-uIuFmz/hA61YhVmnYFdaSWW1L8cO8+58LKsgtOuq/FOFwK+4ijxtNQUqpPr0arwKAt4H3ixAeHMCw30wYEFy8w==}
     peerDependencies:
       svelte: ^5.57.2
 
-  '@kupcad/protocol@0.1.5':
-    resolution: {integrity: sha512-KrtqAQP32CnHxw7aQk7ZhOMVRggV9FKe3uVQjYtcNQaqQerw/URN6PC3w/nWTkOl77DhZvGxNnc7FyoN1gr5Og==}
+  '@kupcad/protocol@0.1.7':
+    resolution: {integrity: sha512-e2pb79X3zdZBbTm9lAyYsXLZzsUE6BDKrGGNhu1f7x/J6Nt7jRr3+JPRXHZO32DW9N5N3DK5SzD5XnPTmwLfsA==}
 
-  '@kupcad/ui@0.1.5':
-    resolution: {integrity: sha512-oqjwV4ndZcvZNwKqUgEfHsqSh7drz+sQOthpT+PNjQx+TOisaxXKo6Zxb60YzPyoDRY5jeA1RV5eNtycvTg01Q==}
+  '@kupcad/ui@0.1.7':
+    resolution: {integrity: sha512-whzeImYTzAV+AP6Z/FF3+m/A3nDFRikrp7MuZStATWvs6LypFRR01ZQTXDEgQDnmCnTaJokLyz3WHO3QrA3Zpw==}
     peerDependencies:
       svelte: ^5.57.2
     peerDependenciesMeta:
       svelte:
         optional: true
 
-  '@kupcad/wasm@0.1.5':
-    resolution: {integrity: sha512-zP1LR2E9BDXhhCbwB+ICwe/xjBzDThzoBkg20Hd62Q3TlybewwPr68KM4ekywOZSgCvlKwI5XfFRS5qA5LI//Q==}
+  '@kupcad/wasm@0.1.7':
+    resolution: {integrity: sha512-9Q0mk/0idgXnhFJgXHVXIzJyIij7eTljVeIkUqs3v9IXEQh/OcNDQ7FeSVvJtBSUrjdL+FOu5SH6DYyanv2ULQ==}
 
   '@lezer/common@1.5.5':
     resolution: {integrity: sha512-Pw7PVCndruF1pb3ebCxpSVpkMHSDjwRCLcTRw+RizUKco5QbWylwq2g4lnG/RYN7yTTQDXE9F77MwtkAyphrjg==}
 
   '@lezer/highlight@1.2.5':
     resolution: {integrity: sha512-O1GMVKgtf5YspFaRzpmqkVgMtIk2HG9uMAbH6wdAIdNh3TVzCsch/+cRi+6l2//UGDKe6NB9BW3cvuR5ezMQ0w==}
+
+  '@lezer/json@1.0.3':
+    resolution: {integrity: sha512-BP9KzdF9Y35PDpv04r0VeSTKDeox5vVr3efE7eBbx3r4s3oNLfunchejZhjArmeieBH+nVOpgIiBJpEAv8ilqQ==}
 
   '@lezer/lr@1.4.12':
     resolution: {integrity: sha512-On9HU4oMMiHPMkQDgoTnGahjgG5n/MkN38CgG77sMraKLL+3JBbeQNi1FcCXV9QRqwF9/BUXP3caHyJC1fBOTQ==}
@@ -1624,6 +1630,9 @@ packages:
   three@0.186.1:
     resolution: {integrity: sha512-blFeqb49wRCSGUGj7gtpfnSGHy2lwDk94RhUmS1c/hTby70kvChbWpkJ4Pm1390LqzzvTmzgXKHPEafJwCb8jA==}
 
+  three@0.187.0:
+    resolution: {integrity: sha512-Qiu7R+Cmh8CstZsY1uJOSWnVlfo7ZtNLV7mF8Jltk3LB3AtDu9cRZlcnRKkAk8Y4z6KKw35z7Y7Urd7jWY8etA==}
+
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
 
@@ -2124,6 +2133,11 @@ snapshots:
       '@codemirror/view': 6.43.15
       '@lezer/common': 1.5.5
 
+  '@codemirror/lang-json@6.0.2':
+    dependencies:
+      '@codemirror/language': 6.13.1
+      '@lezer/json': 1.0.3
+
   '@codemirror/language@6.13.1':
     dependencies:
       '@codemirror/state': 6.7.6
@@ -2358,10 +2372,11 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@kupcad/editor@0.1.5(svelte@5.57.3)':
+  '@kupcad/editor@0.1.7(svelte@5.57.3)':
     dependencies:
       '@codemirror/autocomplete': 6.20.4
       '@codemirror/commands': 6.11.1
+      '@codemirror/lang-json': 6.0.2
       '@codemirror/language': 6.13.1
       '@codemirror/legacy-modes': 6.5.5
       '@codemirror/lint': 6.9.7
@@ -2369,37 +2384,43 @@ snapshots:
       '@codemirror/search': 6.7.2
       '@codemirror/state': 6.7.6
       '@codemirror/view': 6.43.15
-      '@kupcad/protocol': 0.1.5
+      '@kupcad/protocol': 0.1.7
       '@lezer/highlight': 1.2.5
     optionalDependencies:
       svelte: 5.57.3
 
-  '@kupcad/playground@0.1.5(svelte@5.57.3)':
+  '@kupcad/playground@0.1.7(svelte@5.57.3)':
     dependencies:
-      '@kupcad/editor': 0.1.5(svelte@5.57.3)
-      '@kupcad/protocol': 0.1.5
-      '@kupcad/ui': 0.1.5(svelte@5.57.3)
-      '@kupcad/wasm': 0.1.5
+      '@kupcad/editor': 0.1.7(svelte@5.57.3)
+      '@kupcad/protocol': 0.1.7
+      '@kupcad/ui': 0.1.7(svelte@5.57.3)
+      '@kupcad/wasm': 0.1.7
       svelte: 5.57.3
 
-  '@kupcad/protocol@0.1.5': {}
+  '@kupcad/protocol@0.1.7': {}
 
-  '@kupcad/ui@0.1.5(svelte@5.57.3)':
+  '@kupcad/ui@0.1.7(svelte@5.57.3)':
     dependencies:
-      '@kupcad/protocol': 0.1.5
+      '@kupcad/protocol': 0.1.7
       three: 0.186.1
     optionalDependencies:
       svelte: 5.57.3
 
-  '@kupcad/wasm@0.1.5':
+  '@kupcad/wasm@0.1.7':
     dependencies:
-      '@kupcad/protocol': 0.1.5
+      '@kupcad/protocol': 0.1.7
 
   '@lezer/common@1.5.5': {}
 
   '@lezer/highlight@1.2.5':
     dependencies:
       '@lezer/common': 1.5.5
+
+  '@lezer/json@1.0.3':
+    dependencies:
+      '@lezer/common': 1.5.5
+      '@lezer/highlight': 1.2.5
+      '@lezer/lr': 1.4.12
 
   '@lezer/lr@1.4.12':
     dependencies:
@@ -3651,6 +3672,8 @@ snapshots:
       sax: 1.6.1
 
   three@0.186.1: {}
+
+  three@0.187.0: {}
 
   tiny-inflate@1.0.3: {}
 

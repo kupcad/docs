@@ -47,7 +47,7 @@ implementation, the `kupcad` repo (`core/src/stdlib/manifest.zig`, `core/src/std
   playground on the page, `src/scripts/try-here.js`) and "Open in playground"
   (`src/plugins/playground-links.mjs`), so an example should also run in the playground on its
   own.
-- The guides (`start/`, `guides/`, `recipes/`) are tutorials: one idea a page, plain words,
+- The guides (`start/`, `guides/`, `mastering/`, `recipes/`) are tutorials: one idea a page, plain words,
   each page ending with the script so far and links into the reference; they never repeat a
   method's parameter table.
 - Lengths are millimetres and angles degrees. Prose is British English, as the kupcad repo's

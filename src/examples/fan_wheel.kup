@@ -1,0 +1,60 @@
+# @title Fan wheel
+# @description An impeller: twisted blades round a hub, their pitch and twist yours to set
+
+blades = param(:blades, default: 7, validate: { min: 2, max: 16 }, step: 1, title: "Blades")
+diameter = param(
+  :diameter,
+  default: 80,
+  validate: { min: 30, max: 200 },
+  unit: "mm",
+  title: "Diameter",
+)
+height = param(:height, default: 20, validate: { min: 8, max: 60 }, unit: "mm", title: "Height")
+pitch = param(
+  :pitch,
+  default: 35,
+  validate: { min: 0, max: 60 },
+  step: 5,
+  unit: "°",
+  title: "Pitch",
+  description: "How far each blade leans from the axis",
+)
+twist = param(
+  :twist,
+  default: 30,
+  validate: { min: 0, max: 90 },
+  step: 5,
+  unit: "°",
+  title: "Twist",
+  description: "How far a blade turns from its root to its tip",
+)
+shaft = param(
+  :shaft,
+  default: 5,
+  validate: { min: 2, max: 12 },
+  step: 0.5,
+  unit: "mm",
+  title: "Shaft",
+)
+
+hub_d = diameter / 4
+blade_t = 2
+radius = diameter / 2
+
+# A blade starts as a flat strip from a third of the way out of the hub to past the rim,
+# extruded with a twist about the axis, leaned over by the pitch about its own length (turned
+# about its middle, so moved to the origin and back), and trimmed to the rim
+root = hub_d / 3
+strip = square([radius + 2 - root, blade_t], center: true).translate(x: (root + radius + 2) / 2)
+blade = strip
+  .extrude(height, twist: twist, slices: 8)
+  .translate(z: -height / 2)
+  .rotate(pitch, 0, 0)
+  .translate(z: height / 2)
+rim = cylinder(d: diameter, h: height)
+blade = blade & rim
+
+hub = cylinder(d: hub_d, h: height) - cylinder(d: shaft, h: height + 2).translate(z: -1)
+wheel = hub + blade.repeat_polar(blades)
+
+wheel.named("fan wheel").material(color: "#C0392B")

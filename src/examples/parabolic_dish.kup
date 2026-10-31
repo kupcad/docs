@@ -1,0 +1,45 @@
+# @title Parabolic dish
+# @description A dish whose curve comes from the parabola's formula, with a receiver held at its focus
+
+diameter = param(
+  :diameter,
+  default: 120,
+  validate: { min: 40, max: 300 },
+  unit: "mm",
+  title: "Diameter",
+)
+focus = param(
+  :focus,
+  default: 40,
+  validate: { min: 15, max: 200 },
+  unit: "mm",
+  title: "Focal length",
+  description: "How far above the dish's centre the focus sits",
+)
+wall = param(:wall, default: 2, validate: { min: 1, max: 6 }, step: 0.5, unit: "mm", title: "Wall")
+show_receiver = param(:show_receiver, default: true, title: "Show the receiver")
+
+foot_d = 30
+foot_h = 4
+radius = diameter / 2
+steps = 60
+
+# A parabola with its focus `focus` above its vertex is y = x² / (4 focus): the dish's inside.
+# Its height at the rim is the dish's depth.
+height = ->(x) { x * x / (4 * focus) }
+puts("Depth #{height.call(radius).round(1)} mm at the rim")
+
+# The section to turn: up the inside from the centre to the rim, over the rim, then back down
+# the outside, the same curve `wall` lower, as far as the foot
+xs = ->(start) { (0..steps).map { |i| start + (radius - start) * i / steps } }
+inside = xs.call(0).map { |x| [x, height.call(x)] }
+outside = xs.call(foot_d / 2).map { |x| [x, height.call(x) - wall] }.reverse
+section = polygon(inside + outside.reverse + [[foot_d / 2, -foot_h], [0, -foot_h]])
+dish = section.revolve.translate(z: wall).named("dish").material(color: "#D8DEE9")
+
+# The receiver: a ball at the focus on a stalk up from the centre
+stalk = cylinder(d: 3, h: focus + wall)
+ball = sphere(d: 8).translate(z: focus + wall)
+receiver = (stalk + ball).named("receiver").material(color: "#BF616A")
+
+show_receiver ? assemble(name: "Parabolic dish", parts: [dish, receiver]) : dish

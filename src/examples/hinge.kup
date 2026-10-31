@@ -39,6 +39,12 @@ holes = param(
 knuckle_d = 2 * thickness + 2
 pin_d = thickness
 segment = length / knuckles
+# Where a leaf's plate starts: clear of the other leaf's knuckles
+plate_from = knuckle_d / 2 + clearance
+
+# A 3 mm pin drawn with the default handful of edges would touch its bore: fits need round
+# circles
+CAD.config(resolution: { segments: 48 })
 
 # A knuckle: a cylinder along x, as long as its segment less the clearance to its neighbours,
 # bored for the pin with the clearance round it. The pin itself is the first leaf's, one piece
@@ -54,26 +60,29 @@ bore = cylinder(d: pin_d + 2 * clearance, h: length + 2)
   .translate(-1, 0, knuckle_d / 2)
 pin = cylinder(d: pin_d, h: length).rotate(0, 90, 0).translate(0, 0, knuckle_d / 2)
 
-# Each leaf: a plate beside the axis, its knuckles (the even ones for the first leaf, the odd
-# ones for the second), and its screw holes
-def leaf_plate(side)
-  plate = cube(x: length, y: leaf, z: thickness, round_r: 2).translate(
-    0,
-    side > 0 ? knuckle_d / 2 - 1 : -leaf - knuckle_d / 2 + 1,
-    0,
-  )
+# A leaf: a plate beside the axis, a neck under each of its own knuckles joining the two, its
+# knuckles, and its screw holes. `side` is 1 for the +y leaf, -1 for the other.
+def leaf_for(side, indexes)
+  plate = cube(x: length, y: leaf, z: thickness, round_r: 2)
+    .translate(0, side > 0 ? plate_from : -plate_from - leaf, 0)
+  necks = indexes.map do |i|
+    cube(x: segment - clearance, y: plate_from + 1, z: thickness)
+      .translate(i * segment + clearance / 2, side > 0 ? 0 : -plate_from - 1, 0)
+  end
   screw_holes = (0...holes).map do |i|
     cylinder(d: 3.4, h: thickness + 2).translate(
       (i + 0.5) * length / [holes, 1].max,
-      side * (knuckle_d / 2 + leaf / 2),
+      side * (plate_from + leaf / 2),
       -1,
     )
   end
-  plate.difference(screw_holes)
+  (plate + union(necks) + union(indexes.map { |i| knuckle(i) })).difference(screw_holes)
 end
 
-first = leaf_plate(1) + union((0...knuckles).to_a.filter { |i| i.even? }.map { |i| knuckle(i) }) - bore + pin
-second = leaf_plate(-1) + union((0...knuckles).to_a.filter { |i| i.odd? }.map { |i| knuckle(i) }) - bore
+evens = (0...knuckles).to_a.filter { |i| i.even? }
+odds = (0...knuckles).to_a.filter { |i| i.odd? }
+first = leaf_for(1, evens) - bore + pin
+second = leaf_for(-1, odds) - bore
 
 assemble(
   name: "Hinge",
