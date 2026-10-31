@@ -63,5 +63,7 @@ the same.
 
 ## Next
 
-- [Making parts](/guides/parts/solids/): a guide that builds a coffee mug, one idea at a time.
+- [The language](/guides/language/first-script/): values, methods, blocks and the rest, in ten
+  short pages.
+- [Making parts](/guides/parts/solids/): a guide that builds a coffee mug and a gearbox.
 - [The reference](/reference/): every shape, method and command.

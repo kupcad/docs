@@ -21,7 +21,8 @@ plate.difference(spots.map { |(x, y)| bolt.translate(x, y, 0) })
 ```
 
 This reference describes KupCAD's main branch, ahead of the 0.1.0 release. New to KupCAD?
-[Start here](/start/install/), then the guide [Making parts](/guides/parts/solids/).
+[Start here](/start/install/), then the guides [The language](/guides/language/first-script/)
+and [Making parts](/guides/parts/solids/).
 
 ## Sections
 

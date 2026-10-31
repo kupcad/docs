@@ -43,6 +43,7 @@ export default defineConfig({
 				{
 					label: 'Guides',
 					items: [
+						{ label: 'The language', items: [{ autogenerate: { directory: 'guides/language' } }] },
 						{ label: 'Making parts', items: [{ autogenerate: { directory: 'guides/parts' } }] },
 					],
 				},

@@ -5,8 +5,10 @@ sidebar:
   order: 1
 ---
 
-This guide builds a coffee mug, one idea at a time. Each page adds something; at the end of
-every page is the script so far, which you can open in the playground.
+This guide builds a coffee mug, one idea at a time, then a planetary gearbox. Each page adds
+something; at the end of every page is the script so far, which you can open in the playground.
+It uses variables, methods and blocks as [The language](/guides/language/first-script/)
+explains them; you can read that first, or look things up there as they come.
 
 We start with the three basic solids and where they go.
 

@@ -126,7 +126,6 @@ Sixty lines, and every size on a slider.
 
 ## Next
 
-The second part of this guide builds a planetary gearbox: a function that draws a gear tooth,
-gears repeated and placed by arithmetic, and an assembly of named parts. Until it is written,
-the [examples](https://github.com/kupcad/kupcad/tree/main/examples) show these in full, and
-[The language](/reference/language/syntax/) in the reference covers methods, blocks and classes.
+The second part of this guide builds a planetary gearbox: a method that draws a gear, gears
+placed by arithmetic, and an assembly of named parts.
+[A function that draws](/guides/parts/gears/).
