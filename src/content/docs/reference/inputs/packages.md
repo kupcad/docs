@@ -65,11 +65,14 @@ not on a `file:` path, an archive URL or a self-hosted server. See
 | A public git host | `<host>/<user>/<repo>[@ref]` on `github.com`, `gitlab.com`, `codeberg.org` or `gitea.com` |
 | A self-hosted GitLab | `gitlab:<host>/<user>/<repo>[@ref]` |
 | A self-hosted Gitea | `gitea:<host>/<user>/<repo>[@ref]` |
-| An archive on disk | `file:<path>`, a `.tar.gz` file |
-| An archive on the web | an `http://` or `https://` URL of a `.tar.gz` file |
+| An archive on disk | `file:<path>`, a `.tar.gz` file in the project's folder (the one `kupcad.json` is in), by a path relative to it |
+| An archive on the web | an `https://` URL of a `.tar.gz` file; `http://` only from a local or intranet host |
 
 An unknown host without a `gitlab:` or `gitea:` prefix is an error, since its API can't be told
-from its name. Only gzipped tarballs are installed; a `.zip` URL is refused with that reason.
+from its name. Only gzipped tarballs are installed; a `.zip` URL is refused with that reason. A
+`file:` path may not leave the project, by `..` or an absolute path, so a cloned project can't
+copy any archive on the disk into itself. A package's file names are ASCII; one with other
+characters is refused, as two spellings of `é` are one file on some disks and two on others.
 
 A git host wraps its archives in a top folder (`repo-<sha>/`), which is stripped, so the
 repository's files are the package's. A `file:` or web archive is the package as it is, so make
@@ -161,7 +164,7 @@ package is in use.
   from a public host to a private one (loopback, an IP address, an intranet name).
 - A request that receives nothing for 30 seconds is abandoned, from its start until its body
   begins and then between any two parts of its body. A slow download that keeps coming takes as
-  long as it needs.
+  long as it needs, up to 10 minutes in all.
 - An archive's symbolic and hard links are skipped, and entries with absolute paths, `..`, or
   two names for one file on a case-insensitive disk are refused.
 
