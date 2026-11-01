@@ -133,6 +133,8 @@ An SVG's units become millimetres by the root's `width` and `viewBox`; without t
 is a CSS pixel, 1/96 inch. Its y axis, which runs down the page, is turned over about its origin,
 so an `export_svg` read back lands where it was.
 
+A byte order mark at the start of a DXF or an SVG file is skipped.
+
 ## Layers
 
 `layers:` reads only the outlines on the layers named. A layer the file has no outline on is an

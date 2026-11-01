@@ -159,6 +159,11 @@ At the prompt, an expression is evaluated in place, and these commands are avail
 | `.help` | `.h` | Lists the commands. |
 | `.quit` | `.q`, `.exit` | Stops the run, which then fails. Ctrl+C does the same. |
 
+An expression is evaluated where the script paused: it reads the locals there, and an
+assignment to one changes it for the rest of the run. One that raises an error says why, and the script stays
+paused where it was: its own `rescue` doesn't catch what is typed at the prompt. After `.step`,
+the prompt says the line it stopped at.
+
 **Returns:** `nil`.
 
 ## Other global functions

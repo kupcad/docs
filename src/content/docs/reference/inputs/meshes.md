@@ -107,6 +107,8 @@ The types are `"stl"`, `"obj"`, `"3mf"` and `"step"`, as Strings or Symbols.
 STL and OBJ numbers are read as millimetres: neither format records its unit, and KupCAD writes
 millimetres. A 3MF file states its own unit, which is converted.
 
+A byte order mark at the start of an ASCII STL or an OBJ file is skipped.
+
 ## Mending
 
 The geometry kernel takes only a closed mesh: each edge on exactly two triangles, which run

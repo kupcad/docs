@@ -69,6 +69,9 @@ puts "#{name}: #{gear_list.size} gears"   # braider: 2 gears
 A key the object lacks is a `KeyError` listing the keys it has. A file that isn't an object
 (a list of parts, `[...]`) is an `ImportError`: import it whole, without braces.
 
+A byte order mark at the start of the file, which Notepad and PowerShell write, is skipped, as
+it is in a script, `kupcad.json` and a `-P` file.
+
 ## What a file becomes
 
 | JSON | KupCAD |

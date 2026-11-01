@@ -220,7 +220,7 @@ Tools for working on KupCAD itself.
 | `ast-dump` | Writes the syntax tree (`.dump`). |
 | `disasm` | Writes the compiled bytecode (`.disasm`). |
 | `lex-dump` | Writes the token stream (`.lex`). |
-| `bench` | Times parse, compile, the VM run and the geometry's evaluation, each from cold, and prints the median of `--repeat` runs (5 by default). A further run with the profiler gives a table per function (`--no-profile` skips it); `--no-eval` skips the geometry; `--json` prints the medians as JSON. The script's own output isn't shown. |
+| `bench` | Times parse, compile, the VM run and the evaluation of the geometry it leaves (a Solid, a Sketch, an Assembly's parts, or an Array of them), each from cold, and prints the median of `--repeat` runs (5 by default). A further run with the profiler gives a table per function (`--no-profile` skips it); `--no-eval` skips the geometry; `--json` prints the medians as JSON. The script's own output isn't shown. |
 | `crash` | Ends the process with a panic or an abort, to check that crash reports are written. |
 
 ## Crash reports
