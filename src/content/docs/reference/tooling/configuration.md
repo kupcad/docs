@@ -55,6 +55,10 @@ of the geometry graph it builds (a loop of transforms adds a node each). The geo
 meshes aren't counted. Garbage is collected before a new object would cross the limit, so what
 the script no longer holds doesn't count.
 
+Each value is counted at what it takes, the memory kupcad keeps for it besides its own, so the
+process stays near the limit: within about 1.5 times it for a script of millions of short strings,
+and closer for larger values. The geometry kernel's meshes come on top of that.
+
 A run that needs more raises an `OutOfMemoryError` naming the limit and, where it is known, what
 couldn't grow:
 
