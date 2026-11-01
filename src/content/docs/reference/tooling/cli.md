@@ -68,6 +68,9 @@ file next to the script, named after it (`-f` picks another format).
 | `--memory-limit <size>` | The most script memory the run may hold, as `512MB` or `8GB`, in place of `KUPCAD_MEMORY_LIMIT` and the project's `vm_memory_limit`. See [Memory limits](/reference/tooling/configuration/#memory-limits). |
 | `--errors <text\|json>` | How a failure is told: in words (`text`, the default), or with one line of JSON last on stderr for a program that runs the build: `{"error": {"kind", "message", "file", "line", "column"}}`, the kind one of `settings`, `read`, `syntax`, `compile`, `runtime`, `export` and `write`. |
 
+The folders an output, the `--mtl` library, the `--bom` list and `--split` go in are made when
+they aren't there, so `-o build/part.stl` needs no `build/` first.
+
 ```sh
 kupcad build part.kup -o part.stl -o part.glb          # one run, two files
 kupcad build part.kup -f 3mf                           # part.3mf beside the script

@@ -63,6 +63,8 @@ export value from "./data.json"
 
 `export` lists the variables, functions, classes and constants of the file that importers may
 use, each under its own name or the one after `as`. Only exported names reach other files.
+An export takes each name as it is where the export stands, so it goes below what sets the
+name: one above `width = 10` or `def bolt` is the compile error `export-before-definition`.
 
 `export ... from "path"` passes another file's exports on, so a library's entry file can gather
 its parts. It binds nothing in the file that writes it: that file's own variable of the same
