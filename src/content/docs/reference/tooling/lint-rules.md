@@ -54,6 +54,7 @@ class) is left alone.
 cube(-5)                 # cube expects x to be greater than zero, got -5
 cylinder(h: 0, r: 1)
 cube(4).shell(-1)
+square(4).extrude(0)
 a.min_gap(b, 0)          # when a is known to be a Solid
 ```
 

@@ -34,6 +34,8 @@ The sketch pushed straight up along z, from z = 0 to `h`.
 
 **Returns:** `Solid`.
 
+**Raises:** `ValueError` for an `h` of zero or less.
+
 ```kupcad
 puts square(10).extrude(5).volume          # 500
 taper = square(10, center: true).extrude(10, scale: 0.5)
@@ -57,6 +59,8 @@ counter-clockwise seen from above.
 | `segments` | Number | 0 | Segments for a full turn; a partial revolve gets its share (at least 3). |
 
 **Returns:** `Solid`.
+
+**Raises:** `ValueError` for a `deg` of zero, which would sweep nothing; a negative angle turns the other way.
 
 ```kupcad
 ring = square([2, 10]).translate(x: 5).revolve
