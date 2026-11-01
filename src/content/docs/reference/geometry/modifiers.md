@@ -9,6 +9,7 @@ sidebar:
 |---|:-:|:-:|---|
 | [`offset`](#offset) | ✓ | ✓ | the receiver's kind |
 | [`shell`](#shell) | ✓ | ✓ | the receiver's kind |
+| [`round_edges`](#round_edges) | ✓ | | `Solid` |
 | [`trim_by_plane`](#trim_by_plane) | ✓ | | `Solid` |
 | [`split_by_plane`](#split_by_plane) | ✓ | | Array of two Solids |
 | [`slice`](#slice) | ✓ | | `Sketch` |
@@ -74,6 +75,39 @@ a difference cuts it open. Walls thicker than half the shape leave it whole.
 puts square(10).shell(1).area   # 36
 cup = cylinder(r: 20, h: 30).shell(2) - cylinder(r: 30, h: 10).translate(z: 29)
 ```
+
+## round_edges
+
+```kupcad frame="none"
+solid.round_edges(r, segments: 0)
+```
+
+Rounds the Solid's outer edges and corners to radius `r` and keeps its size: it is shrunk by `r`,
+then grown by `r` again (`offset(-r).offset(r)`). An offset alone rounds the edges too, but grows
+the part by `delta` on every side.
+
+Only the outer (convex) edges are rounded; inner edges, such as a notch's, stay sharp. Any part
+of the shape thinner than `2 * r` is lost. The rounding is an approximation, as fine as the
+sphere's `segments:`, not a true fillet: the B-Rep engine's fillets, edge by edge, are still to
+come, and it doesn't take `round_edges` yet.
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `r` | Number | — | The edges' radius, greater than 0. |
+| `segments` | Number | 0 | Segments per full turn of the rounding; 0 follows the resolution for a circle of radius `r`. |
+
+**Returns:** a `Solid`.
+
+**Raises:** `ArgumentError` without `r`; `ValueError` for an `r` of 0 or less.
+
+```kupcad
+box = cube(10).round_edges(1)
+puts box.bbox.size.inspect   # [10, 10, 10]
+```
+
+It takes two Minkowski sums, so it is slow on detailed shapes. Rounding the primitive itself is
+cheaper where it can: `cube(round_r:)` rounds a box's vertical edges, `cylinder(round_r:)` its
+top and bottom.
 
 ## trim_by_plane
 

@@ -73,6 +73,7 @@ a & b                                     # intersection
 hull([a, b])                              # the convex hull
 a.minkowski(b)                            # rounds a with b
 solid.shell(2)                            # hollow, walls 2 thick (slow on complex shapes)
+solid.round_edges(1)                      # outer edges rounded, size kept (slow on complex shapes)
 ```
 
 [Booleans and hulls](/reference/geometry/booleans/)
