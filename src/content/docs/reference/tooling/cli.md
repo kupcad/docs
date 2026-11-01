@@ -66,6 +66,7 @@ file next to the script, named after it (`-f` picks another format).
 | `-p`, `--param <name=value>` | A parameter's value, read as its kind (an Array's or a Map's as JSON). Repeatable. |
 | `-P`, `--params <file.json>` | Parameter values from a JSON object. Repeatable. |
 | `--memory-limit <size>` | The most script memory the run may hold, as `512MB` or `8GB`, in place of `KUPCAD_MEMORY_LIMIT` and the project's `vm_memory_limit`. See [Memory limits](/reference/tooling/configuration/#memory-limits). |
+| `--errors <text\|json>` | How a failure is told: in words (`text`, the default), or with one line of JSON last on stderr for a program that runs the build: `{"error": {"kind", "message", "file", "line", "column"}}`, the kind one of `settings`, `read`, `syntax`, `compile`, `runtime`, `export` and `write`. |
 
 ```sh
 kupcad build part.kup -o part.stl -o part.glb          # one run, two files
@@ -96,7 +97,7 @@ imports can write over the project's scripts or settings.
 ## kupcad run
 
 ```sh
-kupcad run <file.kup> [-p name=value]... [-P file.json]... [--memory-limit <size>]
+kupcad run <file.kup> [-p name=value]... [-P file.json]... [--memory-limit <size>] [--errors json]
 ```
 
 Runs a script and writes no model. What it prints and the errors it raises are the result, for a
@@ -104,7 +105,7 @@ script that computes or checks rather than models. A model that is one Solid is 
 geometry kernel, as the editor's preview evaluates it, so a kernel error in it (a `polyhedron`
 that isn't closed) fails the run as it would a build. An Array or an Assembly of Solids is built
 but not evaluated, so a kernel error in one waits for `kupcad build`. The script can still write
-files itself with `export_*`. Takes `-p`, `-P` and `--memory-limit` as `build` does.
+files itself with `export_*`. Takes `-p`, `-P`, `--memory-limit` and `--errors` as `build` does.
 
 ## kupcad watch
 
