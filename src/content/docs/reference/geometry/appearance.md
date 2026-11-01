@@ -56,6 +56,9 @@ object, an SVG path's `id`, a DXF layer, a `--split` file). It stays through mov
 name isn't passed to a Solid extruded from it, nor to its offset. As with materials, the
 outermost name counts.
 
+The preview's list of parts shows, beside each named part, the line where its name was first
+given, in a library too: a click on it shows that line in the editor.
+
 **Returns:** the receiver's kind.
 
 ```kupcad
