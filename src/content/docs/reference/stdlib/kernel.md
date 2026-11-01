@@ -82,6 +82,10 @@ warn(*values)
 Writes `[Warning] ` and then its values, each as `puts` shows a built-in value, with nothing
 between them and a line break after. The script goes on: to stop it, `raise` or `assert`.
 
+In the editor and the preview it is a warning of the run too: underlined on the line that
+called it, and in the viewer's list of problems. One a library's function gives is shown in the
+library, at its own line.
+
 **Returns:** `nil`.
 
 ```kupcad
