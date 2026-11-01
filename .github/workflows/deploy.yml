@@ -19,7 +19,7 @@ concurrency:
 env:
   # The KupCAD release the reference describes: its examples are checked against it, and drawn
   # by it (scripts/render-examples.mjs)
-  KUPCAD_VERSION: 0.1.5
+  KUPCAD_VERSION: 0.1.8
 
 jobs:
   build:
