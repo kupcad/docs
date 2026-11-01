@@ -63,8 +63,8 @@ A build's time shows in the status line. What makes it long:
 
 - **Resolution.** `CAD.config(resolution: { segments: n })` sets how many edges a circle gets.
   Every curved face pays for it. Set it once, as high as the part needs and no higher.
-- **Booleans of many pieces.** Union a list in one call, `union(list)`, rather than one piece
-  at a time.
+- **Booleans of many pieces, looked at on the way.** A loop of `acc = acc + piece` (or `-`)
+  is built in one call, as `union(list)` is, unless the loop measures `acc` as it goes.
 - **A solid's `shell` and `minkowski`**, which grow with the shape's detail.
 - **Sweeps round many corners** and text with many glyphs.
 

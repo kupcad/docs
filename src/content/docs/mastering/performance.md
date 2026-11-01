@@ -59,8 +59,11 @@ when it is moved into a coarse context.
 
 ## Fewer, bigger booleans
 
-Ten subtractions in a row rebuild the result ten times. One subtraction of a list rebuilds it
-once:
+A boolean is built when its result is needed, and a run of the same boolean is built in one
+go: ten holes cut one at a time in a loop, `acc = acc - hole`, are cut in one call, as a list of
+them is. What breaks the run is a look at the shape on the way: measuring `acc` inside the loop
+(its `volume`, its `bbox`) builds it there, and the next cut starts again from it. A list says
+the same without the loop:
 
 ```kupcad
 plate = cube(x: 60, y: 40, z: 4)
@@ -69,7 +72,8 @@ holes = (0...5).map { |i| cylinder(d: 3.4, h: 6).translate(8 + i * 11, 20, -1) }
 plate.difference(holes)
 ```
 
-`difference(list)`, `union(list)` and `shape.union(a, b, c)` take everything at once.
+`difference(list)`, `union(list)` and `shape.union(a, b, c)` take everything at once, and so
+does a loop of `+` or `-` that nothing measures on the way. A sketch's are the same.
 `repeat_linear` and `repeat_polar` build their copies as one shape too, which is why the bit
 holder's grid of sockets is cut in one go. Build the cutters first, then cut once; build the
 parts, then join once.
