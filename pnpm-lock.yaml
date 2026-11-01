@@ -21,8 +21,8 @@ importers:
         specifier: ^0.44.3
         version: 0.44.3
       '@kupcad/playground':
-        specifier: ^0.1.7
-        version: 0.1.7(svelte@5.57.3)
+        specifier: ^0.1.8
+        version: 0.1.8(svelte@5.57.3)
       astro:
         specifier: ^7.4.4
         version: 7.4.4(@types/node@24.19.2)(yaml@2.9.1)
@@ -37,8 +37,8 @@ importers:
         version: 5.57.3
     devDependencies:
       '@kupcad/ui':
-        specifier: ^0.1.7
-        version: 0.1.7(svelte@5.57.3)
+        specifier: ^0.1.8
+        version: 0.1.8(svelte@5.57.3)
       '@playwright/test':
         specifier: ^1.64.1
         version: 1.64.1
@@ -549,32 +549,32 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@kupcad/editor@0.1.7':
-    resolution: {integrity: sha512-zSgjkp/GAwoDUa6XGGB4MCqbSwiiBs1S25L0atykqgTLBOZzLZo0+b2KVgcoS+II3TE5VXy9rWb1zT2L21xaqg==}
+  '@kupcad/editor@0.1.8':
+    resolution: {integrity: sha512-657fNKhwN2/eddFqZw/0vsCsC1fVogwxU8B7yKbPSJ3CPQU4fHE3OI2ZB0cNkm2UjET1siERnAcMwNZJfWB4SQ==}
     peerDependencies:
       svelte: ^5.57.2
     peerDependenciesMeta:
       svelte:
         optional: true
 
-  '@kupcad/playground@0.1.7':
-    resolution: {integrity: sha512-uIuFmz/hA61YhVmnYFdaSWW1L8cO8+58LKsgtOuq/FOFwK+4ijxtNQUqpPr0arwKAt4H3ixAeHMCw30wYEFy8w==}
+  '@kupcad/playground@0.1.8':
+    resolution: {integrity: sha512-8q4NkD8moWbMgJHm8JvMxQRv63/DhoSeM/AaVWlJFoYoJKs1C9z2BaA6X/EddGXNufN7CxYoPfSjcxDSb5pi2g==}
     peerDependencies:
       svelte: ^5.57.2
 
-  '@kupcad/protocol@0.1.7':
-    resolution: {integrity: sha512-e2pb79X3zdZBbTm9lAyYsXLZzsUE6BDKrGGNhu1f7x/J6Nt7jRr3+JPRXHZO32DW9N5N3DK5SzD5XnPTmwLfsA==}
+  '@kupcad/protocol@0.1.8':
+    resolution: {integrity: sha512-w2+sTXntc9U5TfZH3vOA9OpfybkScrUXWAwXeDRwp4HA1AiyIBV5KjmDZrclQf8fOjj5vjE56FgNwzursZgorw==}
 
-  '@kupcad/ui@0.1.7':
-    resolution: {integrity: sha512-whzeImYTzAV+AP6Z/FF3+m/A3nDFRikrp7MuZStATWvs6LypFRR01ZQTXDEgQDnmCnTaJokLyz3WHO3QrA3Zpw==}
+  '@kupcad/ui@0.1.8':
+    resolution: {integrity: sha512-i6e3hZdWxf1I+LIiEtREgAKglLkRnkxHS270GOffh6VfsT5o8ajFnExW7y5QYIav+oG2LT1nvoyCRBMaKarRsQ==}
     peerDependencies:
       svelte: ^5.57.2
     peerDependenciesMeta:
       svelte:
         optional: true
 
-  '@kupcad/wasm@0.1.7':
-    resolution: {integrity: sha512-9Q0mk/0idgXnhFJgXHVXIzJyIij7eTljVeIkUqs3v9IXEQh/OcNDQ7FeSVvJtBSUrjdL+FOu5SH6DYyanv2ULQ==}
+  '@kupcad/wasm@0.1.8':
+    resolution: {integrity: sha512-TPcMHomICol4QW1vP/Oc2ddrZIQz3/919dzHsywSk3nR+YtMMIbu1wdbzrsaqRKN/kqZ6rYyuJSji/6Hv2YcTg==}
 
   '@lezer/common@1.5.5':
     resolution: {integrity: sha512-Pw7PVCndruF1pb3ebCxpSVpkMHSDjwRCLcTRw+RizUKco5QbWylwq2g4lnG/RYN7yTTQDXE9F77MwtkAyphrjg==}
@@ -1627,6 +1627,11 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
+  three-mesh-bvh@0.9.17:
+    resolution: {integrity: sha512-uU2DNnTHsMcrsAM1kiLXEeLx4JNsPLayLTPE5Rf7exbFRuQYEifS4DhGEA+lDiU8/7mID1PsE9sH8i6p5prZSg==}
+    peerDependencies:
+      three: '>= 0.159.0'
+
   three@0.186.1:
     resolution: {integrity: sha512-blFeqb49wRCSGUGj7gtpfnSGHy2lwDk94RhUmS1c/hTby70kvChbWpkJ4Pm1390LqzzvTmzgXKHPEafJwCb8jA==}
 
@@ -2372,7 +2377,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@kupcad/editor@0.1.7(svelte@5.57.3)':
+  '@kupcad/editor@0.1.8(svelte@5.57.3)':
     dependencies:
       '@codemirror/autocomplete': 6.20.4
       '@codemirror/commands': 6.11.1
@@ -2384,31 +2389,32 @@ snapshots:
       '@codemirror/search': 6.7.2
       '@codemirror/state': 6.7.6
       '@codemirror/view': 6.43.15
-      '@kupcad/protocol': 0.1.7
+      '@kupcad/protocol': 0.1.8
       '@lezer/highlight': 1.2.5
     optionalDependencies:
       svelte: 5.57.3
 
-  '@kupcad/playground@0.1.7(svelte@5.57.3)':
+  '@kupcad/playground@0.1.8(svelte@5.57.3)':
     dependencies:
-      '@kupcad/editor': 0.1.7(svelte@5.57.3)
-      '@kupcad/protocol': 0.1.7
-      '@kupcad/ui': 0.1.7(svelte@5.57.3)
-      '@kupcad/wasm': 0.1.7
+      '@kupcad/editor': 0.1.8(svelte@5.57.3)
+      '@kupcad/protocol': 0.1.8
+      '@kupcad/ui': 0.1.8(svelte@5.57.3)
+      '@kupcad/wasm': 0.1.8
       svelte: 5.57.3
 
-  '@kupcad/protocol@0.1.7': {}
+  '@kupcad/protocol@0.1.8': {}
 
-  '@kupcad/ui@0.1.7(svelte@5.57.3)':
+  '@kupcad/ui@0.1.8(svelte@5.57.3)':
     dependencies:
-      '@kupcad/protocol': 0.1.7
+      '@kupcad/protocol': 0.1.8
       three: 0.186.1
+      three-mesh-bvh: 0.9.17(three@0.186.1)
     optionalDependencies:
       svelte: 5.57.3
 
-  '@kupcad/wasm@0.1.7':
+  '@kupcad/wasm@0.1.8':
     dependencies:
-      '@kupcad/protocol': 0.1.7
+      '@kupcad/protocol': 0.1.8
 
   '@lezer/common@1.5.5': {}
 
@@ -3670,6 +3676,10 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.6.1
+
+  three-mesh-bvh@0.9.17(three@0.186.1):
+    dependencies:
+      three: 0.186.1
 
   three@0.186.1: {}
 
