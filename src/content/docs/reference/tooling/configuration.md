@@ -68,13 +68,28 @@ the errors it rescues uses the reserve up and then stops.
 
 | Command | Memory limit | Instruction limit |
 |---|---|---|
-| `kupcad build`, `kupcad run` | `vm_memory_limit`, or none | none |
-| `kupcad watch`, the language server | `vm_memory_limit`, or 1 GiB | 100 million |
+| `kupcad build`, `kupcad run` | `--memory-limit`, `KUPCAD_MEMORY_LIMIT`, `vm_memory_limit`, or none | none |
+| `kupcad watch`, the language server | `--memory-limit`, `KUPCAD_MEMORY_LIMIT`, `vm_memory_limit`, or 1 GiB | 100 million |
+
+The limit comes from the first of these that is set: the `--memory-limit` option of `build`,
+`run`, `watch` and `lsp`; the `KUPCAD_MEMORY_LIMIT` environment variable; the project's
+`vm_memory_limit`. The option and the variable take a whole number with a unit, `512MB` or
+`8GB` (`KB` and `B` too, 1024-based), or bytes alone. They are for whoever runs a project they
+didn't write: the desktop app and the VS Code extension pass their memory limit setting (8 GB
+by default) as the option, for the preview and an export alike, and a CI job sets the
+variable once for every command. A project's `vm_memory_limit` can't lift them, as a
+parameter's default can't override `-p`.
+
+```sh
+kupcad build part.kup -o part.stl --memory-limit 2GB
+KUPCAD_MEMORY_LIMIT=2GB kupcad run check.kup
+```
 
 ## Environment variables
 
 | Variable | Description |
 |---|---|
+| `KUPCAD_MEMORY_LIMIT` | The most script memory a run may hold, as `512MB` or `8GB`, when `--memory-limit` isn't given; it wins over the project's `vm_memory_limit`. Empty counts as unset. See [Memory limits](#memory-limits). |
 | `KUPCAD_HOME` | The package store, an absolute path. Default `~/.kupcad`; empty counts as unset, and a relative path is an error. See [Packages](/reference/inputs/packages/#the-store). |
 | `KUPCAD_VIEWPORT_PORT` | The port the language server's viewport socket prefers. Default `9001`; when it is taken, a free port is used and reported to the editor. |
 | `KUPCAD_CRASH_DIR` | A directory to write crash reports to. Unset, none are written. See [Crash reports](/reference/tooling/cli/#crash-reports). |

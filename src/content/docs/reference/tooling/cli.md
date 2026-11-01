@@ -65,6 +65,7 @@ file next to the script, named after it (`-f` picks another format).
 | `--split <dir>` | Write each part to its own file in `<dir>`, as made and not placed, named after it; STL unless `-f` names another format. |
 | `-p`, `--param <name=value>` | A parameter's value, read as its kind (an Array's or a Map's as JSON). Repeatable. |
 | `-P`, `--params <file.json>` | Parameter values from a JSON object. Repeatable. |
+| `--memory-limit <size>` | The most script memory the run may hold, as `512MB` or `8GB`, in place of `KUPCAD_MEMORY_LIMIT` and the project's `vm_memory_limit`. See [Memory limits](/reference/tooling/configuration/#memory-limits). |
 
 ```sh
 kupcad build part.kup -o part.stl -o part.glb          # one run, two files
@@ -95,7 +96,7 @@ imports can write over the project's scripts or settings.
 ## kupcad run
 
 ```sh
-kupcad run <file.kup> [-p name=value]... [-P file.json]...
+kupcad run <file.kup> [-p name=value]... [-P file.json]... [--memory-limit <size>]
 ```
 
 Runs a script and writes no model. What it prints and the errors it raises are the result, for a
@@ -103,7 +104,7 @@ script that computes or checks rather than models. A model that is one Solid is 
 geometry kernel, as the editor's preview evaluates it, so a kernel error in it (a `polyhedron`
 that isn't closed) fails the run as it would a build. An Array or an Assembly of Solids is built
 but not evaluated, so a kernel error in one waits for `kupcad build`. The script can still write
-files itself with `export_*`. Takes `-p` and `-P` as `build` does.
+files itself with `export_*`. Takes `-p`, `-P` and `--memory-limit` as `build` does.
 
 ## kupcad watch
 
@@ -118,8 +119,9 @@ is watched until it appears. It takes `build`'s options. With an export option (
 reloads them; without one it writes nothing. A failed build is reported as `build` reports it, and
 watching goes on until the fix.
 
-A watched run stops after 100 million instructions and, unless the project sets
-`vm_memory_limit`, at 1 GiB of script memory, so a script that loops forever can't hang it.
+A watched run stops after 100 million instructions and, unless `--memory-limit`,
+`KUPCAD_MEMORY_LIMIT` or the project's `vm_memory_limit` says otherwise, at 1 GiB of script
+memory, so a script that loops forever can't hang it.
 
 ## kupcad check
 
@@ -178,13 +180,14 @@ See [Packages](/reference/inputs/packages/).
 ## kupcad lsp
 
 ```sh
-kupcad lsp [--stdio] [--viewport-origin <origin>]
+kupcad lsp [--stdio] [--viewport-origin <origin>] [--memory-limit <size>]
 ```
 
 Starts the language server on stdin and stdout, the only transport (`--stdio`, which language
 clients pass, is accepted). Editors start it themselves. `--viewport-origin` lets the page at
 `<origin>` (`scheme://host[:port]`, such as `tauri://localhost`) read the viewport socket,
-besides VS Code's webviews. See [Language server](/reference/tooling/language-server/).
+besides VS Code's webviews. `--memory-limit` holds every preview to that much script memory, as
+`build` takes it. See [Language server](/reference/tooling/language-server/).
 
 ## kupcad version
 

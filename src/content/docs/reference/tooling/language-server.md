@@ -37,8 +37,10 @@ Hovers and the preview read a run of the document. Every run:
 - reads files through a read-only view: open documents as the editor has them (unsaved edits
   included), then the workspace on disk. Writes (`export_*`) are discarded, so opening a script
   can't change the disk;
-- stops after 100 million instructions and at 1 GiB of script memory, unless the project's
-  `vm_memory_limit` says otherwise, so a script that loops forever can't hang the editor;
+- stops after 100 million instructions and at 1 GiB of script memory, unless `--memory-limit`,
+  `KUPCAD_MEMORY_LIMIT` or the project's `vm_memory_limit` says otherwise (see
+  [Memory limits](/reference/tooling/configuration/#memory-limits)), so a script that loops
+  forever can't hang the editor;
 - sees [`CAD.preview?`](/reference/geometry/engine-settings/) as `true`, so a script can leave out
   detail only an export needs;
 - treats `debugger()` as a no-op.
