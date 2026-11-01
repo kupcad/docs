@@ -11,7 +11,7 @@ and the value of the script's last statement is its model.
 ## Source files
 
 Source files are UTF-8. A file that isn't is reported as a syntax error
-(`invalid-utf8`) at its first bad byte.
+(`invalid-utf8`) at its first bad byte. A byte order mark at the start is skipped.
 
 ## Comments
 

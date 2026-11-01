@@ -8,8 +8,8 @@ sidebar:
 The measuring methods compute the shape first (see
 [When geometry is computed](/reference/geometry/shapes/#when-geometry-is-computed)) and answer
 in millimetres: mm² for areas, mm³ for volumes, grams for masses. The B-Rep engine can't measure
-yet: every method here except a Path's is a `NotImplementedError` for a B-Rep part (see
-[Engine settings](/reference/geometry/engine-settings/#the-b-rep-engine-today)).
+yet: every method here except a Path's, and a Solid's `empty?`, is a `NotImplementedError` for a
+B-Rep part (see [Engine settings](/reference/geometry/engine-settings/#the-b-rep-engine-today)).
 
 | Method | Solid | Sketch | Path | Assembly | Returns |
 |---|:-:|:-:|:-:|:-:|---|
@@ -259,7 +259,7 @@ puts hits.map { |h| -h["crossing"] * h["distance"] }.sum    # 20: the thickness 
 shape.empty?
 ```
 
-Whether a Solid has no volume, or a Sketch no area. See
-[Empty shapes](/reference/geometry/shapes/#empty-shapes).
+Whether a Solid holds nothing (its mesh has no vertices, so it answers on the B-Rep engine
+too), or a Sketch has no area. See [Empty shapes](/reference/geometry/shapes/#empty-shapes).
 
 **Returns:** Boolean.
