@@ -104,9 +104,11 @@ Blocks and lambdas are lenient about their arguments, where methods are strict: 
 argument is `nil` and an extra one is dropped.
 
 Block parameters don't unpack an Array argument by themselves. `[[1, 2]].map { |a, b| ... }`
-binds `a` to `[1, 2]` and `b` to `nil`; write `|(a, b)|` to destructure. A Map's iterators
-pass the key and the value as two arguments, so `{ x: 1 }.each { |k, v| ... }` needs no
-brackets.
+binds `a` to `[1, 2]` and `b` to `nil`; write `|(a, b)|` to destructure. The names in brackets
+nest, `|(a, (b, c))|`, and one of them may be `*rest`, which takes what the others leave as an
+Array, as `a, *rest = value` does. A default or a keyword there is the compile error
+`invalid-parameter`. A Map's iterators pass the key and the value as two arguments, so
+`{ x: 1 }.each { |k, v| ... }` needs no brackets.
 
 ```kupcad
 pair = ->(a, b) { [a, b].inspect }
@@ -114,6 +116,7 @@ puts pair.call(1)              # [1, nil]
 puts pair.call(1, 2, 3)        # [1, 2]
 puts [[1, 2]].map { |a, b| b.inspect }.inspect   # ["nil"]
 puts [[1, 2]].map { |(a, b)| a + b }.inspect     # [3]
+puts [[1, 2, 3]].map { |(a, *rest)| rest }.inspect # [[2, 3]]
 puts({ x: 1 }.map { |k, v| "#{k}=#{v}" }.inspect) # ["x=1"]
 ```
 

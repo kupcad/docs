@@ -187,7 +187,7 @@ for the code. The editor gets it as the diagnostic's code, `kupcad check --forma
 | `file-import-names` | An import of a mesh or a font in braces, or of any file naming more than one variable without braces. |
 | `misplaced-do` | A `do` after a `while`, `until` or `for` header, which ends at the line break. |
 | `spaced-parentheses` | Several arguments in parentheses with a space before them (`f (1, 2)`). |
-| `invalid-parameter` | A parameter that can't be one: an `@`, `@@` or `$` name, a second splat, a block for a block parameter. |
+| `invalid-parameter` | A parameter that can't be one: an `@`, `@@` or `$` name, a second `*rest`, `**opts` or `&blk` in one list, a default or keyword in a block's `(a, b)`, a block for a block parameter. |
 | `unexpected-block` | A call given two blocks (a `&block` argument and a `do` or `{ }` block), or `yield` given one. |
 | `misplaced-splat` | A `*` or `**` outside an array, a map or a call's arguments. |
 | `outside-loop` | A `break` or `next` outside a loop or block, or a `break` in a lambda. |

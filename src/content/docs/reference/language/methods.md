@@ -65,8 +65,9 @@ Parameters come in this order:
 A default is evaluated when the call needs it and may use the parameters before it. `nil`
 given for an optional parameter, positional or keyword, takes its default, so a value passed on
 may be absent. A Map passed as a positional argument stays a positional argument; only
-`key: value` arguments reach keyword parameters. A parameter can't be an `@`, `@@` or `$` name
-(the compile error `invalid-parameter`), and a method takes at most 255 parameters.
+`key: value` arguments reach keyword parameters. A list takes one each of `*rest`, `**opts` and
+`&blk`, and a parameter can't be an `@`, `@@` or `$` name: either is the compile error
+`invalid-parameter`. A method takes at most 255 parameters.
 
 ```kupcad
 def frame(w, h = w / 2, *extra, depth: 3, label:, **opts, &blk)

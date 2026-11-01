@@ -17,8 +17,9 @@ not missing pieces.
   lambda, never the method around it; `break` is how a block stops an iteration with a result.
   Both are lenient about arguments: missing ones are `nil` and extras are dropped. See
   [break, next and return](/reference/language/blocks-and-lambdas/#break-next-and-return).
-- **Block parameters don't unpack an Array by themselves**: write `|(a, b)|`. Map iterators
-  still pass the key and value separately. See
+- **Block parameters don't unpack an Array by themselves**: write `|(a, b)|`, which nests
+  and takes one `*rest` (`|(first, *rest)|`). Map iterators still pass the key and value
+  separately. See
   [Arguments](/reference/language/blocks-and-lambdas/#arguments).
 - **No `&:name`** shorthand: write `{ |v| v.name }`.
 - **No Enumerator**: `each_with_index`, `each_cons` and `each_slice` without a block give an
