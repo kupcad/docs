@@ -1,0 +1,116 @@
+# @title Cable clip
+# @description A clip that a cable snaps into, screwed to a wall or a desk: its side drawn as one sketch, with a filleted neck, a lead-in at the mouth and countersunk screws
+
+cable_d = param(
+  :cable_d,
+  default: 8,
+  validate: { min: 3, max: 14 },
+  step: 0.5,
+  unit: "mm",
+  group: "Cable",
+  title: "Cable diameter",
+)
+clearance = param(
+  :clearance,
+  default: 0.5,
+  validate: { min: 0.2, max: 1 },
+  step: 0.1,
+  unit: "mm",
+  group: "Cable",
+  title: "Clearance",
+  description: "Round the cable, so it can slide in the clip",
+)
+gap = param(
+  :gap,
+  default: 5,
+  validate: { min: 2, max: 12 },
+  step: 0.5,
+  unit: "mm",
+  group: "Cable",
+  title: "Opening",
+  description: "Narrower than the cable, so it snaps in and stays",
+)
+wall = param(
+  :wall,
+  default: 3,
+  validate: { min: 2, max: 4 },
+  step: 0.5,
+  unit: "mm",
+  group: "Clip",
+  title: "Wall",
+)
+width = param(
+  :width,
+  default: 12,
+  validate: { min: 10, max: 30 },
+  step: 1,
+  unit: "mm",
+  group: "Clip",
+  title: "Width",
+)
+screw = param(
+  :screw,
+  default: 3,
+  validate: { min: 2, max: 4 },
+  step: 0.5,
+  unit: "mm",
+  group: "Clip",
+  title: "Screw size",
+  description: "A countersunk wood or machine screw: 3 for M3",
+)
+
+assert(gap < cable_d) { "an opening of #{gap} mm lets a #{cable_d} mm cable fall out" }
+
+# Round enough to grip a cable evenly; coarser while the editor previews
+CAD.config(resolution: { segments: CAD.preview? ? 24 : 80 })
+
+# The cable lies on the foot: the bore's lowest point is the foot's top, and the ring's outside
+# just touches the bed
+bore_r = (cable_d + clearance) / 2
+ring_r = bore_r + wall
+center = wall + bore_r
+top = center + ring_r
+fillet = wall / 2
+
+# The screws sit far enough out that their heads clear the fillet, and the foot a little past
+# them
+shank = screw + 0.4
+head = 2 * screw
+sink = (head - shank) / 2
+hole_x = ring_r + fillet + head / 2 + 1
+foot = 2 * (hole_x + head / 2 + 2)
+
+# The clip's side, drawn flat: x across, y up. The foot and the ring, with the corners where
+# they meet rounded (grown and shrunk back by the fillet, which fills inside corners only);
+# then the bore, the mouth up through the top, and a 45° lead-in either side of it so the
+# cable is pushed in rather than threaded
+body = (square([foot, wall]).translate(x: -foot / 2) + circle(r: ring_r).translate(0, center))
+  .offset(fillet)
+  .offset(-fillet)
+bore = circle(r: bore_r).translate(0, center)
+mouth = square([gap, ring_r + 2]).translate(-gap / 2, center)
+lead = wall / 2
+lead_in = polygon([
+  [-gap / 2, top - lead - 1],
+  [gap / 2, top - lead - 1],
+  [gap / 2 + lead + 2, top + 1],
+  [-gap / 2 - lead - 2, top + 1],
+])
+side = body - bore - mouth - lead_in
+
+# Extruded across the width and stood up, then trimmed by its own plan, a rounded rectangle, so
+# the foot has round corners
+plan = square([foot, width], center: true, round_r: 3).extrude(top + 2).translate(z: -1)
+clip = side.extrude(width, center: true).rotate(90, 0, 0) & plan
+
+# Countersunk holes: the shank through the foot, and a 90° cone for the head, carried on above
+# the foot so it cuts cleanly through the top face
+countersunk = cylinder(d: shank, h: wall + 2).translate(z: -1) +
+  cylinder(d1: shank, d2: head + 2, h: sink + 1).translate(z: wall - sink)
+holes = [-hole_x, hole_x].map { |x| countersunk.translate(x: x) }
+clip = clip.difference(holes)
+
+# The cable, shown for reference only: a ghost isn't part of the model
+ghost { cylinder(d: cable_d, h: width + 30, center: true).rotate(90, 0, 0).translate(z: center) }
+
+clip.named("cable clip").material(color: "#2E86AB")
