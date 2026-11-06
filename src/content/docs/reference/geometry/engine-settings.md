@@ -150,22 +150,30 @@ fine = sphere(10)          # coarse is still drawn as it was made
 `engine: :brep`, and every STEP export, runs on Locus, KupCAD's own exact B-Rep engine, which is
 still being written. Today it builds:
 
-- cubes, cylinders (with `r1` equal to `r2`) and polyhedra;
-- the sketches `square`, `circle`, `polygon` and `text`;
+- cubes, cylinders, cones, spheres and polyhedra, exact (a cylinder's side is two half-faces of
+  one cylindrical surface, a sphere two hemispheres);
+- the sketches `square`, `circle` (exact) and `polygon`, and `text` when it is one outline with
+  holes (a word of several letters waits for the 2D kernel);
+- their extrusions (`extrude(h)`, so `cube(round_r:)` and `cube(chamfer:)` too; a twist or a
+  taper is refused) and revolutions (`revolve` with `segments:`; a profile across the axis is
+  refused, where the mesh engine clips it);
+- every move, turn, uniform scale and mirror (`translate`, `rotate`, `scale`, `mirror`,
+  `transform`; a non-uniform scale of a curved part is refused, as its surfaces have no exact
+  form);
 - the convex hulls of flat-faced solids (`hull`, `batch_hull`);
-- STEP files of them.
+- the exact `volume`, `surface_area`, `genus` and `bbox` of all of them (so `align`, `center`
+  and `resize` too), and a sketch's `area` and `bbox`;
+- STEP files of them, every surface kind as its own STEP entity.
 
 Everything else is a `NotImplementedError` that names what is missing and suggests
 `engine: :manifold`, rather than a stand-in answer:
 
-- shapes and operations: spheres, cones; `translate`, `rotate`, `scale`, `mirror`,
-  `transform`; booleans on solids and on sketches; hulls of curved solids and of sketches;
-  `extrude` (and so `cube(round_r:)` and `cube(chamfer:)`), `revolve`, `loft`, `helix`;
-  `offset` and `minkowski`, `trim_by_plane` and `split_by_plane`, `slice`, `project`,
-  `decompose`; empty shapes (`union([])`);
-- measurements: `volume`, `surface_area`, `genus`, `empty?`, `bbox` and what uses it (`align`,
-  `center`, `resize`), `contains?`, `ray_cast`, `min_gap`, and a sketch's outlines (what a
-  2D export is made of);
+- shapes and operations: `extrude(twist:)`, `extrude(scale:)`, `helix`, `loft`; booleans on
+  solids and on sketches; hulls of curved solids and of sketches; `offset` and `minkowski`,
+  `trim_by_plane` and `split_by_plane`, `slice`, `project`, `decompose`; empty shapes
+  (`union([])`); a `revolve` without `segments:`, which measures the profile's outline first;
+- measurements: `contains?`, `ray_cast`, `min_gap`, `center_of_mass`, and a sketch's outlines
+  (what a 2D export is made of);
 - meshes: STL and glTF export, and the viewer.
 
 Materials are the exception: a B-Rep model is built without them, with one warning. Each of

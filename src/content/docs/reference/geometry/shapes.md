@@ -132,8 +132,9 @@ ends with the shape the ghost was called on, which is then its model.
 Two geometry engines build shapes:
 
 - **`:manifold`**, the default: fast mesh booleans, for previews and mesh formats.
-- **`:brep`**: exact boundary representation, for STEP files. It is still being written and
-  supports only some shapes and operations so far.
+- **`:brep`**: exact boundary representation, for STEP files. It is still being written: the
+  primitives, extrusions, revolutions, transforms and measures are exact already; booleans and
+  the rest are not there yet ([what it builds today](/reference/geometry/engine-settings/)).
 
 A script chooses with `CAD.config(engine: :brep)`, or for one part with
 `CAD.with_config(engine: :brep) do ... end`. Geometry keeps the engine and settings it was made
