@@ -17,10 +17,10 @@ kupcad lsp --stdio
 | Feature | What it gives |
 |---|---|
 | Diagnostics | Syntax errors, compile errors and [lint findings](/reference/tooling/lint-rules/), after every keystroke, with their codes; and the warnings of the document's last preview run (a material the B-Rep engine can't keep, a mended mesh), from the call to the end of its line. |
-| Hover | What running the document gives a variable: a solid's size, volume, surface area, and vertex and face counts; a sketch's size and area. |
+| Hover | What running the document gives a variable: a solid's size, volume, surface area, and vertex and face counts; a sketch's size and area. Over a call, what the run kept of it: the variable it is assigned to whole, or the model of the last statement. A call is never made again for a hover. |
 | Go to definition | A variable to its first assignment (or the `def`, lambda or block it is a parameter of), a method call to its `def` (in the call's class first), a class to its `class`, an imported name to its `import`, an import's path to its file. |
 | Inlay hints | The name of each positional argument of a built-in (`cube(5)` shows `size:`), and the class a variable gets from a built-in's result (`s = part.slice(1)` shows `: Sketch`). A method's hints show where the script shows that its receiver is a solid or a sketch. |
-| Completion | After a dot, the methods of solids, sketches and assemblies; elsewhere, the built-in classes and global functions. |
+| Completion | After a dot, the methods of solids, sketches and assemblies; elsewhere, the built-in classes and global functions. None inside a string or a comment, or after a number's point (`2.`). |
 | Document symbols | The document's methods, classes, modules and variables, for an outline. |
 | Code actions | Each finding's fix as a quick fix, the safe ones preferred, and "Disable `<rule>` for this line" for every lint finding. |
 | Formatting | The whole document, as [`kupcad fmt`](/reference/tooling/formatter/) formats it. |
@@ -40,14 +40,17 @@ Hovers and the preview read a run of the document. Every run:
 - stops after 100 million instructions and at 1 GiB of script memory, unless `--memory-limit`,
   `KUPCAD_MEMORY_LIMIT` or the project's `vm_memory_limit` says otherwise (see
   [Memory limits](/reference/tooling/configuration/#memory-limits)), so a script that loops
-  forever can't hang the editor;
+  forever can't hang the editor. A `KUPCAD_MEMORY_LIMIT` that is no size keeps the 1 GiB cap,
+  and the editor shows a message saying why;
 - sees [`CAD.preview?`](/reference/geometry/engine-settings/) as `true`, so a script can leave out
   detail only an export needs;
 - treats `debugger()` as a no-op.
 
-A hover runs the document once, and every hover reads that run until the document is edited.
-The preview runs once typing pauses (for 200 ms). An edit, or a request such as a hover, cancels
-a preview run that is still going; it runs again once the editor is quiet.
+Hovers read the preview's run of the document, or run it once as the preview does, and every
+hover reads that run until something is edited. The preview runs once typing pauses (for
+200 ms). An edit, or a request such as a hover, cancels a preview run that is still going; it
+runs again once the editor is quiet. An edit, or the editor's `$/cancelRequest` of a hover,
+stops a hover's run the same way.
 
 ## The preview
 
@@ -65,7 +68,8 @@ when a module it imports is edited, so editing a library shows the model that us
 ### Commands
 
 Front ends send these with `workspace/executeCommand`. Arguments of another shape are refused
-with `InvalidParams`.
+with `InvalidParams`, as is any request whose params the server can't read, answered with the
+request's id.
 
 | Command | Argument | Does |
 |---|---|---|
@@ -82,12 +86,15 @@ with `InvalidParams`.
   asks the editor to watch exactly those, and saving, creating or deleting one runs the documents
   that read it again. An editor that can't watch files by relative path updates on the next edit
   instead.
+- **Imports not there yet** (a module not written yet, a package not installed) are watched too:
+  creating the file, or `kupcad pkg install`, runs the documents that import it again.
 - **Closing a document** clears its diagnostics and drops it from the session.
 
 ## The viewport socket
 
 The viewport connects to the server over a WebSocket on `127.0.0.1`, at `KUPCAD_VIEWPORT_PORT`
-(default `9001`), or a free port when that one is taken. The server tells the editor the port it
+(default `9001`; a value that is no port is warned of in the log, and the default taken), or a
+free port when that one is taken. The server tells the editor the port it
 bound, with the protocol version of what it sends, in a `kupcad/viewportReady` notification:
 
 ```json
