@@ -62,11 +62,11 @@ file next to the script, named after it (`-f` picks another format).
 | `--stroke-width <mm>` | An SVG's outline width (default 0.1), such as a laser's hairline. |
 | `--mtl` | Also write an OBJ's materials as a library beside it (`<output>.mtl`; `materials.mtl` with `--split`). |
 | `--bom <file.json>` | Also write the model's parts list: each part, its count, volume, size and mass. |
-| `--split <dir>` | Write each part to its own file in `<dir>`, as made and not placed, named after it; STL unless `-f` names another format. |
+| `--split <dir>` | Write each part to its own file in `<dir>`, as made and not placed, named after it; STL unless `-f` names another format. See [Split files](#split-files). |
 | `-p`, `--param <name=value>` | A parameter's value, read as its kind (an Array's or a Map's as JSON). Repeatable. |
 | `-P`, `--params <file.json>` | Parameter values from a JSON object. Repeatable. |
 | `--memory-limit <size>` | The most script memory the run may hold, as `512MB` or `8GB`, in place of `KUPCAD_MEMORY_LIMIT` and the project's `vm_memory_limit`. See [Memory limits](/reference/tooling/configuration/#memory-limits). |
-| `--errors <text\|json>` | How a failure is told: in words (`text`, the default), or with one line of JSON last on stderr for a program that runs the build: `{"error": {"kind", "message", "file", "line", "column"}}`, the kind one of `settings`, `read`, `syntax`, `compile`, `runtime`, `export` and `write`. |
+| `--errors <text\|json>` | How a failure is told: in words (`text`, the default), or with one line of JSON last on stderr for a program that runs the build: `{"error": {"kind", "message", "file", "line", "column"}}`, the kind one of `settings`, `read` (a script or its folder that can't be opened too), `syntax`, `compile`, `runtime`, `export` and `write`. Its strings are UTF-8, a byte that isn't (a DXF layer named in its codepage) U+FFFD. |
 
 The folders an output, the `--mtl` library, the `--bom` list and `--split` go in are made when
 they aren't there, so `-o build/part.stl` needs no `build/` first.
@@ -88,11 +88,21 @@ on [Export formats](/reference/geometry/export/). The `--bom` file is
 for what a part has none of. Parameter values are described on
 [Parameters](/reference/inputs/parameters/#giving-values).
 
+### Split files
+
+`--split` names each file after its part, with the characters a file name can't hold as `_`
+(`a/b` is `a_b.stl`), `part_2` for a part without a name, and a number after a name used twice
+(`M3 bolt_2.stl`). A name that is a Windows device name gets a `_` (`CON_.stl`), and a long one
+is cut to 200 bytes, between characters. All the names are settled before any file is written.
+
 ### Files a script can read and write
 
-A build reads and writes files from its script's root: the working directory when the script is
-under it; otherwise the nearest folder above the script that holds a `kupcad.json` or
-`.kupcad.json`; otherwise the script's own folder. Imports and `import_*` calls can't reach
+A build reads and writes files from its script's root, where its packages are installed too. For
+a script under the working directory, that is the nearest folder from the script's own up to
+the working directory that holds a `kupcad.json`, else the working directory, so
+`kupcad run proj/main.kup` reads `proj`'s packages as `kupcad run main.kup` does inside `proj`.
+For a script outside it, the nearest folder above the script that holds a `kupcad.json` or
+`.kupcad.json`, else the script's own folder. Imports and `import_*` calls can't reach
 outside it, through `..` or through a symbolic link. A script's `export_*` methods write only
 files named for their format (`export_stl` a `.stl`), so neither a script nor a package it
 imports can write over the project's scripts or settings.
@@ -117,11 +127,15 @@ kupcad watch <file.kup> [options]
 ```
 
 Builds a script, then rebuilds it whenever it, a module it imports or a file it reads as data
-changes; a file restored to an older version counts as a change, and a data file that was missing
-is watched until it appears. It takes `build`'s options. With an export option (`-o`, `-f`,
-`--split`, `--bom`, ...), each build that succeeds writes its files, for a slicer or viewer that
-reloads them; without one it writes nothing. A failed build is reported as `build` reports it, and
-watching goes on until the fix.
+changes; a file restored to an older version counts as a change. A data file that was missing,
+and a module an import couldn't read (a file not written yet, a package not installed), are
+watched until they appear: creating one, or `kupcad pkg install`, rebuilds. It takes `build`'s
+options, `--errors json` among them. With an export option (`-o`, `-f`, `--split`, `--bom`,
+...), each build that succeeds runs the script again and writes its model, even when only an
+import changed, for a slicer or viewer that reloads the files; without one it writes nothing. A
+failed build is reported as `build` reports it, syntax and compile errors with their file, line
+and column, and with `--errors json` the JSON line after each failure; watching goes on until
+the fix.
 
 A watched run stops after 100 million instructions and, unless `--memory-limit`,
 `KUPCAD_MEMORY_LIMIT` or the project's `vm_memory_limit` says otherwise, at 1 GiB of script
@@ -140,7 +154,7 @@ Reports syntax errors, compile errors and lint findings, without running the scr
 | `--fix` | Apply the fixes that keep the model the same, rewrite the files, then report what is left. |
 | `--format <kind>` | `text` (the default), `json`, or `sarif` for code scanning. JSON and SARIF write one document to stdout. |
 | `--max-warnings <n>` | Fail when there are more than `n` warnings; `0` fails on any. |
-| `--config <file>` | Read lint settings from `<file>` instead of `.kupcad.json`. |
+| `--config <file>` | Read lint settings from `<file>`, for every file, instead of each file's nearest `.kupcad.json`. |
 
 Errors fail the check; warnings and infos alone don't, unless `--max-warnings` says so. Given a
 directory, `check` takes every `.kup` file under it except in hidden directories (`.git`,
@@ -216,11 +230,12 @@ kupcad dev bench <file> [--repeat <n>] [--no-profile] [--no-eval] [--json]
 kupcad dev crash panic|abort
 ```
 
-Tools for working on KupCAD itself.
+Tools for working on KupCAD itself. The dumps and `bench` take one file; anything more is an
+error.
 
 | Subcommand | Does |
 |---|---|
-| `ast-dump` | Writes the syntax tree (`.dump`). |
+| `ast-dump` | Writes the syntax tree (`part.kup.dump`): a node per line, indented two spaces per level, with each name's kind (local, upvalue, global, instance variable) and the parameters each def, lambda and block binds. |
 | `disasm` | Writes the compiled bytecode (`.disasm`). |
 | `lex-dump` | Writes the token stream (`.lex`). |
 | `bench` | Times parse, compile, the VM run and the evaluation of the geometry it leaves (a Solid, a Sketch, an Assembly's parts, or an Array of them), each from cold, and prints the median of `--repeat` runs (5 by default). A further run with the profiler gives a table per function (`--no-profile` skips it); `--no-eval` skips the geometry; `--json` prints the medians as JSON. The script's own output isn't shown. |

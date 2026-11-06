@@ -92,13 +92,17 @@ puts in force with `CAD.config` end with it (see
 | Path | Names |
 |---|---|
 | `"./hardware.kup"`, `"../lib/units.kup"`, `"./logo.stl"` | A file relative to the file that imports it |
-| `"hardware"` | The package with that alias in `kupcad.json`: its `main.kup` |
+| `"hardware"` | The package with that alias in `kupcad.json`, installed in the project's `.kupcad/pkg`: its `main.kup` |
 | `"hardware/screws.kup"` | Another file of that package |
 
 A relative path is resolved from the importing file, so `kupcad build parts/main.kup` and the
-files it imports agree on where `./` is. Imports stay inside the project, the directory
-`kupcad` runs in or the folder the editor opened: a path that climbs out of it is refused with
-an `ImportError`. A path in single quotes is read the same as in double quotes. See
+files it imports agree on where `./` is. Imports stay inside the project: a path that climbs out
+of it is refused with an `ImportError`. The project is the folder the editor opened or, on the
+command line, the [script's root](/reference/tooling/cli/#files-a-script-can-read-and-write):
+the nearest folder holding a `kupcad.json`, so `kupcad run proj/main.kup` reads `proj`'s
+packages as `kupcad run main.kup` does inside `proj`. A sub-project with a `kupcad.json` of its
+own is a project of its own, so its `../` imports of files beside it are refused. A path in
+single quotes is read the same as in double quotes. See
 [Packages](/reference/inputs/packages/) for installing packages.
 
 ## File imports

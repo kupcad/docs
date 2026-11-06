@@ -20,12 +20,15 @@ file.
 ## Where it is found
 
 The `.kupcad.json` that applies to a script is the one in the script's folder or the nearest
-folder above it, as git finds a repository, so a project's settings hold in every folder of it
-whatever directory a command starts in. The editor looks the same way from each document's
-folder, so it lints and formats as `kupcad check` and `kupcad fmt` do.
+folder above it, as git finds a repository, so a project's settings hold in every folder of it,
+and a subfolder's own hold for the files in it, whatever directory a command starts in:
+`kupcad check sub/a.kup` reads `sub/.kupcad.json` when there is one. `kupcad build`, `run`,
+`watch`, `check` and `fmt` each read the settings of each file they are given. The editor looks
+the same way from each document's folder, so it lints and formats as `kupcad check` and
+`kupcad fmt` do. `kupcad fmt --stdin` reads the current folder's.
 
 `kupcad check --config <file>` and `kupcad fmt --config <file>` read the settings from `<file>`
-instead.
+instead, for every file. Settings that can't be read fail the files they hold for.
 
 ## Settings
 
