@@ -228,10 +228,12 @@ kupcad dev disasm <file>
 kupcad dev lex-dump <file>
 kupcad dev bench <file> [--repeat <n>] [--no-profile] [--no-eval] [--json]
 kupcad dev crash panic|abort
+kupcad dev brep-readiness [path...]
+kupcad dev brep-trace <file>
 ```
 
-Tools for working on KupCAD itself. The dumps and `bench` take one file; anything more is an
-error.
+Tools for working on KupCAD itself. The dumps, `bench` and `brep-trace` take one file;
+anything more is an error.
 
 | Subcommand | Does |
 |---|---|
@@ -240,6 +242,8 @@ error.
 | `lex-dump` | Writes the token stream (`.lex`). |
 | `bench` | Times parse, compile, the VM run and the evaluation of the geometry it leaves (a Solid, a Sketch, an Assembly's parts, or an Array of them), each from cold, and prints the median of `--repeat` runs (5 by default). A further run with the profiler gives a table per function (`--no-profile` skips it); `--no-eval` skips the geometry; `--json` prints the medians as JSON. The script's own output isn't shown. |
 | `crash` | Ends the process with a panic or an abort, to check that crash reports are written. |
+| `brep-readiness` | Builds each script given (a folder: its `.kup` files, in name order; `examples/` without a path) on the B-Rep engine, as a STEP export does, and prints a line per script: `builds`, or the error naming what the engine still lacks; then how many build. The report succeeds whatever the scripts lack; a path that can't be read fails it. |
+| `brep-trace` | Runs the script on the B-Rep engine with the kernel's trace on and writes the body after each phase of each operation into `<file>.trace/` (`001-transform-mapped.json`, `002-transform-checked.json`, …), each a body JSON file. The script's failure, if any, is reported after the phases it left, and fails the command. |
 
 ## Crash reports
 
