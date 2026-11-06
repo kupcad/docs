@@ -218,7 +218,8 @@ the JSON has them. A parameter the host gave no value is missing from it. Read p
 
 ## Script metadata
 
-Comments at the top of a script, each a tag and its text, describe the script to a host:
+Comments above a script's first statement, each a tag and its text, describe the script to a
+host:
 
 ```kupcad
 # @title Heavy duty bracket
@@ -229,7 +230,17 @@ width = param(:width, default: 20.0, validate: { min: 10.0, max: 100.0 })
 cube(x: width, y: 50, z: 5)
 ```
 
-`@title`, `@description` and `@author` are read, each its own line's text.
+`@title`, `@description` and `@author` are read, the first of each. A tag's text is the rest of
+its line; a comment line indented two spaces or more past its `#` continues the one above,
+joined by a newline:
+
+```kupcad frame="none"
+# @title Mounting plate
+#   for M3 bolts
+```
+
+is the title `"Mounting plate\nfor M3 bolts"`. A tagged comment below the first statement, or
+anywhere else, is an ordinary comment.
 
 ## kupcad doc
 

@@ -22,10 +22,10 @@ and `/* */` are not comments.
 width = 40 # the plate's width
 ```
 
-A comment whose text starts with `@` is a doc comment. `kupcad doc` reads a script's
-`# @title`, `# @description` and `# @author` lines into its metadata (see
-[Parameters](/reference/inputs/parameters/) and [Command line](/reference/tooling/cli/)).
-Comments that start with `kupcad:` hide lint findings (see
+A comment is a comment wherever it is, whatever its text. Two kinds are also read by the tools:
+`kupcad doc` reads the `# @title`, `# @description` and `# @author` comments above a script's
+first statement into its metadata (see [Parameters](/reference/inputs/parameters/#script-metadata)),
+and comments that start with `kupcad:` hide lint findings (see
 [Lint rules](/reference/tooling/lint-rules/)).
 
 ```kupcad
@@ -197,9 +197,16 @@ puts :"a b".inspect       # :"a b"
 `%w[...]` is an Array of Strings and `%i[...]` an Array of Symbols, split at whitespace.
 `%W` and `%I` read the same; neither interpolates.
 
+A `%` literal starts only where a value may start. Written right after a name, a number, a
+closing bracket or a string, `%` is the modulo operator whatever follows it, as in Ruby:
+`(i%w)` is `i` modulo `w`.
+
 ```kupcad
 puts %w[m3 m4 m5].inspect # ["m3", "m4", "m5"]
 puts %i[m3 m4 m5].inspect # [:m3, :m4, :m5]
+i = 7
+w = 3
+puts (i%w)                # 1
 ```
 
 ## Arrays

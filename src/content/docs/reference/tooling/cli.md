@@ -164,9 +164,9 @@ Directories are walked as `check` walks them. See [Formatter](/reference/tooling
 kupcad doc <file.kup>
 ```
 
-Prints the script's `# @title`, `# @description` and `# @author` comments and its parameters as
-JSON, without running it, for a host to build controls from. See
-[Parameters](/reference/inputs/parameters/#kupcad-doc).
+Prints the script's `# @title`, `# @description` and `# @author` comments (those above its first
+statement) and its parameters as JSON, without running it, for a host to build controls from. It
+takes one file; anything more is an error. See [Parameters](/reference/inputs/parameters/#kupcad-doc).
 
 ## kupcad pkg
 

@@ -177,7 +177,7 @@ for the code. The editor gets it as the diagnostic's code, `kupcad check --forma
 | `runs-into-heredoc` | A line that runs on into the body of a heredoc it opened. |
 | `invalid-escape` | A backslash in a string that starts no escape (`"\q"`), or a `\u` escape that names no character. |
 | `invalid-number` | A malformed number, or one beyond the largest (`1e999`). |
-| `unexpected-token` | Something other than what the syntax needs here, such as an unclosed parenthesis (`cube(1`). |
+| `unexpected-token` | Something other than what the syntax needs here, named as written: an unclosed parenthesis (`cube(1`: "Expected ')', but found the end of the file"), or an `if`, `unless` or `elsif` the file ends in without its `end`. |
 | `invalid-expression` | A token that can't start an expression (`x = )`). |
 | `invalid-assignment` | An assignment to a call (`f() = 1`), or to several names with an operator other than `=` (`a, b += 1`). |
 | `nesting-too-deep` | Code, or interpolation in a string, nested deeper than the limit. |

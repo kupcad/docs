@@ -83,7 +83,8 @@ plate = cube(x: 40, y: 20, z: 3)
 - **Block delimiters**: `{ |x| x * 2 }` stays on one line when it fits, and `do ... end` stays
   `do ... end`.
 - **Blank lines**: one blank line wherever the source had any, so a script keeps its sections.
-- **Comments**, each with the statement, list row, chain call or block it belongs to.
+- **Comments**, as written (a `# @title` too), each with the statement, list row, chain call or
+  block it belongs to.
 
 ## Safety
 
