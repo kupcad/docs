@@ -152,11 +152,19 @@ still being written. Today it builds:
 
 - cubes, cylinders, cones, spheres and polyhedra, exact (a cylinder's side is two half-faces of
   one cylindrical surface, a sphere two hemispheres);
-- the sketches `square`, `circle` (exact) and `polygon`, and `text` when it is one outline with
-  holes (a word of several letters waits for the 2D kernel);
+- the sketches `square`, `circle` (exact), `polygon` and `text` (its glyphs' outlines filled by
+  the even-odd rule, as the mesh engine fills them);
+- booleans on sketches (`+`, `-`, `&`, `union`, `difference`, `intersection` of Sketches), exact:
+  a circle cut by a square keeps its arc;
+- a sketch's `offset` (every join, a negative `delta` too) and `shell`;
+- the convex hull of sketches of straight edges (`hull`); one with arcs is refused, as the hull
+  of a curved solid is, rather than hulled through its arcs' extreme points;
+- a sketch's outlines (`export_svg` and `export_dxf`, each arc drawn exact), its `contains?`, and
+  whether it is convex;
 - their extrusions (`extrude(h)`, so `cube(round_r:)` and `cube(chamfer:)` too; a twist or a
-  taper is refused) and revolutions (`revolve` with `segments:`; a profile across the axis is
-  refused, where the mesh engine clips it);
+  taper is refused), revolutions (`revolve`, with or without `segments:`; a profile across the
+  axis is refused, where the mesh engine clips it) and sweeps along one line or one arc
+  (`sweep`; a path of several segments joins its pieces with a boolean);
 - every move, turn, uniform scale and mirror (`translate`, `rotate`, `scale`, `mirror`,
   `transform`; a non-uniform scale of a curved part is refused, as its surfaces have no exact
   form);
@@ -169,11 +177,10 @@ Everything else is a `NotImplementedError` that names what is missing and sugges
 `engine: :manifold`, rather than a stand-in answer:
 
 - shapes and operations: `extrude(twist:)`, `extrude(scale:)`, `helix`, `loft`; booleans on
-  solids and on sketches; hulls of curved solids and of sketches; `offset` and `minkowski`,
-  `trim_by_plane` and `split_by_plane`, `slice`, `project`, `decompose`; empty shapes
-  (`union([])`); a `revolve` without `segments:`, which measures the profile's outline first;
-- measurements: `contains?`, `ray_cast`, `min_gap`, `center_of_mass`, and a sketch's outlines
-  (what a 2D export is made of);
+  solids; hulls of curved solids and of sketches with arcs; a solid's `offset`, `shell` and
+  `round_edges` and `minkowski` (Minkowski sums), `trim_by_plane` and `split_by_plane`, `slice`,
+  `project`, `decompose`; empty shapes (`union([])`);
+- measurements: a solid's `contains?`, `ray_cast`, `min_gap`, `center_of_mass`;
 - meshes: STL and glTF export, and the viewer.
 
 Materials are the exception: a B-Rep model is built without them, with one warning. Each of

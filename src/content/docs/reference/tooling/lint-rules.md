@@ -154,15 +154,16 @@ cylinder(r: 5, h: 2, segments: 6)   # use sides: 6 for one on both
 ### brep-unsupported
 
 After `CAD.config(engine: :brep)`, or inside `CAD.with_config(engine: :brep) do ... end`,
-something the B-Rep engine can't do yet, which fails when the script runs: a call (`translate`,
-`volume`, `sphere`, a cone, ...), a boolean on shapes (`box - hole`), or a call to a method of the
-script whose body needs one (`plate() uses translate`). A method's body runs under the engine of
-its call, so it is reported where it is called. See
+something the B-Rep engine can't do yet, which fails when the script runs: a call (`loft`,
+`slice`, a solid's `offset`, `ray_cast`, ...), a boolean on solids (`box - hole`), or a call to a
+method of the script whose body needs one (`bracket() uses slice`). A method's body runs under
+the engine of its call, so it is reported where it is called. The rule knows the receiver: a
+sketch's `offset` or `contains?` runs on the engine, a solid's doesn't yet. See
 [Engine settings](/reference/geometry/engine-settings/).
 
 ```kupcad frame="none"
 CAD.config(engine: :brep)
-cube(5).translate(x: 1)    # the brep engine can't move, turn, scale or mirror shapes yet
+cube(5) - cylinder(r: 1, h: 5)    # the brep engine can't combine solids (union, difference, intersection) yet
 ```
 
 ### shape-mismatch
