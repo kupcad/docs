@@ -55,7 +55,10 @@ An import path that doesn't start with `./` or `../` names a package by its alia
 
 A package's files are those of its repository. A package's own `kupcad.json` dependencies are
 installed with it, but a downloaded package may only depend on packages from public git hosts,
-not on a `file:` path, an archive URL or a self-hosted server. See
+not on a `file:` path, an archive URL or a self-hosted server. A package imports its own
+dependencies by their aliases the same way: they are linked in the package's folder
+(`.kupcad/pkg/hardware/.kupcad/pkg/<alias>`), and a module of the package reads its imports of
+packages from there, never from the project's. See
 [Imports and exports](/reference/language/imports/) for the import syntax.
 
 ## Dependency sources
@@ -75,8 +78,9 @@ copy any archive on the disk into itself. A package's file names are ASCII; one 
 characters is refused, as two spellings of `é` are one file on some disks and two on others.
 
 A git host wraps its archives in a top folder (`repo-<sha>/`), which is stripped, so the
-repository's files are the package's. A `file:` or web archive is the package as it is, so make
-it from inside the package's folder:
+repository's files are the package's. A `file:` or web archive is the package as it is, less any
+`.kupcad/pkg` folder in it (a project folder tarred whole), so make it from inside the package's
+folder:
 
 ```sh
 tar czf part.tar.gz -C part .
@@ -150,9 +154,12 @@ kupcad pkg doctor
 |---|---|
 | `init` | Writes a new `kupcad.json` in the current directory. Where one exists, it changes nothing and fails. |
 | `add <alias>=<source>` | Installs the dependency and links it, then adds it to `kupcad.json`. A failed `add` leaves the project as it was. |
-| `install` | Installs every dependency of `kupcad.json`, as pinned by `kupcad.lock`, and links them into `.kupcad/pkg/`. Re-resolves only refs that aren't locked or that `kupcad.json` changed. |
+| `install` | Installs every dependency of `kupcad.json`, as pinned by `kupcad.lock`, and links them into `.kupcad/pkg/`. Re-resolves only refs that aren't locked or that `kupcad.json` changed. Makes the links match: a dependency taken out of `kupcad.json` is unlinked, and an upgrade's old commit is removed from `.kupcad/pkg/.store`, so `prune` can free its files. |
 | `prune` | Removes from the store what no project uses. A file stays while a project links it, or while it, or a package an install used, is less than 7 days old. `--force` drops the age rule. |
-| `doctor` | Checks the store: hashes each file against its name, removes a changed one, and indexes stray files that are named for their own content. |
+| `doctor` | Checks the store in four steps: the index's integrity, each file hashed against its name (a changed one removed), stray files named for their own content indexed, and what stopped installs left removed. |
+
+`prune` and `doctor` also remove the half-written files an install that was stopped (Ctrl+C, a
+kill) left in the store's `tmp` folder, once they are an hour old.
 
 An install prunes the store on its own, at most once a week. Where the store is on another
 device than the project, the project holds copies, so only the store's index can tell that a
