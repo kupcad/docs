@@ -22,7 +22,11 @@ import_stl(path, repair: true)
 import name from "./file.stl"
 ```
 
-Reads an STL file, binary or ASCII.
+Reads an STL file, binary or ASCII. A file is binary when its header's triangle count fits its
+size (bytes after the triangles are left, and so is a header that starts with `solid`, as some
+writers put there). An ASCII file is read facet by facet: each `facet` to its `endfacet` is a
+triangle of the three `vertex` lines in its loop, their coordinates read as the 32-bit floats a
+binary STL holds. A corner written `-0` is the same point as one written `0`.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -148,6 +152,9 @@ Each of these is an `ImportError` naming the file, and for a text format the lin
 - a vertex that isn't three finite numbers;
 - a face of fewer than three corners, or more than 4096;
 - a file with no faces;
+- in an ASCII STL, a vertex that isn't three numbers, a facet of other than three vertices, or a
+  word STL hasn't (`line 12: the vertex coordinate "1O" isn't a number`), and a file that is
+  neither binary nor ASCII STL;
 - a 3MF package that isn't a zip archive, has no 3D model, places an object it doesn't have, or
   holds an object within itself.
 

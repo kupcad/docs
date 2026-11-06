@@ -36,7 +36,8 @@ Reads an ASCII DXF file.
 **Returns:** `Sketch`, or with `paths: true` an `Array` of `Path`s.
 
 **Raises:** `ImportError` when the file can't be read, an outline doesn't close, a layer has no
-outline (the message lists the layers there are), or with `paths: true` the file has no open
+outline (the message lists the layers there are), a number overflows where it is drawn (see
+[Left out and refused](#left-out-and-refused)), or with `paths: true` the file has no open
 line.
 
 ## import_svg
@@ -56,8 +57,8 @@ Reads an SVG file.
 
 **Returns:** `Sketch`, or with `paths: true` an `Array` of `Path`s.
 
-**Raises:** `ImportError` when the file can't be read or parsed, or with `paths: true` it has no
-open line.
+**Raises:** `ImportError` when the file can't be read or parsed, a number overflows where it is
+drawn, or with `paths: true` it has no open line.
 
 ## Importing by file name
 
@@ -70,6 +71,8 @@ a Sketch; use the function for `layers:`, `tolerance:` or `paths:`.
 
 Outlines fill by nesting, as a laser cutter reads them: an outline inside another is a hole, and
 one inside the hole an island, whichever way each is drawn and whatever an SVG's fill rule says.
+An outline drawn more than once in one place (a repeated entity, an SVG's `use`s of one shape)
+is one outline.
 Pieces drawn separately are joined where their ends meet within `tolerance:`, either way round.
 An outline that still doesn't close is an `ImportError` saying where its ends are and how far
 apart, unless it is read as an open line.
@@ -145,7 +148,8 @@ A byte order mark at the start of a DXF or an SVG file is skipped.
 A DXF block reference (`INSERT`) draws its block's entities at its insertion point, scaled,
 turned and repeated along its columns and rows (`MINSERT`'s array), blocks within blocks too.
 An entity on layer `0` takes the layer of its `INSERT`, as AutoCAD draws it. An uneven scale
-draws the block's arcs as cubics.
+draws the block's arcs as cubics. A block that draws nothing (text alone, say) is skipped
+wherever it is inserted, however many copies.
 
 An SVG `use` draws the element it names (`href="#id"`, in `defs` or anywhere) where it stands,
 through its `transform`, `x` and `y`, with the style it gives. A `symbol` is drawn as a group,
@@ -160,7 +164,9 @@ given as a percentage, is the enclosing viewport's. Nothing is clipped.
   meshes) and what a layout draws in paper space (a title block, a viewport's frame).
 - **DXF, refused:** an entity off the XY plane, a binary DXF file.
 - **Both, refused:** a block that inserts itself, a `use` within what it names, a reference to
-  another file.
+  another file, and a number that is no longer finite once scaled, bulged or placed (an SVG's
+  `scale(1e308) scale(1e308)`, a DXF bulge of 1e308, blocks within blocks scaled 1e200 each):
+  an `ImportError` naming its line.
 
 | Limit | Value |
 |---|---|

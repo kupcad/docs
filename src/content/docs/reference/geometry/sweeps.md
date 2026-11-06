@@ -27,14 +27,16 @@ The sketch pushed straight up along z, from z = 0 to `h`.
 |---|---|---|---|
 | `h` | Number | 1 | The height. |
 | `center` | Boolean | `false` | Centre it along z, from `-h / 2` to `h / 2`. |
-| `twist` | Number | 0 | Degrees the profile turns about the z axis from bottom to top. |
-| `scale` | Number | 1 | The top's size against the bottom's, about the sketch's origin. |
-| `scale_x`, `scale_y` | Number | 1 | The top's scale along x and y alone. `scale:` sets both. |
+| `twist` | Number | 0 | Degrees the profile turns about the z axis from bottom to top, counter-clockwise when positive. |
+| `scale` | Number | 1 | The top's size against the bottom's, about the sketch's origin: 0 (a point) or more. |
+| `scale_x`, `scale_y` | Number | 1 | The top's scale along x and y alone, 0 or more. `scale:` sets both. |
 | `slices` | Number | 0 | Layers the side is cut into. With 0, a twist gets its share of a full turn's segments, and a straight extrusion none. |
 
 **Returns:** `Solid`.
 
-**Raises:** `ValueError` for an `h` of zero or less.
+A negative `twist` is the mirror image of the same twist the positive way, with as much volume.
+
+**Raises:** `ValueError` for an `h` of zero or less, or a negative scale.
 
 ```kupcad
 puts square(10).extrude(5).volume          # 500
@@ -60,7 +62,10 @@ counter-clockwise seen from above.
 
 **Returns:** `Solid`.
 
-**Raises:** `ValueError` for a `deg` of zero, which would sweep nothing; a negative angle turns the other way.
+A negative angle turns the other way: the mirror image of the same revolve the positive way, with
+as much volume.
+
+**Raises:** `ValueError` for a `deg` of zero, which would sweep nothing.
 
 ```kupcad
 ring = square([2, 10]).translate(x: 5).revolve
@@ -88,7 +93,8 @@ turn one of three ways.
 | `turns` | Number | — | The number of turns, instead of `twist`. |
 | `slices` | Number | 0 | Layers along the height; 0 gives the twist its share of the segments. |
 
-`helix(20, 3600)`, `helix(20, pitch: 2)` and `helix(h: 20, turns: 10)` are the same ten turns.
+`helix(20, 3600)`, `helix(20, pitch: 2)` and `helix(h: 20, turns: 10)` are the same ten turns. A
+negative turn winds the other way, the mirror image of the positive one: a left-hand thread.
 
 **Returns:** `Solid`.
 

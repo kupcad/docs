@@ -45,7 +45,7 @@ script nor a package it imports can write over the project's scripts, `kupcad.js
 **Returns:** the receiver.
 
 **Raises:** `ArgumentError` for a path not named for the format; `GeometryError` for an empty
-model; `RuntimeError` naming the file when it can't be written (a missing directory, or a host
+model, or one reaching past 3.4e38 mm from the origin in STL, 3MF, glTF or OBJ; `RuntimeError` naming the file when it can't be written (a missing directory, or a host
 that gives the script no file system, such as the editor's preview);
 `NotImplementedError` for `export_step` of a part the mesh engine built.
 
@@ -65,9 +65,17 @@ Paths, open and unfilled, and each Solid as its silhouette on the XY plane, as `
 it. A model a format can't hold is an error naming what is wrong, never a file with part of the
 model.
 
+STL, 3MF, glTF and OBJ write 32-bit floats, so a model reaching past 3.4e38 mm from the origin
+is a `GeometryError` there, not a file of `inf`. (Any shape whose sizes or points reach past
+1e100 mm is already one where it is built: see
+[When geometry is computed](/reference/geometry/shapes/#when-geometry-is-computed).)
+
 Parts are named from [`named`](/reference/geometry/appearance/#named). Where a format names its
 objects, a name used twice is numbered (`lid`, `lid_2`), and a part without a name is `part_1`,
 `part_2` and so on.
+
+A file holds the materials its parts use and no others, numbered in the order they first
+appear, so the same model always gives the same file.
 
 ## STL
 
@@ -83,7 +91,8 @@ as one part printed four times, where an STL merges them.
 ## glTF and GLB
 
 A `.glb` file is binary glTF. A `.gltf` file is glTF JSON with its buffer embedded as a base64
-data URI. Each part is a node of its own, named after it, with its material.
+data URI. Each part is a node of its own, named after it, with its material and a mesh of its
+own positions and their bounds.
 
 glTF is in metres with y up, as the format defines: the meshes stay in millimetres, under a root
 node that scales them by 0.001. Ghosts are exported beside the model, in glTF and GLB only.
@@ -99,8 +108,10 @@ millimetres with z up as the script made it (OBJ has no unit or up axis), with a
 
 Without the material library it has no materials. With it (`mtl: true`, or `kupcad build --mtl`),
 the library is written beside it (`part.mtl`; `materials.mtl` for the parts of a `--split`):
-each run of faces names its material, and the library gives each the script's colour as its
-diffuse and ambient colour and its alpha as its dissolve.
+each run of faces names its material, by its colour and alpha (`material_ff0000ff`, or
+`default` for a part without a colour), and the library gives each the script's colour as its
+diffuse and ambient colour and its alpha as its dissolve. It lists the materials the faces use,
+each once.
 
 ## STEP
 
@@ -118,8 +129,9 @@ end
 
 ## SVG
 
-A drawing in millimetres: `width`, `height` and a `viewBox` of the drawing's bounds, y turned
-over, as SVG's runs down the page.
+A drawing in millimetres: `width`, `height` and a `viewBox` of the drawing's bounds with half
+the outline's stroke round them, so the strokes at the edges are whole and a drawing of no
+height, a single line, still shows; y turned over, as SVG's runs down the page.
 
 - Each Sketch, and each Solid's silhouette, is one `<path>` of its outlines, filled by the
   even-odd rule in its material colour (grey without one), with a thin black outline: 0.1 mm, or

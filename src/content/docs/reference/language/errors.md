@@ -112,7 +112,7 @@ Every class below is a subclass of `StandardError`, which is a subclass of `Exce
 | `NoMethodError` | An unknown method, or a private one called from outside |
 | `ImportError` | A module, data file, mesh, font or drawing that can't be read, parsed or compiled; a circular import |
 | `NotImplementedError` | A feature the active geometry engine doesn't support yet |
-| `GeometryError` | The geometry kernel failed an operation or produced an invalid solid |
+| `GeometryError` | The geometry kernel failed an operation or produced an invalid solid; a size or point past 1e100 mm; an export past what its 32-bit floats hold |
 | `OutOfMemoryError` | The script's heap went past its memory limit (see [Configuration](/reference/tooling/configuration/)) |
 | `AssertionError` | A failed `assert` |
 | `RuntimeError` | `raise "message"`, and other failures at run time |

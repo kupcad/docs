@@ -159,9 +159,11 @@ A solid from its corners and faces.
 | `points` | Array | — | The corners, `[x, y, z]` each; at least 4. |
 | `faces` | Array | — | The faces, each an Array of indices into `points`; at least 4 faces. |
 
-Each face lists its corners in order, counter-clockwise seen from outside the solid. A face has
-3 to 4096 corners, all on one plane. A face of more than three is cut into triangles on its own
-plane, along its inside when it is concave, the same on both engines.
+Each face lists its corners in order, counter-clockwise seen from outside the solid. A mesh
+wound the other way, every face clockwise, is the same solid: it is turned round before either
+engine builds it. A face has 3 to 4096 corners, all on one plane. A face of more than three is
+cut into triangles on its own plane, along its inside when it is concave, the same on both
+engines.
 
 The faces must close the solid: every edge is shared by exactly two faces, running opposite ways.
 One that doesn't is a `GeometryError` when the solid is computed.

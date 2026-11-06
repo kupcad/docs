@@ -99,6 +99,11 @@ first time something needs its geometry: a measurement (`volume`, `bbox`, `conta
 export, or the build of the model. A `GeometryError` from the kernel (a `polyhedron` that isn't
 closed, say) is raised there.
 
+The kernel computes with coordinates up to 1e100 mm from the origin. A shape whose sizes or
+points reach past that is a `GeometryError` when it is computed, on either engine:
+`cube: a coordinate reaches past 1e100 mm from the origin, the most the geometry kernel computes
+with`.
+
 ## The model
 
 The model is the script's last value. `kupcad build` exports it, and the editor and the
