@@ -14,7 +14,9 @@ KupCAD has one number type, `Number`: a 64-bit floating-point number. `5`, `5.0`
 Arithmetic on finite numbers never produces infinity or `NaN`: an operation that would raises
 instead, a `RangeError` when the result is past the largest Number (`2 ** 1024`), a
 `ZeroDivisionError` for a division or modulo by zero (`1 / 0`, `0 / 0`), and a `MathError` for
-a result that isn't a number (`(-8) ** 0.5`).
+a result that isn't a number (`(-8) ** 0.5`). Every operator raises that `MathError` when its result is
+`NaN`, from a non-finite operand too: `Number::NAN + 1` and `Number::INFINITY - Number::INFINITY`
+raise.
 
 ## Printing
 

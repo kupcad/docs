@@ -45,7 +45,8 @@ It takes no other join.
 **Returns:** the receiver's kind.
 
 **Raises:** `ValueError` for a Solid's `delta` of 0, or a Solid's `join:` other than `:round`;
-`ArgumentError` for `miter_limit:` without `join: :miter`, or on a Solid.
+`ArgumentError` for `miter_limit:` without `join: :miter`, or on a Solid; `RangeError` for a
+Solid's `delta` whose sphere has no volume a number holds (`offset(1e150)`).
 
 ```kupcad
 puts square(10).offset(1, join: :miter).area     # 144

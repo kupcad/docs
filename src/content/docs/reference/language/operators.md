@@ -59,8 +59,9 @@ Every number is a 64-bit float.
 
 - Dividing by zero is a `ZeroDivisionError`.
 - A result beyond ±1.8e308 is a `RangeError` (`2 ** 1024`), and a result that is no number is a
-  `MathError` (`(-1) ** 0.5`). Arithmetic never produces infinity or NaN; write
-  `Number::INFINITY` or `Number::NAN` to use one.
+  `MathError`, whichever operator gives it (`(-1) ** 0.5`, `Number::NAN + 1`,
+  `Number::INFINITY - Number::INFINITY`). Arithmetic on finite numbers never produces infinity
+  or NaN; write `Number::INFINITY` or `Number::NAN` to use one.
 - Operands of other kinds are a `TypeError`: `"a" + 1`, `"ab" * 3` and `[1] * 2` are all errors.
   Convert first: `"a" + 1.to_s`.
 

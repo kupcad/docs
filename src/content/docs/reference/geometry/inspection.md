@@ -29,6 +29,12 @@ B-Rep part (see [Engine settings](/reference/geometry/engine-settings/#the-b-rep
 A Path's `length`, `start` and `end` are on the [Paths](/reference/geometry/paths/#start-end-length)
 page.
 
+A measure past the largest Number (about 1.8e308) is a `RangeError`, as an arithmetic overflow
+is, never infinity or `NaN`: `cube(1).scale(1e200).volume` raises
+`volume overflows: the result is beyond the largest number (1.8e308)`, and so do `surface_area`,
+`area`, `center_of_mass`, `mass`, `min_gap`, a Path's `length` and a
+[`bom`](/reference/geometry/assemblies/#parts-lists) row.
+
 ## bbox
 
 ```kupcad frame="none"

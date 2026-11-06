@@ -20,8 +20,9 @@ A list of shapes can be given to the booleans whole: `base.union([boss, rib].com
 the last). An index past either end is an `IndexError`, where Ruby gives `nil`. A Range gives
 the items it covers, as [`slice`](#slice) does: `a[1..2]`, `a[1...3]`, `a[1..-1]`.
 
-`a[i] = value` replaces an item. The index must already exist: assigning past the end is an
-`IndexError` (Ruby pads with `nil`); use [`push`](#push) to add.
+`a[i] = value` replaces an item. The index must be a whole Number (`a["x"] = 2` is a
+`TypeError`: "Array index must be an integer, got String") and must already exist: assigning
+past the end is an `IndexError` (Ruby pads with `nil`); use [`push`](#push) to add.
 
 `+` joins two Arrays into a new one. `==` and `!=` compare by content, nested Arrays and Maps
 included, and so do `include?`, `count(x)`, `uniq` and `case`/`when`. There is no `-`, `*`,

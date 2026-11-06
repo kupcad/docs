@@ -105,9 +105,9 @@ Every class below is a subclass of `StandardError`, which is a subclass of `Exce
 | `ValueError` | A value of the right type that is out of range or not finite: `cube(-1)`, `segments: 1e9` |
 | `IndexError` | An Array or String index out of bounds: `[1, 2][5]` (Ruby gives `nil`) |
 | `KeyError` | A key that a JsonObject's `fetch` or `dig` doesn't find |
-| `RangeError` | A number outside what can be represented: `2 ** 1024`, a bitwise operand beyond 64 bits |
+| `RangeError` | A number outside what can be represented: `2 ** 1024`, `"1e400".to_f`, a bitwise operand beyond 64 bits, a measure past the largest number (`volume overflows: …`) |
 | `ZeroDivisionError` | Division by zero |
-| `MathError` | An operation whose result is no number: `(-1) ** 0.5`, `Math.sqrt(-1)` |
+| `MathError` | An operation whose result is no number: `(-1) ** 0.5`, `Math.sqrt(-1)`, `Number::NAN + 1` |
 | `NameError` | An undefined variable, constant or member |
 | `NoMethodError` | An unknown method, or a private one called from outside |
 | `ImportError` | A module, data file, mesh, font or drawing that can't be read, parsed or compiled; a circular import |

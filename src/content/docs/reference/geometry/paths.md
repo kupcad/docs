@@ -203,7 +203,8 @@ path.end      # [x, y]
 path.length   # mm
 ```
 
-The path's first and last point, and its length along its segments.
+The path's first and last point, and its length along its segments. A length past the largest
+Number is a `RangeError` (`length overflows: …`).
 
 ```kupcad
 l = line([0, 0], [3, 4])

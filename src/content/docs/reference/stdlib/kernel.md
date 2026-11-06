@@ -107,13 +107,14 @@ Raises when `condition` is `false` or `nil`, and does nothing otherwise.
 |---|---|---|---|
 | `condition` | any | — | What must hold. Only `false` and `nil` fail. |
 | `message` | String | `"Assertion failed."` | The error's message. |
-| `error_class` | Class | `AssertionError` | The class of the error raised. |
+| `error_class` | Class | `AssertionError` | The class of the error raised: `Exception` or a class under it. |
 | block | — | — | Builds the message, called only when the assertion fails. It must return a String. |
 
 **Returns:** `nil`.
 
 **Raises:** `AssertionError` (or `error_class`) when the condition fails; `TypeError` when the
-message isn't a String. A `break` in its block is an `ArgumentError`.
+message isn't a String, or when the condition fails and `error_class` isn't an error class
+(`Array`). A `break` in its block is an `ArgumentError`.
 
 ```kupcad
 thickness = 3

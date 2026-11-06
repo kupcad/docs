@@ -189,10 +189,13 @@ puts "abc".chars.inspect           # ["a", "b", "c"]
 s.to_f
 ```
 
-The String read as a number (`"2.5"`, `"-4"`, `"1e3"`), or `nil` when the whole String isn't
-one: `"2.5mm".to_f` and `" 3".to_f` are `nil`, where Ruby reads what it can.
+The String read as a decimal number, with a fraction and an exponent if it has them (`"2.5"`,
+`"-4"`, `"-2.5e3"`), or `nil` when the whole String isn't one: `"2.5mm"`, `" 3"`, `"0x10"`,
+`"1_000"`, `"nan"` and `"inf"` are `nil`, where Ruby reads what it can.
 
 **Returns:** `Number` or `nil`.
+
+**Raises:** `RangeError` for a number past the largest one (`"1e400".to_f`).
 
 ### to_i
 
@@ -201,9 +204,11 @@ s.to_i
 ```
 
 The String read as a whole number in decimal digits (`"12"`, `"-5"`), or `nil` when the whole
-String isn't one: `"3.5".to_i` is `nil`.
+String isn't one: `"3.5"`, `"1e3"`, `"0x10"` and `"1_000"` are `nil`.
 
 **Returns:** `Number` or `nil`.
+
+**Raises:** `RangeError` for a number past the largest one.
 
 ### to_sym
 
@@ -225,6 +230,8 @@ The String itself. **Returns:** `String`.
 puts "12".to_i + 1            # 13
 puts "2.5".to_f * 2           # 5
 puts "2.5mm".to_f.inspect     # nil
+puts "-2.5e3".to_f            # -2500
+puts "0x10".to_i.inspect      # nil
 puts "m3".to_sym.inspect      # :m3
 ```
 

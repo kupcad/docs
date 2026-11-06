@@ -50,8 +50,10 @@ A rule set to `"error"` fails `kupcad check`, which makes it a CI gate.
 
 ## Memory limits
 
-`vm_memory_limit` caps the script's own memory: strings, arrays, maps, instances, and the tables
-of the geometry graph it builds (a loop of transforms adds a node each). The geometry kernel's
+`vm_memory_limit` caps the script's own memory: strings, arrays, maps, instances, the text a
+built-in writes as it grows (an interpolated or `%`-formatted String, an `inspect`, what `puts`
+and `warn` print), and the tables of the geometry graph it builds (a loop of transforms adds a
+node each). The geometry kernel's
 meshes aren't counted. Garbage is collected before a new object would cross the limit, so what
 the script no longer holds doesn't count.
 
