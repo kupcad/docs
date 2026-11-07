@@ -9,7 +9,6 @@ import { chromium } from '@playwright/test';
 import { spawn, spawnSync } from 'node:child_process';
 import {
   copyFileSync,
-  existsSync,
   mkdirSync,
   mkdtempSync,
   readdirSync,
@@ -19,7 +18,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join, resolve } from 'node:path';
-import { allExamples, idOf } from './lib/blocks.mjs';
+import { allExamples } from './lib/blocks.mjs';
 import { prepare } from './lib/fixtures.mjs';
 
 const KUPCAD = process.env.KUPCAD ? resolve(process.env.KUPCAD) : 'kupcad';
@@ -74,11 +73,16 @@ mkdirSync(models);
 let server = null;
 try {
   prepare(models, KUPCAD);
-  const vite = spawnSync('pnpm', ['exec', 'vite', 'build', '--config', join(RENDER, 'vite.config.js')], {
-    env: { ...process.env, RENDER_OUT: site },
-    encoding: 'utf8',
-  });
-  if (vite.status !== 0) throw new Error(`the renderer wasn't built:\n${vite.stdout}${vite.stderr}`);
+  const vite = spawnSync(
+    'pnpm',
+    ['exec', 'vite', 'build', '--config', join(RENDER, 'vite.config.js')],
+    {
+      env: { ...process.env, RENDER_OUT: site },
+      encoding: 'utf8',
+    },
+  );
+  if (vite.status !== 0)
+    throw new Error(`the renderer wasn't built:\n${vite.stdout}${vite.stderr}`);
 
   const built = [];
   for (const subject of subjects()) {
@@ -87,10 +91,25 @@ try {
   }
   for (const { file } of built) copyFileSync(join(models, file), join(site, file));
 
-  server = spawn('pnpm', ['exec', 'vite', 'preview', '--config', join(RENDER, 'vite.config.js'), '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], {
-    env: { ...process.env, RENDER_OUT: site },
-    stdio: 'ignore',
-  });
+  server = spawn(
+    'pnpm',
+    [
+      'exec',
+      'vite',
+      'preview',
+      '--config',
+      join(RENDER, 'vite.config.js'),
+      '--host',
+      '127.0.0.1',
+      '--port',
+      String(PORT),
+      '--strictPort',
+    ],
+    {
+      env: { ...process.env, RENDER_OUT: site },
+      stdio: 'ignore',
+    },
+  );
   const url = `http://127.0.0.1:${PORT}`;
   for (let tries = 0; ; tries++) {
     try {
@@ -105,7 +124,10 @@ try {
   const browser = await chromium.launch({
     args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
   });
-  const page = await browser.newPage({ viewport: { width: 640, height: 400 }, deviceScaleFactor: 2 });
+  const page = await browser.newPage({
+    viewport: { width: 640, height: 400 },
+    deviceScaleFactor: 2,
+  });
   let drawn = 0;
   for (const { id, file } of built) {
     // Once in each theme: the page shows the one that matches its own

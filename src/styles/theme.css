@@ -11,96 +11,96 @@
 
 /* Dark, Starlight's default */
 :root {
-	--sl-color-accent-low: #43271b; /* --kc-accent-subtle */
-	--sl-color-accent: #ff5f14; /* --kc-accent */
-	--sl-color-accent-high: #ff6a24; /* --kc-accent-text */
-	--sl-color-text-accent: #ff6a24;
-	--sl-color-bg-accent: #ff5f14;
-	--sl-color-text-invert: #1a1b1c; /* --kc-accent-fg */
-	--sl-color-accent-hover: #ff7a3d; /* --kc-accent-hover */
+  --sl-color-accent-low: #43271b; /* --kc-accent-subtle */
+  --sl-color-accent: #ff5f14; /* --kc-accent */
+  --sl-color-accent-high: #ff6a24; /* --kc-accent-text */
+  --sl-color-text-accent: #ff6a24;
+  --sl-color-bg-accent: #ff5f14;
+  --sl-color-text-invert: #1a1b1c; /* --kc-accent-fg */
+  --sl-color-accent-hover: #ff7a3d; /* --kc-accent-hover */
 
-	--sl-color-white: #ffffff;
-	--sl-color-gray-1: #f1f3f5;
-	--sl-color-gray-2: #e3e7eb; /* gainsboro: body text */
-	--sl-color-gray-3: #9a9da3; /* --kc-muted */
-	--sl-color-gray-4: #73767c; /* --kc-control-border */
-	--sl-color-gray-5: #333436; /* --kc-border */
-	--sl-color-gray-6: #282829; /* raised: nav, sidebar, inline code */
-	--sl-color-black: #1a1b1c; /* brand black: the page */
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #f1f3f5;
+  --sl-color-gray-2: #e3e7eb; /* gainsboro: body text */
+  --sl-color-gray-3: #9a9da3; /* --kc-muted */
+  --sl-color-gray-4: #73767c; /* --kc-control-border */
+  --sl-color-gray-5: #333436; /* --kc-border */
+  --sl-color-gray-6: #282829; /* raised: nav, sidebar, inline code */
+  --sl-color-black: #1a1b1c; /* brand black: the page */
 
-	--sl-hue-blue: 204; /* dodgerblue, #0099ff: notes */
-	--sl-hue-red: 350; /* rose red: dangers */
+  --sl-hue-blue: 204; /* dodgerblue, #0099ff: notes */
+  --sl-hue-red: 350; /* rose red: dangers */
 
-	/* The icon (public/icon.svg): the brand orange, brand black on it */
-	--kc-icon-bg: #ff5f14;
-	--kc-icon-fg: #1a1b1c;
+  /* The icon (public/icon.svg): the brand orange, brand black on it */
+  --kc-icon-bg: #ff5f14;
+  --kc-icon-fg: #1a1b1c;
 }
 
 /* Light */
 :root[data-theme='light'] {
-	--sl-color-accent-low: #ffe9de;
-	--sl-color-accent: #ff5f14;
-	--sl-color-accent-high: #c5480d;
-	--sl-color-text-accent: #c5480d;
-	--sl-color-bg-accent: #ff5f14;
-	--sl-color-text-invert: #1a1b1c;
-	--sl-color-accent-hover: #f0540c;
+  --sl-color-accent-low: #ffe9de;
+  --sl-color-accent: #ff5f14;
+  --sl-color-accent-high: #c5480d;
+  --sl-color-text-accent: #c5480d;
+  --sl-color-bg-accent: #ff5f14;
+  --sl-color-text-invert: #1a1b1c;
+  --sl-color-accent-hover: #f0540c;
 
-	--sl-color-white: #1a1b1c; /* brand black: headings */
-	--sl-color-gray-1: #1a1b1c;
-	--sl-color-gray-2: #26272a; /* body text */
-	--sl-color-gray-3: #5a5d65; /* --kc-muted */
-	--sl-color-gray-4: #8a9099; /* --kc-control-border */
-	--sl-color-gray-5: #d5dae0; /* --kc-border */
-	--sl-color-gray-6: #e3e7eb; /* gainsboro: surfaces, inline code */
-	--sl-color-gray-7: #f2f4f6; /* the nav */
-	--sl-color-black: #ffffff;
-	--sl-color-hairline: #d5dae0;
+  --sl-color-white: #1a1b1c; /* brand black: headings */
+  --sl-color-gray-1: #1a1b1c;
+  --sl-color-gray-2: #26272a; /* body text */
+  --sl-color-gray-3: #5a5d65; /* --kc-muted */
+  --sl-color-gray-4: #8a9099; /* --kc-control-border */
+  --sl-color-gray-5: #d5dae0; /* --kc-border */
+  --sl-color-gray-6: #e3e7eb; /* gainsboro: surfaces, inline code */
+  --sl-color-gray-7: #f2f4f6; /* the nav */
+  --sl-color-black: #ffffff;
+  --sl-color-hairline: #d5dae0;
 
-	/* The icon's own colours: a darker orange on white, its marks light on it */
-	--kc-icon-bg: #e0501c;
-	--kc-icon-fg: #f1efe8;
+  /* The icon's own colours: a darker orange on white, its marks light on it */
+  --kc-icon-bg: #e0501c;
+  --kc-icon-fg: #f1efe8;
 }
 
 /* The landing page's icon, drawn in the page (index.mdx), as wide as the hero gives it */
 .hero-html > svg {
-	width: 100%;
-	height: auto;
+  width: 100%;
+  height: auto;
 }
 
 /* A primary button: the brand orange, its text brand black, in both themes */
 .sl-link-button.primary {
-	background: var(--sl-color-accent);
-	border-color: var(--sl-color-accent);
-	color: var(--sl-color-text-invert);
+  background: var(--sl-color-accent);
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-text-invert);
 }
 .sl-link-button.primary:hover {
-	background: var(--sl-color-accent-hover);
-	border-color: var(--sl-color-accent-hover);
-	color: var(--sl-color-text-invert);
+  background: var(--sl-color-accent-hover);
+  border-color: var(--sl-color-accent-hover);
+  color: var(--sl-color-text-invert);
 }
 
 /* The current page in the sidebar: tinted and edged in orange, its text the page's */
 .sidebar-content a[aria-current='page'],
 .sidebar-content a[aria-current='page']:hover,
 .sidebar-content a[aria-current='page']:focus {
-	color: var(--sl-color-white);
-	background-color: var(--sl-color-accent-low);
-	box-shadow: inset 3px 0 0 var(--sl-color-accent);
+  color: var(--sl-color-white);
+  background-color: var(--sl-color-accent-low);
+  box-shadow: inset 3px 0 0 var(--sl-color-accent);
 }
 
 /* The guides' diagrams: drawn in the text's colour, captioned small */
 .kc-diagram {
-	margin: 1.5rem 0;
-	text-align: center;
+  margin: 1.5rem 0;
+  text-align: center;
 }
 .kc-diagram svg {
-	max-width: 100%;
-	height: auto;
-	color: var(--sl-color-text);
+  max-width: 100%;
+  height: auto;
+  color: var(--sl-color-text);
 }
 .kc-diagram figcaption {
-	margin-top: 0.25rem;
-	font-size: var(--sl-text-sm);
-	color: var(--sl-color-gray-2);
+  margin-top: 0.25rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
 }

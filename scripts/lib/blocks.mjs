@@ -25,11 +25,11 @@ const EXPECTED = /^\s*puts\b.*?\s#(?!\{)\s*(.+?)\s*$/;
 
 /** Every Markdown file under `dir`. @param {string} dir @returns {string[]} */
 export function markdownFiles(dir) {
-	return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-		const path = join(dir, entry.name);
-		if (entry.isDirectory()) return markdownFiles(path);
-		return /\.mdx?$/.test(entry.name) ? [path] : [];
-	});
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) return markdownFiles(path);
+    return /\.mdx?$/.test(entry.name) ? [path] : [];
+  });
 }
 
 /**
@@ -38,30 +38,30 @@ export function markdownFiles(dir) {
  * @returns {Example[]}
  */
 export function examplesIn(file) {
-	const lines = readFileSync(file, 'utf8').split('\n');
-	const found = [];
-	for (let i = 0; i < lines.length; i++) {
-		const open = OPENING_FENCE.exec(lines[i]);
-		if (!open) continue;
-		const [, indent, fence, , meta = ''] = open;
-		const body = [];
-		let j = i + 1;
-		while (j < lines.length && lines[j].trim() !== fence) {
-			body.push(lines[j].startsWith(indent) ? lines[j].slice(indent.length) : lines[j]);
-			j++;
-		}
-		if (!/frame="none"/.test(meta)) {
-			const code = body.join('\n') + '\n';
-			found.push({ file, line: i + 1, code, id: idOf(code), expected: expectedOf(body) });
-		}
-		i = j;
-	}
-	return found;
+  const lines = readFileSync(file, 'utf8').split('\n');
+  const found = [];
+  for (let i = 0; i < lines.length; i++) {
+    const open = OPENING_FENCE.exec(lines[i]);
+    if (!open) continue;
+    const [, indent, fence, , meta = ''] = open;
+    const body = [];
+    let j = i + 1;
+    while (j < lines.length && lines[j].trim() !== fence) {
+      body.push(lines[j].startsWith(indent) ? lines[j].slice(indent.length) : lines[j]);
+      j++;
+    }
+    if (!/frame="none"/.test(meta)) {
+      const code = body.join('\n') + '\n';
+      found.push({ file, line: i + 1, code, id: idOf(code), expected: expectedOf(body) });
+    }
+    i = j;
+  }
+  return found;
 }
 
 /** Every example in the docs. @returns {Example[]} */
 export function allExamples() {
-	return markdownFiles(DOCS_DIR).flatMap(examplesIn);
+  return markdownFiles(DOCS_DIR).flatMap(examplesIn);
 }
 
 /**
@@ -70,15 +70,15 @@ export function allExamples() {
  * @param {string} code
  */
 export function idOf(code) {
-	return createHash('sha1').update(`${code.trimEnd()}\n`).digest('hex').slice(0, 16);
+  return createHash('sha1').update(`${code.trimEnd()}\n`).digest('hex').slice(0, 16);
 }
 
 /** @param {string[]} lines */
 function expectedOf(lines) {
-	return lines.flatMap((line) => {
-		const match = EXPECTED.exec(line);
-		return match ? [match[1]] : [];
-	});
+  return lines.flatMap((line) => {
+    const match = EXPECTED.exec(line);
+    return match ? [match[1]] : [];
+  });
 }
 
 /**
@@ -88,10 +88,10 @@ function expectedOf(lines) {
  * @param {string} expected
  */
 export function printedAsSaid(printed, expected) {
-	return (
-		printed === expected ||
-		expected.startsWith(`${printed}:`) ||
-		expected.startsWith(`${printed} (`) ||
-		expected.startsWith(`${printed} ...`)
-	);
+  return (
+    printed === expected ||
+    expected.startsWith(`${printed}:`) ||
+    expected.startsWith(`${printed} (`) ||
+    expected.startsWith(`${printed} ...`)
+  );
 }

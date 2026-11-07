@@ -16,7 +16,11 @@ try {
   if (!response.ok) throw new Error(`${file}: ${response.status}`);
   const model = file.endsWith('.svg')
     ? /** @type {const} */ ({ kind: '2d', svg: await response.text() })
-    : /** @type {const} */ ({ kind: '3d', glb: new Uint8Array(await response.arrayBuffer()), parts: [] });
+    : /** @type {const} */ ({
+        kind: '3d',
+        glb: new Uint8Array(await response.arrayBuffer()),
+        parts: [],
+      });
   await viewer.setModel(model);
   viewer.fit({ instant: true });
   // Drawn once more after the fit, before the screenshot reads the canvas

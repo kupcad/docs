@@ -41,6 +41,10 @@ jobs:
       - name: Install Javascript dependencies
         run: pnpm install --frozen-lockfile
 
+      # oxlint, and oxfmt's format
+      - name: Lint and check formatting
+        run: pnpm check
+
       - name: Install KupCAD
         env:
           GH_TOKEN: ${{ github.token }}

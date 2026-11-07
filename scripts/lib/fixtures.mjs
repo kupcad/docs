@@ -16,7 +16,11 @@ const BUILD_TIMEOUT_MS = 120_000;
 export function prepare(dir, kupcad) {
   cpSync(FIXTURES, dir, { recursive: true });
   mkdirSync(join(dir, 'parts'), { recursive: true });
-  const build = (/** @type {string} */ script, /** @type {string} */ code, /** @type {string[]} */ outs) => {
+  const build = (
+    /** @type {string} */ script,
+    /** @type {string} */ code,
+    /** @type {string[]} */ outs,
+  ) => {
     writeFileSync(join(dir, script), code);
     const built = spawnSync(kupcad, ['build', script, ...outs.flatMap((out) => ['-o', out])], {
       cwd: dir,

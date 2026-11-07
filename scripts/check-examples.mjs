@@ -25,9 +25,9 @@ const RUN_TIMEOUT_MS = 120_000;
  * @returns {{ ok: boolean, output: string }}
  */
 function kupcad(args, cwd) {
-	const ran = spawnSync(KUPCAD, args, { cwd, timeout: RUN_TIMEOUT_MS, encoding: 'utf8' });
-	const output = `${ran.stdout}${ran.stderr}` || ran.error?.message || '';
-	return { ok: ran.status === 0, output };
+  const ran = spawnSync(KUPCAD, args, { cwd, timeout: RUN_TIMEOUT_MS, encoding: 'utf8' });
+  const output = `${ran.stdout}${ran.stderr}` || ran.error?.message || '';
+  return { ok: ran.status === 0, output };
 }
 
 /**
@@ -37,8 +37,8 @@ function kupcad(args, cwd) {
  * @param {string} code
  */
 function raisesAsSaid(output, code) {
-	const said = [...code.matchAll(/#\s*([A-Z]\w*Error)\b/g)].map((match) => match[1]);
-	return said.some((klass) => output.includes(`${klass}:`));
+  const said = [...code.matchAll(/#\s*([A-Z]\w*Error)\b/g)].map((match) => match[1]);
+  return said.some((klass) => output.includes(`${klass}:`));
 }
 
 /**
@@ -47,50 +47,50 @@ function raisesAsSaid(output, code) {
  * @param {string[]} expected
  */
 function misprinted(printed, expected) {
-	if (expected.length === 0) return null;
-	const lines = printed.split('\n').filter((line) => line !== '' && !line.startsWith('[Warning]'));
-	// Line for line where the puts lines each printed once; else each said line somewhere
-	const aligned = lines.length === expected.length;
-	const wrong = expected.filter((said, i) => {
-		if (aligned && printedAsSaid(lines[i], said)) return false;
-		if (lines.some((line) => printedAsSaid(line, said))) return false;
-		// `# 0, 0.5, 1`: a loop's lines, said in one comment
-		const several = said.split(', ');
-		return !lines.some((_, at) => several.every((one, k) => lines[at + k] === one));
-	});
-	if (wrong.length === 0) return null;
-	return `said it prints ${wrong.map((w) => JSON.stringify(w)).join(', ')}; printed:\n${printed}`;
+  if (expected.length === 0) return null;
+  const lines = printed.split('\n').filter((line) => line !== '' && !line.startsWith('[Warning]'));
+  // Line for line where the puts lines each printed once; else each said line somewhere
+  const aligned = lines.length === expected.length;
+  const wrong = expected.filter((said, i) => {
+    if (aligned && printedAsSaid(lines[i], said)) return false;
+    if (lines.some((line) => printedAsSaid(line, said))) return false;
+    // `# 0, 0.5, 1`: a loop's lines, said in one comment
+    const several = said.split(', ');
+    return !lines.some((_, at) => several.every((one, k) => lines[at + k] === one));
+  });
+  if (wrong.length === 0) return null;
+  return `said it prints ${wrong.map((w) => JSON.stringify(w)).join(', ')}; printed:\n${printed}`;
 }
 
 const scratch = mkdtempSync(join(tmpdir(), 'kupcad-docs-'));
 let checked = 0;
 let failed = 0;
 try {
-	prepare(scratch, KUPCAD);
-	for (const example of allExamples()) {
-		const script = join(scratch, `example_${checked}.kup`);
-		writeFileSync(script, example.code);
-		checked++;
-		const where = `${relative(process.cwd(), example.file)}:${example.line}`;
-		const linted = kupcad(['check', script], scratch);
-		if (!linted.ok) {
-			failed++;
-			console.error(`${where}\n${linted.output.replaceAll(script, 'example')}`);
-			continue;
-		}
-		const ran = kupcad(['run', script], scratch);
-		const wrong = ran.ok
-			? misprinted(ran.output, example.expected)
-			: raisesAsSaid(ran.output, example.code)
-				? null
-				: ran.output;
-		if (wrong !== null) {
-			failed++;
-			console.error(`${where}\n${wrong.replaceAll(script, 'example')}`);
-		}
-	}
+  prepare(scratch, KUPCAD);
+  for (const example of allExamples()) {
+    const script = join(scratch, `example_${checked}.kup`);
+    writeFileSync(script, example.code);
+    checked++;
+    const where = `${relative(process.cwd(), example.file)}:${example.line}`;
+    const linted = kupcad(['check', script], scratch);
+    if (!linted.ok) {
+      failed++;
+      console.error(`${where}\n${linted.output.replaceAll(script, 'example')}`);
+      continue;
+    }
+    const ran = kupcad(['run', script], scratch);
+    const wrong = ran.ok
+      ? misprinted(ran.output, example.expected)
+      : raisesAsSaid(ran.output, example.code)
+        ? null
+        : ran.output;
+    if (wrong !== null) {
+      failed++;
+      console.error(`${where}\n${wrong.replaceAll(script, 'example')}`);
+    }
+  }
 } finally {
-	rmSync(scratch, { recursive: true, force: true });
+  rmSync(scratch, { recursive: true, force: true });
 }
 
 console.log(`${checked} examples checked, ${failed} failed`);

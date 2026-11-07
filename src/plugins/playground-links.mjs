@@ -19,9 +19,9 @@ const BACKGROUND = { light: '#eef1f4', dark: '#131415' };
 
 /** @param {{ playground: string }} options */
 export default function playgroundLinks({ playground }) {
-	return definePlugin({
-		name: 'KupCAD examples',
-		baseStyles: `
+  return definePlugin({
+    name: 'KupCAD examples',
+    baseStyles: `
 			.kc-example-picture {
 				display: block;
 				width: 100%;
@@ -92,59 +92,59 @@ export default function playgroundLinks({ playground }) {
 				}
 			}
 		`,
-		hooks: {
-			postprocessRenderedBlock({ codeBlock, renderData }) {
-				if (codeBlock.language !== 'kupcad' || codeBlock.props.frame === 'none') return;
-				const code = codeBlock.code;
-				const id = idOf(code);
-				const encoded = Buffer.from(code, 'utf8').toString('base64url');
-				const children = [];
-				if (existsSync(`${PICTURES}${id}.png`)) {
-					for (const [theme, suffix] of [
-						['light', ''],
-						['dark', '-dark'],
-					]) {
-						if (!existsSync(`${PICTURES}${id}${suffix}.png`)) continue;
-						children.push(
-							h('img', {
-								class: `kc-example-picture kc-${theme}`,
-								src: `/examples/${id}${suffix}.png`,
-								alt: 'The model this example makes',
-								loading: 'lazy',
-								width: 1280,
-								height: 800,
-							}),
-						);
-					}
-					if (/\baside\b/.test(codeBlock.meta)) {
-						const frame = renderData.blockAst;
-						frame.properties ??= {};
-						frame.properties.className = [
-							...(/** @type {string[]} */ (frame.properties.className ?? [])),
-							'kc-aside',
-						];
-					}
-				}
-				const links = [];
-				if (/^# @title /.test(code)) {
-					links.push(
-						h('button', { type: 'button', class: 'kc-try', 'data-code': code }, 'Edit here'),
-					);
-				}
-				links.push(
-					h(
-						'a',
-						{
-							href: `${playground}#code=${encoded}`,
-							target: '_blank',
-							rel: 'noopener noreferrer',
-						},
-						'Open in playground →',
-					),
-				);
-				children.push(h('div', { class: 'kc-example-links' }, links));
-				renderData.blockAst.children.push(...children);
-			},
-		},
-	});
+    hooks: {
+      postprocessRenderedBlock({ codeBlock, renderData }) {
+        if (codeBlock.language !== 'kupcad' || codeBlock.props.frame === 'none') return;
+        const code = codeBlock.code;
+        const id = idOf(code);
+        const encoded = Buffer.from(code, 'utf8').toString('base64url');
+        const children = [];
+        if (existsSync(`${PICTURES}${id}.png`)) {
+          for (const [theme, suffix] of [
+            ['light', ''],
+            ['dark', '-dark'],
+          ]) {
+            if (!existsSync(`${PICTURES}${id}${suffix}.png`)) continue;
+            children.push(
+              h('img', {
+                class: `kc-example-picture kc-${theme}`,
+                src: `/examples/${id}${suffix}.png`,
+                alt: 'The model this example makes',
+                loading: 'lazy',
+                width: 1280,
+                height: 800,
+              }),
+            );
+          }
+          if (/\baside\b/.test(codeBlock.meta)) {
+            const frame = renderData.blockAst;
+            frame.properties ??= {};
+            frame.properties.className = [
+              .../** @type {string[]} */ (frame.properties.className ?? []),
+              'kc-aside',
+            ];
+          }
+        }
+        const links = [];
+        if (code.startsWith('# @title ')) {
+          links.push(
+            h('button', { type: 'button', class: 'kc-try', 'data-code': code }, 'Edit here'),
+          );
+        }
+        links.push(
+          h(
+            'a',
+            {
+              href: `${playground}#code=${encoded}`,
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            },
+            'Open in playground →',
+          ),
+        );
+        children.push(h('div', { class: 'kc-example-links' }, links));
+        renderData.blockAst.children.push(...children);
+      },
+    },
+  });
 }

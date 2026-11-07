@@ -26,7 +26,7 @@ const examples = Object.entries(scripts)
 			playground: `${PLAYGROUND}#code=${Buffer.from(source, 'utf8').toString('base64url')}`,
 		};
 	})
-	.sort((a, b) => a.title.localeCompare(b.title));
+	.toSorted((a, b) => a.title.localeCompare(b.title));
 ---
 
 <div class="gallery not-content">
