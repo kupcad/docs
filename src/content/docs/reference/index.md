@@ -20,7 +20,7 @@ spots = holes == 4 ? [[5, 5], [width - 5, 5], [5, 25], [width - 5, 25]] : [[5, 1
 plate.difference(spots.map { |(x, y)| bolt.translate(x, y, 0) })
 ```
 
-This reference describes KupCAD 0.1.5, the current release; its examples are checked against
+This reference describes KupCAD 0.1.11, the current release; its examples are checked against
 it. New to KupCAD?
 [Start here](/start/install/), then the guides [The language](/guides/language/first-script/)
 and [Making parts](/guides/parts/solids/).
