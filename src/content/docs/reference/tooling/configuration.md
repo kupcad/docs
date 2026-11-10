@@ -102,5 +102,7 @@ KUPCAD_MEMORY_LIMIT=2GB kupcad run check.kup
 | `KUPCAD_HOME` | The package store, an absolute path. Default `~/.kupcad`; empty counts as unset, and a relative path is an error. See [Packages](/reference/inputs/packages/#the-store). |
 | `KUPCAD_VIEWPORT_PORT` | The port the language server's viewport socket prefers. Default `9001`; when it is taken, a free port is used and reported to the editor. |
 | `KUPCAD_CRASH_DIR` | A directory to write crash reports to. Unset, none are written. See [Crash reports](/reference/tooling/cli/#crash-reports). |
+| `KUPCAD_NO_PROGRESS` | Set and not empty, turns the progress line off. It shows only on an interactive terminal anyway: never when stderr is piped or redirected, in CI or with `TERM=dumb`. See [Common behaviour](/reference/tooling/cli/#common-behaviour). |
+| `CI` | Set and not empty (as CI services set it), no progress line is shown. |
 | `NO_COLOR` | Set and not empty, turns coloured output off. |
 | `CLICOLOR_FORCE` | Set and not empty, keeps coloured output when it is piped or redirected. |

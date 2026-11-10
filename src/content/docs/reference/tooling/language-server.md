@@ -52,6 +52,11 @@ hover reads that run until something is edited. The preview runs once typing pau
 runs again once the editor is quiet. An edit, or the editor's `$/cancelRequest` of a hover,
 stops a hover's run the same way.
 
+A preview whose build runs past 0.4 s is reported as work-done progress, "Building part.kup"
+from its start to its end (cancelled or not), to an editor that says it takes it
+(`window.workDoneProgress`): VS Code shows it in its status bar. A faster build sends nothing,
+so the status bar doesn't flicker as you type.
+
 ## The preview
 
 The server sends the previewed document's model to the viewport (the VS Code webview, the desktop

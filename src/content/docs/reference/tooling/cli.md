@@ -39,6 +39,15 @@ kupcad fmt --write .                               # format them
 - **Version.** `kupcad --version` (or `-V`) prints the version.
 - **Colour.** Output is coloured only on a terminal; piped or redirected output is plain.
   `NO_COLOR=1` turns colours off everywhere, and `CLICOLOR_FORCE=1` keeps them when redirected.
+- **Progress.** While `build`, `run`, `watch` (a rebuild), `check`, `fmt` and `pkg add` or
+  `install` work, a line on stderr says how far they are: a spinner with the stage and the time
+  so far where how long is unknown (`⠹ Building part.kup · evaluating geometry 1.8s`), a bar where
+  the work is counted (`[=========>          ] 46% Checking 23/49 files`, or a download of a
+  known size). It shows after 0.2 s, so a fast command prints nothing, and comes off before
+  anything else is printed, so what a script prints stays whole. It shows only on an interactive
+  terminal: never when stderr is piped or redirected, in CI (`CI` set), with `TERM=dumb` or with
+  `--errors json`. `KUPCAD_NO_PROGRESS=1` turns it off. A Windows console without the UTF-8 code
+  page gets an ASCII spinner (`|/-\`).
 - **Errors.** A syntax or compile error is printed with its file, line and column and a code in
   brackets (`part.kup:2:1: E: 'cube' is a built-in and can't be assigned [builtin-redefined]`).
   An uncaught runtime error is printed once with its class and where it was raised. See
