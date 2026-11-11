@@ -153,7 +153,9 @@ still being written. Today it builds:
 - cubes, cylinders, cones, spheres and polyhedra, exact (a cylinder's side is two half-faces of
   one cylindrical surface, a sphere two hemispheres);
 - the sketches `square`, `circle` (exact), `polygon` and `text` (its glyphs' outlines filled by
-  the even-odd rule, as the mesh engine fills them);
+  the even-odd rule, as the mesh engine fills them), `square(round_r:)`, `polygon(round_r:)` and
+  `polygon(chamfer:)` with their corner arcs exact, and a Path's `close` with its lines and arcs
+  exact (a cubic curve is chorded on both engines);
 - booleans on sketches (`+`, `-`, `&`, `union`, `difference`, `intersection` of Sketches), exact:
   a circle cut by a square keeps its arc;
 - a sketch's `offset` (every join, a negative `delta` too) and `shell`;
@@ -161,7 +163,8 @@ still being written. Today it builds:
   of a curved solid is, rather than hulled through its arcs' extreme points;
 - a sketch's outlines (`export_svg` and `export_dxf`, each arc drawn exact), its `contains?`, and
   whether it is convex;
-- their extrusions (`extrude(h)`, so `cube(round_r:)` and `cube(chamfer:)` too; a twist or a
+- their extrusions (`extrude(h)`, so `cube(round_r:)` with its edges truly rounded, and
+  `cube(chamfer:)`; a twist or a
   taper is refused), revolutions (`revolve`, with or without `segments:`; a profile across the
   axis is refused, where the mesh engine clips it) and sweeps along one line or one arc
   (`sweep`; a path of several segments joins its pieces with a boolean);
@@ -171,6 +174,9 @@ still being written. Today it builds:
 - the convex hulls of flat-faced solids (`hull`, `batch_hull`);
 - the exact `volume`, `surface_area`, `genus` and `bbox` of all of them (so `align`, `center`
   and `resize` too), and a sketch's `area` and `bbox`;
+- meshes of all of them (STL, glTF, 3MF and OBJ export, `center_of_mass` and the viewer): every
+  circle cut on the grid the resolution gives its radius, as the mesh engine cuts it, a free-form
+  curve where its certified chords say, curved faces gridded between their edges, every mesh closed;
 - STEP files of them, every surface kind as its own STEP entity.
 
 Everything else is a `NotImplementedError` that names what is missing and suggests
@@ -180,8 +186,7 @@ Everything else is a `NotImplementedError` that names what is missing and sugges
   solids; hulls of curved solids and of sketches with arcs; a solid's `offset`, `shell` and
   `round_edges` and `minkowski` (Minkowski sums), `trim_by_plane` and `split_by_plane`, `slice`,
   `project`, `decompose`; empty shapes (`union([])`);
-- measurements: a solid's `contains?`, `ray_cast`, `min_gap`, `center_of_mass`;
-- meshes: STL and glTF export, and the viewer.
+- measurements: a solid's `contains?`, `ray_cast`, `min_gap`.
 
 Materials are the exception: a B-Rep model is built without them, with one warning. Each of
 these turns on as Locus implements it. `kupcad check` reports what the B-Rep engine can't do
