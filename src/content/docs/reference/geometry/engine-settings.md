@@ -174,6 +174,10 @@ still being written. Today it builds:
 - the convex hulls of flat-faced solids (`hull`, `batch_hull`);
 - the exact `volume`, `surface_area`, `genus` and `bbox` of all of them (so `align`, `center`
   and `resize` too), and a sketch's `area` and `bbox`;
+- a solid's `contains?`, `ray_cast` and `min_gap`, on its exact geometry: a cylinder's gap is its
+  circle's, not its polygon's (the mesh engine's differs from it by up to a chord's sagitta), and a
+  ray grazing an edge or a corner, or tangent to a curved face, is an entry and an exit at the same
+  distance, as the mesh engine reports a grazed corner;
 - meshes of all of them (STL, glTF, 3MF and OBJ export, `center_of_mass` and the viewer): every
   circle cut on the grid the resolution gives its radius, as the mesh engine cuts it, a free-form
   curve where its certified chords say, curved faces gridded between their edges, every mesh closed,
@@ -188,8 +192,7 @@ Everything else is a `NotImplementedError` that names what is missing and sugges
 - shapes and operations: `extrude(twist:)`, `extrude(scale:)`, `helix`, `loft`; booleans on
   solids; hulls of curved solids and of sketches with arcs; a solid's `offset`, `shell` and
   `round_edges` and `minkowski` (Minkowski sums), `trim_by_plane` and `split_by_plane`, `slice`,
-  `project`, `decompose`; empty shapes (`union([])`);
-- measurements: a solid's `contains?`, `ray_cast`, `min_gap`.
+  `project`, `decompose`; empty shapes (`union([])`).
 
 Materials are the exception: a B-Rep model is built without them, with one warning. Each of
 these turns on as Locus implements it. `kupcad check` reports what the B-Rep engine can't do

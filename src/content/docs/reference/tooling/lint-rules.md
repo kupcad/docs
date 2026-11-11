@@ -155,10 +155,10 @@ cylinder(r: 5, h: 2, segments: 6)   # use sides: 6 for one on both
 
 After `CAD.config(engine: :brep)`, or inside `CAD.with_config(engine: :brep) do ... end`,
 something the B-Rep engine can't do yet, which fails when the script runs: a call (`loft`,
-`slice`, a solid's `offset`, `ray_cast`, ...), a boolean on solids (`box - hole`), or a call to a
+`slice`, a solid's `offset`, `decompose`, ...), a boolean on solids (`box - hole`), or a call to a
 method of the script whose body needs one (`bracket() uses slice`). A method's body runs under
 the engine of its call, so it is reported where it is called. The rule knows the receiver: a
-sketch's `offset` or `contains?` runs on the engine, a solid's doesn't yet. See
+sketch's `offset` runs on the engine, a solid's doesn't yet. See
 [Engine settings](/reference/geometry/engine-settings/).
 
 ```kupcad frame="none"
