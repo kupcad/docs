@@ -176,7 +176,10 @@ still being written. Today it builds:
   and `resize` too), and a sketch's `area` and `bbox`;
 - meshes of all of them (STL, glTF, 3MF and OBJ export, `center_of_mass` and the viewer): every
   circle cut on the grid the resolution gives its radius, as the mesh engine cuts it, a free-form
-  curve where its certified chords say, curved faces gridded between their edges, every mesh closed;
+  curve where its certified chords say, curved faces gridded between their edges, every mesh closed,
+  built once per part and kept; the live preview of a very large part (a fine resolution on a big
+  sphere, say) is drawn within a preview budget at once, coarser than the part's own mesh, which an
+  export always builds;
 - STEP files of them, every surface kind as its own STEP entity.
 
 Everything else is a `NotImplementedError` that names what is missing and suggests
