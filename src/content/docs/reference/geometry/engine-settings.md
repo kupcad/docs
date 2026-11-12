@@ -184,6 +184,11 @@ still being written. Today it builds:
   built once per part and kept; the live preview of a very large part (a fine resolution on a big
   sphere, say) is drawn within a preview budget at once, coarser than the part's own mesh, which an
   export always builds;
+- materials (`material`), kept on every face and carried into glTF, 3MF and OBJ exports;
+- the `slice` of all of them, its lines and arcs exact (a cylinder's section is a circle), the
+  solid just above the plane as the mesh engine cuts it (a cube sliced at its top is empty); a
+  section that would be an ellipse or another conic (a tilted cylinder or cone) or that crosses
+  a free-form surface is an error that says so;
 - STEP files of them, every surface kind as its own STEP entity.
 
 Everything else is a `NotImplementedError` that names what is missing and suggests
@@ -191,11 +196,10 @@ Everything else is a `NotImplementedError` that names what is missing and sugges
 
 - shapes and operations: `extrude(twist:)`, `extrude(scale:)`, `helix`, `loft`; booleans on
   solids; hulls of curved solids and of sketches with arcs; a solid's `offset`, `shell` and
-  `round_edges` and `minkowski` (Minkowski sums), `trim_by_plane` and `split_by_plane`, `slice`,
+  `round_edges` and `minkowski` (Minkowski sums), `trim_by_plane` and `split_by_plane`,
   `project`, `decompose`; empty shapes (`union([])`).
 
-Materials are the exception: a B-Rep model is built without them, with one warning. Each of
-these turns on as Locus implements it. `kupcad check` reports what the B-Rep engine can't do
+Each of these turns on as Locus implements it. `kupcad check` reports what the B-Rep engine can't do
 yet before the script runs ([`brep-unsupported`](/reference/tooling/lint-rules/)).
 
 A STEP file holds only exact geometry, so a part built by the mesh engine (left on the default

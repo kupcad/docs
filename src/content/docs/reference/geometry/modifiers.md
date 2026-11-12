@@ -160,7 +160,11 @@ puts lower.bbox.z_max   # 4
 solid.slice(height = 0)
 ```
 
-The cross-section of the solid at z = `height`, as a Sketch.
+The cross-section of the solid at z = `height`, as a Sketch. At the height of a flat face the
+cut is the solid just above it, on both engines: `cube(10).slice(0)` is the 10 × 10 square and
+`cube(10).slice(10)` is empty. The B-Rep engine cuts its lines and arcs exactly (a cylinder's
+section is a circle, not a polygon); where a section would be an ellipse or another conic (a
+tilted cylinder or cone) or crosses a free-form surface, it raises an error that says so.
 
 **Returns:** `Sketch`.
 

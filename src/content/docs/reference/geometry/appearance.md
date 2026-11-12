@@ -29,10 +29,8 @@ its drawing (its SVG fill, its DXF colour); the rest is kept with it.
 At least one keyword is needed. The material goes with the Solid into glTF, 3MF, OBJ (with its
 material library) and SVG and DXF exports, and into the viewer. A Solid's outermost material is
 the one that counts: `cube(5).material(color: "#f00").material(color: "#00f")` is blue. A
-union has no material of its own.
-
-The B-Rep engine can't keep materials yet: a B-Rep model is built without them, with one
-warning.
+union has no material of its own. Both engines keep it: the B-Rep engine gives every face of
+the Solid the material, and its exports carry it as the mesh engine's do.
 
 **Returns:** the receiver's kind.
 
