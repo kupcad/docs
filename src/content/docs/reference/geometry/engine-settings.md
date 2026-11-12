@@ -185,6 +185,15 @@ still being written. Today it builds:
   sphere, say) is drawn within a preview budget at once, coarser than the part's own mesh, which an
   export always builds;
 - materials (`material`), kept on every face and carried into glTF, 3MF and OBJ exports;
+- booleans on solids with flat faces (`+`, `-`, `&`, `union`, `difference`, `intersection`, and
+  chains of them, the first less the rest), exact: solids touching along a face merge into one,
+  touching along an edge or at a corner stay two, a part left inside another is a void; a curved
+  operand (a cylinder, a sphere) is refused for now;
+- `trim_by_plane` and `split_by_plane` of solids with flat faces, the part on the side the normal
+  points to, as the mesh engine cuts them;
+- `decompose`: each solid with the voids inside it (the mesh engine gives a void back as a part of
+  its own, inside out);
+- empty shapes (`union([])`, an intersection of parts apart);
 - the `slice` of all of them, its lines and arcs exact (a cylinder's section is a circle), the
   solid just above the plane as the mesh engine cuts it (a cube sliced at its top is empty); a
   section that would be an ellipse or another conic (a tilted cylinder or cone) or that crosses
@@ -194,10 +203,10 @@ still being written. Today it builds:
 Everything else is a `NotImplementedError` that names what is missing and suggests
 `engine: :manifold`, rather than a stand-in answer:
 
-- shapes and operations: `extrude(twist:)`, `extrude(scale:)`, `helix`, `loft`; booleans on
-  solids; hulls of curved solids and of sketches with arcs; a solid's `offset`, `shell` and
-  `round_edges` and `minkowski` (Minkowski sums), `trim_by_plane` and `split_by_plane`,
-  `project`, `decompose`; empty shapes (`union([])`).
+- shapes and operations: `extrude(twist:)`, `extrude(scale:)`, `helix`, `loft`; booleans,
+  `trim_by_plane` and `split_by_plane` of solids with curved faces; hulls of curved solids and of
+  sketches with arcs; a solid's `offset`, `shell` and `round_edges` and `minkowski` (Minkowski
+  sums), `project`.
 
 Each of these turns on as Locus implements it. `kupcad check` reports what the B-Rep engine can't do
 yet before the script runs ([`brep-unsupported`](/reference/tooling/lint-rules/)).

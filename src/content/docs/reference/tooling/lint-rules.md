@@ -155,15 +155,16 @@ cylinder(r: 5, h: 2, segments: 6)   # use sides: 6 for one on both
 
 After `CAD.config(engine: :brep)`, or inside `CAD.with_config(engine: :brep) do ... end`,
 something the B-Rep engine can't do yet, which fails when the script runs: a call (`loft`,
-`project`, a solid's `offset`, `decompose`, ...), a boolean on solids (`box - hole`), or a call to
-a method of the script whose body needs one (`bracket() uses project`). A method's body runs under
-the engine of its call, so it is reported where it is called. The rule knows the receiver: a
-sketch's `offset` runs on the engine, a solid's doesn't yet. See
-[Engine settings](/reference/geometry/engine-settings/).
+`project`, a solid's `offset`, `shell`, ...), or a call to a method of the script whose body needs
+one (`bracket() uses project`). A method's body runs under the engine of its call, so it is
+reported where it is called. The rule knows the receiver: a sketch's `offset` runs on the engine,
+a solid's doesn't yet. What depends on the shapes' values it can't tell: a boolean of a curved
+solid (`box - cylinder(...)`) fails when the script runs, a boolean of flat-faced solids builds.
+See [Engine settings](/reference/geometry/engine-settings/).
 
 ```kupcad frame="none"
 CAD.config(engine: :brep)
-cube(5) - cylinder(r: 1, h: 5)    # the brep engine can't combine solids (union, difference, intersection) yet
+cube(5).project    # the brep engine can't project solids yet
 ```
 
 ### shape-mismatch
