@@ -188,7 +188,9 @@ still being written. Today it builds:
 - booleans on solids with flat faces (`+`, `-`, `&`, `union`, `difference`, `intersection`, and
   chains of them, the first less the rest), exact: solids touching along a face merge into one,
   touching along an edge or at a corner stay two, a part left inside another is a void; a curved
-  operand (a cylinder, a sphere) is refused for now;
+  operand (a cylinder, a sphere) is refused for now, and a result that would touch itself along
+  a line or at a point inside one solid (a pocket meeting a face along an edge of its own) is
+  refused by design, where the mesh engine keeps it;
 - `trim_by_plane` and `split_by_plane` of solids with flat faces, the part on the side the normal
   points to, as the mesh engine cuts them;
 - `decompose`: each solid with the voids inside it (the mesh engine gives a void back as a part of
