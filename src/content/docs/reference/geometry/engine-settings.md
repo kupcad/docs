@@ -190,7 +190,9 @@ still being written. Today it builds:
   touching along an edge or at a corner stay two, a part left inside another is a void; a curved
   operand (a cylinder, a sphere) is refused for now, and a result that would touch itself along
   a line or at a point inside one solid (a pocket meeting a face along an edge of its own) is
-  refused by design, where the mesh engine keeps it;
+  refused by design, where the mesh engine keeps it; so are operands exactly the engine's
+  tolerance apart (0.00002 for parts of 1 to 100 mm, to the last digit), which
+  it can neither take as touching nor as apart: move one by a hair either way;
 - `trim_by_plane` and `split_by_plane` of solids with flat faces, the part on the side the normal
   points to, as the mesh engine cuts them;
 - `decompose`: each solid with the voids inside it (the mesh engine gives a void back as a part of
