@@ -194,7 +194,9 @@ still being written. Today it builds:
   keeps it (a STEP solid's void touches nothing of its own solid); so are operands exactly the engine's
   tolerance apart (0.00002 for parts of 1 to 100 mm, to the last digit), and faces or corners
   exactly half that apart (0.00001: whether they are one plane or one point), which it can
-  neither take as touching nor as apart: move one by a hair either way;
+  neither take as touching nor as apart: move one by a hair either way; so is a result with a face
+  narrower than 0.00001 (a cut a hair past the tolerance from an edge, the edge's side kept,
+  leaves its ends that thin), a face no part of the engine's may have: move the cut further;
 - `trim_by_plane` and `split_by_plane` of solids with flat faces, the part on the side the normal
   points to, as the mesh engine cuts them;
 - `decompose`: each solid with the voids inside it (the mesh engine gives a void back as a part of
