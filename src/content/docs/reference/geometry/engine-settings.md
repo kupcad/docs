@@ -166,7 +166,8 @@ still being written. Today it builds:
 - their extrusions (`extrude(h)`, so `cube(round_r:)` with its edges truly rounded, and
   `cube(chamfer:)`; a twist or a
   taper is refused), revolutions (`revolve`, with or without `segments:`; a profile across the
-  axis is refused, where the mesh engine clips it) and sweeps along one line or one arc
+  axis is refused, where the mesh engine clips it; a profile with a hole revolves into a solid
+  with a void) and sweeps along one line or one arc
   (`sweep`; a path of several segments joins its pieces with a boolean);
 - every move, turn, uniform scale and mirror (`translate`, `rotate`, `scale`, `mirror`,
   `transform`; a non-uniform scale of a curved part is refused, as its surfaces have no exact
