@@ -189,8 +189,9 @@ still being written. Today it builds:
   chains of them, the first less the rest), exact: solids touching along a face merge into one,
   touching along an edge or at a corner stay two, a part left inside another is a void; a curved
   operand (a cylinder, a sphere) is refused for now, and a result that would touch itself along
-  a line or at a point inside one solid (a pocket meeting a face along an edge of its own) is
-  refused by design, where the mesh engine keeps it; so are operands exactly the engine's
+  a line or at a point inside one solid (a pocket meeting a face along an edge of its own, or a
+  void touching the outer surface or another void) is refused by design, where the mesh engine
+  keeps it (a STEP solid's void touches nothing of its own solid); so are operands exactly the engine's
   tolerance apart (0.00002 for parts of 1 to 100 mm, to the last digit), and faces or corners
   exactly half that apart (0.00001: whether they are one plane or one point), which it can
   neither take as touching nor as apart: move one by a hair either way;
