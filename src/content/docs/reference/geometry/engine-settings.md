@@ -167,8 +167,10 @@ still being written. Today it builds:
   `cube(chamfer:)`; a twist or a
   taper is refused), revolutions (`revolve`, with or without `segments:`; a profile across the
   axis is refused, where the mesh engine clips it; a profile with a hole revolves into a solid
-  with a void) and sweeps along one line or one arc
-  (`sweep`; a path of several segments joins its pieces with a boolean);
+  with a void) and sweeps along one line or one arc (`sweep`; a path of several segments joins
+  its pieces with a boolean); a sketch that passes through one point twice (a hole touching its
+  outline) sweeps a solid touching itself, which is refused by design as the booleans refuse
+  it, where the mesh engine keeps it;
 - every move, turn, uniform scale and mirror (`translate`, `rotate`, `scale`, `mirror`,
   `transform`; a non-uniform scale of a curved part is refused, as its surfaces have no exact
   form);
